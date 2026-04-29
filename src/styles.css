@@ -1,0 +1,117 @@
+:root {
+    interpolate-size: allow-keywords;
+    /* 👈 */
+}
+
+.session-summary {
+    height: 100%;
+
+    margin: 0 16px;
+    padding-bottom: 40px;;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    line-height: 3ch;
+
+    h3 {
+        margin-bottom: 2ch;
+    }
+
+    p {
+        margin-bottom: 2ch
+    }
+}
+
+.session-summary-sentence {
+    position: relative;
+    cursor: pointer;
+    border-radius: 4px 0 4px 0;
+
+    transition: background-color 0.3s, color 0.3s, font-weight 0.3s;
+
+    text-wrap: pretty;
+
+    &.selected {
+        background-color: #151;
+    }
+
+    &.annotated {
+        text-decoration: underline;
+    }
+}
+
+.annotation {
+    display: block;
+
+    width: fit-content;
+    height: 0;
+    padding: 0 8px;
+
+    background-color: #444;
+    color: inherit;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    overflow: hidden;
+
+    transition: height 0.3s ease-in-out, padding 0.3s ease-in-out;
+
+    &.show {
+        padding: 4px 8px;
+        height: auto;
+    }
+}
+
+.session-annotation-input-wrapper {
+    position: fixed;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border-top: 3px solid var(--egg-shell);
+    padding: 0 16px;
+    transform: translateY(0%);
+
+    background-color: var(--night-sky);
+
+    transition: transform 0.3s ease-in-out;
+
+
+    &.enabled {
+        transform: translateY(-100%);
+    }
+
+    textarea {
+        width: 100%;
+        background-color: transparent;
+    }
+
+    button {
+        background-color: transparent;
+        border: 0;
+    }
+}
+
+.show-annotations-button {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+
+    padding: 8px;
+    border-radius: 1000px;
+
+    background-color: var(--egg-shell);
+    border: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 100%;
+    }
+}
