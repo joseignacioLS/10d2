@@ -102,11 +102,14 @@
 
     background-color: var(--night-sky);
 
-    transition: transform 0.3s ease-in-out;
+    opacity: 0;
+
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 
 
     &.enabled {
         transform: translateY(-100%);
+        opacity: 1;
     }
 
     .controls {
