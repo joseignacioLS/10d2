@@ -4,7 +4,7 @@ import { Annotations } from "./Annotations";
 
 type Props = {
     id: string;
-    handleSelectSentence: (id: string) => void;
+    handleSelectSentence: ({ id,  text }: {id: string, text: string} ) => void;
     content: string;
     annotations?: Annotation[];
     isSelected: boolean;
@@ -51,11 +51,11 @@ export const Sentence: React.FC<Props> = ({
         <span
             ref={ref}
             className={`session-summary-sentence ${isSelected ? "selected" : ""} ${annotations.length > 0 ? "annotated" : ""}`}
-            onClick={() => { handleSelectSentence(id) }}
+            onClick={() => { handleSelectSentence({ id, text: content }) }}
             dangerouslySetInnerHTML={{
-                __html: content + (isLast ? "" : ". ")
+                __html: content
             }}>
-        </span>
+        </span >
         {annotations.length > 0 && <Annotations annotations={annotations} showAnnotations={showAnnotations && inScreen} />}
     </>
 }

@@ -6,7 +6,7 @@ type Props = {
     plainText: string;
     annotations: Annotation[],
     selectedSentence: string | undefined,
-    handleSelectSentence: (id: string) => void;
+    handleSelectSentence: ({ id, text }: { id: string, text: string }) => void;
     showAnnotations: boolean;
 }
 
@@ -18,22 +18,25 @@ export const Paragraph: React.FC<Props> = ({
     handleSelectSentence,
     showAnnotations
 }) => {
+    const sentences = plainText
+        .replaceAll(/([\.\?\!] )/g, "$1\n")
+        .split("\n")
     return <p key={lineIndex}> {
-        plainText.split(". ")
-            .map((sentence, sentenceIndex) => {
-                const isLast = sentenceIndex === plainText.split(". ").length - 1;
-                const sentenceId = `${lineIndex}-${sentenceIndex}`;
-                const annotation = annotations.filter(({ id }) => id === sentenceId)
-                return <Sentence
-                    key={sentenceIndex}
-                    id={`${lineIndex}-${sentenceIndex}`}
-                    handleSelectSentence={handleSelectSentence}
-                    content={sentence}
-                    annotations={annotation}
-                    isSelected={selectedSentence === sentenceId}
-                    isLast={isLast}
-                    showAnnotations={showAnnotations}
-                />
-            })
+
+        sentences.map((sentence, sentenceIndex) => {
+            const isLast = sentenceIndex === sentences.length - 1;
+            const sentenceId = `${lineIndex}-${sentenceIndex}`;
+            const annotation = annotations.filter(({ id }) => id === sentenceId)
+            return <Sentence
+                key={sentenceIndex}
+                id={`${lineIndex}-${sentenceIndex}`}
+                handleSelectSentence={handleSelectSentence}
+                content={sentence}
+                annotations={annotation}
+                isSelected={selectedSentence === sentenceId}
+                isLast={isLast}
+                showAnnotations={showAnnotations}
+            />
+        })
     }</p >
 }

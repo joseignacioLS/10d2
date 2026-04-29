@@ -20,7 +20,13 @@ const fetchSession = async (sessionId: TSession["id"]): Promise<TSession | undef
 export const Session: React.FC<Props> = ({ sessionId }) => {
     const [session, setSession] = useState<TSession>();
     const [userInput, setUserInput] = useState<string>("");
-    const [selectedSentence, setSelectedSentence] = useState<string>();
+    const [selectedSentence, setSelectedSentence] = useState<{
+        text: string;
+        id: string;
+    }>({
+        text: "",
+        id: ""
+    });
 
     useEffect(() => {
         fetchSession(sessionId).then((data) => {
@@ -50,11 +56,17 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
             }
         })
         setUserInput("");
-        setSelectedSentence(undefined);
+        setSelectedSentence({
+            text: "",
+            id: ""
+        });
     }
 
 
-    return <div className={"session-summary"} onClick={() => setSelectedSentence(undefined)}>
+    return <div className={"session-summary"} onClick={() => setSelectedSentence({
+        text: "",
+        id: ""
+    })}>
         <header>
             <h2>
                 {session?.title}
@@ -63,17 +75,18 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
         {session && <TextEntrySection
             text={session.summary.text}
             annotations={session.summary.annotations}
-            selectedSentence={selectedSentence}
-            setSelectedSentence={setSelectedSentence}
+            selectedSentence={selectedSentence.id}
+            handleSelectSentence={setSelectedSentence}
         />}
         {session && <CommentSection comments={session?.summary.comments || []} />}
 
         <section
-            className={`session-annotation-input-wrapper ${selectedSentence !== undefined ? "enabled" : ""}`}
+            className={`session-annotation-input-wrapper ${selectedSentence.id ? "enabled" : ""}`}
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
             }}>
+            {selectedSentence.id && <p>{selectedSentence.text}</p>}
             <textarea
                 disabled={selectedSentence === undefined}
                 value={userInput}
@@ -81,14 +94,17 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
                     setUserInput(e.currentTarget.value)
                 }}></textarea>
             <div className="controls" >
-                <Button onClick={() => setSelectedSentence(undefined)}>Cerrar</Button>
+                <Button onClick={() => setSelectedSentence({
+                    text: "",
+                    id: ""
+                })}>Cerrar</Button>
                 <Button onClick={() => {
                     if (!selectedSentence) {
                         return
                     }
-                    handleAnnotate(userInput, selectedSentence)
+                    handleAnnotate(userInput, selectedSentence.id)
                 }}>Guardar</Button>
             </div>
         </section>
-    </div>
+    </div >
 }

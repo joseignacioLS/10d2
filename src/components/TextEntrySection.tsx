@@ -7,10 +7,10 @@ type Props = {
     text: string;
     annotations: Annotation[];
     selectedSentence: string | undefined;
-    setSelectedSentence: (id: string) => void;
+    handleSelectSentence: ({ id, text }: { id: string, text: string }) => void;
 }
 
-export const TextEntrySection: React.FC<Props> = ({ text, annotations, selectedSentence, setSelectedSentence }) => {
+export const TextEntrySection: React.FC<Props> = ({ text, annotations, selectedSentence, handleSelectSentence }) => {
 
 
     const [showAnnotations, setShowAnnotations] = useState<boolean>(true);
@@ -35,7 +35,7 @@ export const TextEntrySection: React.FC<Props> = ({ text, annotations, selectedS
                     plainText={line.substring(3, line.length - 4)}
                     annotations={annotations}
                     selectedSentence={selectedSentence}
-                    handleSelectSentence={setSelectedSentence}
+                    handleSelectSentence={handleSelectSentence}
                     showAnnotations={showAnnotations}
                 ></Paragraph>
             }

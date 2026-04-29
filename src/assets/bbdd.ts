@@ -109,7 +109,7 @@ export const bbdd: Group[] = [
 <p>Por desgracia para los Cazadores, de todos estos sitios de Tantir, el inicio de su historia se remonta a los oscuros calabozos. Sin conocerse aún, Itri, Jurenay y Volk se encontraban arrestados en sus subterráneas, húmedas, y no tan cómodas como la taberna, celdas. En su defensa diré que su estancia allí era más una peripecia del destino que un resultado de sus malas acciones.</p>
 <p>Sea como fuere, Tantir se encontraba bajo el asalto de unas criaturas cristalinas, unos animales conformados por algún tipo de cristal azulado y con instintos violentos. Los primeeros avistamientos en los bosques había evolucionado en asaltos frecuentes al pueblo, hasta el punto de sobrepasar las capacidades de la guardia. Desgracia de Tantir, oportunidad para los allí presos. El alcalde, ajeno a la cadena de acontecimientos que estaba a punto de iniciar, les ofreció un trato.</p>
 <p>Cómo yo lo veo, podéis quedaros a esperar a que vengan a juzgaros, o quizás hacer algo de provecho. Acabad con las criaturas y su origen y desestimamos todos los cargos.</p>
-<p>¿Tuvieron acaso alguna alternativa más que aceptar la oferta del alcadel? Armados y equipados, su primera hazaña fuer la defensa del mercado de Tantir esa misma noche. Allí disuadieron a un enjambre de escarabajos cristalinos. Nada mal para tres aventureros principiantes empezando a forjar su leyenda.</p>`,
+<p>¿Tuvieron acaso alguna alternativa más que aceptar la oferta del alcade? Armados y equipados, su primera hazaña fuer la defensa del mercado de Tantir esa misma noche. Allí disuadieron a un enjambre de escarabajos cristalinos. Nada mal para tres aventureros principiantes empezando a forjar su leyenda.</p>`,
                             annotations: [
                                 {
                                     id: "1-2",
@@ -117,7 +117,7 @@ export const bbdd: Group[] = [
                                     character: "0-0"
                                 },
                                 {
-                                    id: "4-2",
+                                    id: "4-3",
                                     text: "Bueno, tendríamos que hablar de la pelea en la que Volk me dejó sin aire...",
                                     character: "1-0"
                                 }
