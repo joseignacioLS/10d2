@@ -1,0 +1,16 @@
+---
+import { Campaign } from "../../components/Campaign";
+import Layout from "../../layouts/Layout.astro";
+import "../../styles.css";
+
+const { id } = Astro.params;
+---
+
+<Layout>
+    <header>
+        <h1>10d2</h1>
+    </header>
+    <main>
+        <Campaign campaignId={id ?? ""} client:load />
+    </main>
+</Layout>

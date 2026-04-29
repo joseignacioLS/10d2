@@ -1,6 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import { bbdd, type Session as TSession } from "../assets/bbdd";
+import { campaigns, type Session as TSession } from "../assets/bbdd";
 import { Button } from "./Button";
 import { CommentSection } from "./CommentSection";
 import { TextEntrySection } from "./TextEntrySection";
@@ -11,9 +11,9 @@ type Props = {
 
 const fetchSession = async (sessionId: TSession["id"]): Promise<TSession | undefined> => {
     const groupId = sessionId.split("-")[0];
-    const campaingId = groupId + "-" + sessionId.split("-")[1]
+    const campaignId = groupId + "-" + sessionId.split("-")[1]
 
-    const session = bbdd.find(({ id }) => id === groupId)?.campaings.find(({ id }) => id === campaingId)?.sessions.find(({ id }) => id === sessionId)
+    const session = campaigns.find(({ id }) => id === campaignId)?.sessions.find(({ id }) => id === sessionId)
     return session
 }
 

@@ -39,7 +39,7 @@ export const TextEntrySection: React.FC<Props> = ({ text, annotations, selectedS
                     showAnnotations={showAnnotations}
                 ></Paragraph>
             }
-            return <></>
+            return null
         })}
         <Button className={"show-annotations-button"} onClick={handleToggleAnnotations}>
             <img src={showAnnotations ? "/eye.svg" : "/eye-closed.svg"} />
