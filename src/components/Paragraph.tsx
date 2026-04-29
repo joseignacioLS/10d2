@@ -26,13 +26,12 @@ export const Paragraph: React.FC<Props> = ({
         sentences.map((sentence, sentenceIndex) => {
             const isLast = sentenceIndex === sentences.length - 1;
             const sentenceId = `${lineIndex}-${sentenceIndex}`;
-            const annotation = annotations.filter(({ id }) => id === sentenceId)
             return <Sentence
                 key={sentenceIndex}
                 id={`${lineIndex}-${sentenceIndex}`}
                 handleSelectSentence={handleSelectSentence}
                 content={sentence}
-                annotations={annotation}
+                annotations={annotations.filter(({ id }) => id === sentenceId)}
                 isSelected={selectedSentence === sentenceId}
                 isLast={isLast}
                 showAnnotations={showAnnotations}

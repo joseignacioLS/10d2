@@ -4,7 +4,7 @@ import { Annotations } from "./Annotations";
 
 type Props = {
     id: string;
-    handleSelectSentence: ({ id,  text }: {id: string, text: string} ) => void;
+    handleSelectSentence: ({ id, text }: { id: string, text: string }) => void;
     content: string;
     annotations?: Annotation[];
     isSelected: boolean;
@@ -23,29 +23,29 @@ export const Sentence: React.FC<Props> = ({
     showAnnotations
 }) => {
 
-    const [inScreen, setInScreen] = useState(false);
+    const [inScreen, setInScreen] = useState(true);
     const ref = useRef<HTMLSpanElement>(null);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    setInScreen(true);
-                } else {
-                    setInScreen(false);
-                }
-            });
-        }, {
-            root: null,
-            threshold: 1
-        });
+    // useEffect(() => {
+    //     const observer = new IntersectionObserver((entries) => {
+    //         entries.forEach(entry => {
+    //             if (entry.isIntersecting) {
+    //                 setInScreen(true);
+    //             } else {
+    //                 setInScreen(false);
+    //             }
+    //         });
+    //     }, {
+    //         root: null,
+    //         threshold: 1
+    //     });
 
-        observer.observe(ref.current!);
+    //     observer.observe(ref.current!);
 
-        return () => {
-            observer.disconnect();
-        }
-    }, [])
+    //     return () => {
+    //         observer.disconnect();
+    //     }
+    // }, [])
 
     return <>
         <span
