@@ -80,6 +80,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
         />}
         {session && <CommentSection comments={session?.summary.comments || []} />}
 
+        {selectedSentence.id && <div className="backdrop" />}
         <section
             className={`session-annotation-input-wrapper ${selectedSentence.id ? "enabled" : ""}`}
             onClick={(e) => {

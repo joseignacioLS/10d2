@@ -57,6 +57,10 @@ import { Font } from "astro:assets";
 	body {
 		max-width: 70ch;
 		margin: auto;
+
+		&:has(.backdrop) {
+			overflow: hidden;
+		}
 	}
 
 	header {
