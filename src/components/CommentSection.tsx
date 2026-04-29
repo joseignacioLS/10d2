@@ -6,7 +6,7 @@ type Props = {
 
 export const CommentSection: React.FC<Props> = ({ comments }) => {
     return <section>
-        <h2>Commentarios</h2>
+        <h2>Comentarios</h2>
         <div className="comment-wrapper">
 
             {comments.map(({ text, member: memberId, date }, index) => {
