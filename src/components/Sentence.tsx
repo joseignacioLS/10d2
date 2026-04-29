@@ -1,4 +1,5 @@
 import { Characters, type Annotation } from "../assets/bbdd";
+import { Annotations } from "./Annotations";
 
 type Props = {
     id: string;
@@ -31,20 +32,6 @@ export const Sentence: React.FC<Props> = ({
                 __html: content + (isLast ? "" : ". ")
             }}>
         </span>
-        {annotations?.map(({ text, character }) => {
-            const char = Characters.find((c) => c.id === character);
-            return <div
-                className={`annotation ${showAnnotations ? "show" : ""}`}
-                style={{
-                    backgroundColor: char?.color
-                }}
-            >
-                <span>
-                    {text}
-
-                </span>
-                <span><i> - {char?.name}</i></span>
-            </div>
-        })}
+        {annotations.length > 0 && <Annotations annotations={annotations} showAnnotations={showAnnotations} />}
     </>
 }

@@ -6,7 +6,7 @@ type Props = {
     plainText: string;
     annotations: Annotation[],
     selectedSentence: string | undefined,
-    handleSelectSentence: (position: string) => void;
+    handleSelectSentence: (id: string) => void;
     showAnnotations: boolean;
 }
 

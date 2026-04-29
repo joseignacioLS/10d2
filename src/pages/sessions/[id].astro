@@ -1,0 +1,16 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Session } from "../../components/Session";
+import "../../styles.css";
+
+const { id } = Astro.params;
+---
+
+<Layout>
+    <header>
+        <h1>10d2</h1>
+    </header>
+    <main>
+        <Session sessionId={id ?? ""} client:load />
+    </main>
+</Layout>

@@ -10,6 +10,7 @@ export default defineConfig({
     provider: fontProviders.fontsource(),
     name: "Open Sans",
     cssVariable: "--font-open-sans",
-  }]
+  }],
+  output: "server"
 });
 
