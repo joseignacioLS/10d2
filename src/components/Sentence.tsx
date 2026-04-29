@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Characters, type Annotation } from "../assets/bbdd";
 import { Annotations } from "./Annotations";
 
@@ -21,17 +22,40 @@ export const Sentence: React.FC<Props> = ({
     isLast,
     showAnnotations
 }) => {
+
+    const [inScreen, setInScreen] = useState(false);
+    const ref = useRef<HTMLSpanElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setInScreen(true);
+                } else {
+                    setInScreen(false);
+                }
+            });
+        }, {
+            root: null,
+            threshold: 1
+        });
+
+        observer.observe(ref.current!);
+
+        return () => {
+            observer.disconnect();
+        }
+    }, [])
+
     return <>
         <span
-            className={`session-summary-sentence
-            ${isSelected ? "selected" : ""}
-            ${annotations.length > 0 ? "annotated" : ""}
-            `}
+            ref={ref}
+            className={`session-summary-sentence ${isSelected ? "selected" : ""} ${annotations.length > 0 ? "annotated" : ""}`}
             onClick={() => { handleSelectSentence(id) }}
             dangerouslySetInnerHTML={{
                 __html: content + (isLast ? "" : ". ")
             }}>
         </span>
-        {annotations.length > 0 && <Annotations annotations={annotations} showAnnotations={showAnnotations} />}
+        {annotations.length > 0 && <Annotations annotations={annotations} showAnnotations={showAnnotations && inScreen} />}
     </>
 }
