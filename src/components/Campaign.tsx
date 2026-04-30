@@ -1,7 +1,5 @@
 import { Campaigns, Characters, Groups, Members, Sessions, } from "../assets/bbdd";
 import { type Campaign as TCampaign } from "../types/ttrpg";
-
-import styles from "./Campaign.module.css";
 import { CrumbsHeader } from "./Core/CrumbsHeader";
 
 type Props = {
@@ -21,6 +19,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
             }
             ]}
         />
+        <p>{campaign.summary}</p>
         <h3>Personajes</h3>
         {campaign.characters.map((id) => {
             const { name, player } = Characters.find((c) => c.id === id) ?? { name: "", player: "" };

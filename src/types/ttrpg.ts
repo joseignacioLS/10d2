@@ -19,7 +19,8 @@ export type Campaign = {
     name: string;
     GM: Member["id"];
     characters: Character["id"][];
-    sessions: Session["id"][]
+    sessions: Session["id"][];
+    summary: string;
 }
 
 export type Session = {

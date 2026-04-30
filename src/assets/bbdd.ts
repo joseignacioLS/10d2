@@ -56,8 +56,8 @@ export const Campaigns: Campaign[] = [
         sessions: [
             "0-0-0",
             "0-0-4",
-
-        ]
+        ],
+        summary: "Las historias del grupo de héroes: Los Cazadores de Aurovita"
     }
 ];
 
