@@ -2,7 +2,7 @@
 import { EditorContent, useEditor } from '@tiptap/react'
 import { BubbleMenu } from '@tiptap/react/menus'
 import StarterKit from '@tiptap/starter-kit'
-import { Button } from './Core/Button'
+import { Button } from './Button'
 
 const Tiptap = () => {
     const editor = useEditor({
