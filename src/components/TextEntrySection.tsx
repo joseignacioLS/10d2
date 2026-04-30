@@ -1,16 +1,12 @@
-import { useState } from "react";
 import type { Annotation } from "../types/ttrpg";
 import { Paragraph } from "./Paragraph";
-import { Button } from "./Core/Button";
 
-import styles from "./TextEntrySection.module.css"
 
 type Props = {
     text: string;
     annotations: Annotation[];
     selectedSentence: string | undefined;
     handleSelectSentence: ({ id, text }: { id: string, text: string }) => void;
-    toggleVisibleSentence: (id: string, visible: boolean) => void;
 }
 
 export const TextEntrySection: React.FC<Props> = ({
@@ -18,16 +14,7 @@ export const TextEntrySection: React.FC<Props> = ({
     annotations,
     selectedSentence,
     handleSelectSentence,
-    toggleVisibleSentence
 }) => {
-
-
-    const [showAnnotations, setShowAnnotations] = useState<boolean>(true);
-
-
-    const handleToggleAnnotations = () => {
-        setShowAnnotations(v => !v)
-    }
     return <section onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -45,14 +32,9 @@ export const TextEntrySection: React.FC<Props> = ({
                     annotations={annotations}
                     selectedSentence={selectedSentence}
                     handleSelectSentence={handleSelectSentence}
-                    showAnnotations={showAnnotations}
-                    toggleVisibleSentence={toggleVisibleSentence}
                 ></Paragraph>
             }
             return null
         })}
-        <Button className={styles.showAnnotationsButton} onClick={handleToggleAnnotations}>
-            <img src={showAnnotations ? "/eye.svg" : "/eye-closed.svg"} />
-        </Button>
     </section>
 }

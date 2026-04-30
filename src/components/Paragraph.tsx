@@ -7,8 +7,6 @@ type Props = {
     annotations: Annotation[],
     selectedSentence: string | undefined,
     handleSelectSentence: ({ id, text }: { id: string, text: string }) => void;
-    showAnnotations: boolean;
-    toggleVisibleSentence: (id: string, visible: boolean) => void;
 }
 
 export const Paragraph: React.FC<Props> = ({
@@ -17,8 +15,6 @@ export const Paragraph: React.FC<Props> = ({
     annotations,
     selectedSentence,
     handleSelectSentence,
-    showAnnotations,
-    toggleVisibleSentence
 }) => {
     const sentences = plainText
         .replaceAll(/([\.\?\!] )/g, "$1\n")
@@ -34,8 +30,6 @@ export const Paragraph: React.FC<Props> = ({
                 content={sentence}
                 annotations={annotations.filter(({ id }) => id === sentenceId)}
                 isSelected={selectedSentence === sentenceId}
-                showAnnotations={showAnnotations}
-                toggleVisibleSentence={toggleVisibleSentence}
             />
         })
     }</p >
