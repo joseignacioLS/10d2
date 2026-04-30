@@ -8,6 +8,7 @@ import { TextEntrySection } from "./TextEntrySection";
 
 import styles from "./Session.module.css"
 import { CrumbsHeader } from "./Core/CrumbsHeader";
+import { Backdrop } from "./Core/Backdrop";
 
 type Props = {
     sessionId: TSession["id"];
@@ -95,7 +96,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
         />}
         {session && <CommentSection comments={session?.summary.comments || []} />}
 
-        {selectedSentence.id && <div className={styles.backdrop} />}
+        {selectedSentence.id && <Backdrop />}
         <section
             className={`${styles.sessionAnnotationInputWrapper} ${selectedSentence.id ? styles.enabled : ""}`}
             onClick={(e) => {
