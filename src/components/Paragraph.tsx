@@ -1,4 +1,4 @@
-import type { Annotation } from "../assets/bbdd";
+import type { Annotation } from "../types/ttrpg";
 import { Sentence } from "./Sentence";
 
 type Props = {
@@ -8,6 +8,7 @@ type Props = {
     selectedSentence: string | undefined,
     handleSelectSentence: ({ id, text }: { id: string, text: string }) => void;
     showAnnotations: boolean;
+    toggleVisibleSentence: (id: string, visible: boolean) => void;
 }
 
 export const Paragraph: React.FC<Props> = ({
@@ -16,7 +17,8 @@ export const Paragraph: React.FC<Props> = ({
     annotations,
     selectedSentence,
     handleSelectSentence,
-    showAnnotations
+    showAnnotations,
+    toggleVisibleSentence
 }) => {
     const sentences = plainText
         .replaceAll(/([\.\?\!] )/g, "$1\n")
@@ -24,7 +26,6 @@ export const Paragraph: React.FC<Props> = ({
     return <p key={lineIndex}> {
 
         sentences.map((sentence, sentenceIndex) => {
-            const isLast = sentenceIndex === sentences.length - 1;
             const sentenceId = `${lineIndex}-${sentenceIndex}`;
             return <Sentence
                 key={sentenceIndex}
@@ -33,8 +34,8 @@ export const Paragraph: React.FC<Props> = ({
                 content={sentence}
                 annotations={annotations.filter(({ id }) => id === sentenceId)}
                 isSelected={selectedSentence === sentenceId}
-                isLast={isLast}
                 showAnnotations={showAnnotations}
+                toggleVisibleSentence={toggleVisibleSentence}
             />
         })
     }</p >

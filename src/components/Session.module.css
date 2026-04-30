@@ -16,8 +16,22 @@
         margin-bottom: 2ch
     }
 
+    .sessionBody {
+        height: 100%;
+        overflow: auto;
+    }
+
 }
 
+.peekWrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 50%;
+    background-color: var(--main-bg-color);
+    padding: 8px 0;
+}
 
 
 

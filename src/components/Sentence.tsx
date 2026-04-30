@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { Characters, type Annotation } from "../assets/bbdd";
+import { Characters } from "../assets/bbdd";
 import { Annotations } from "./Annotations";
 
 import styles from "./Sentence.module.css"
+import type { Annotation } from "../types/ttrpg";
 
 type Props = {
     id: string;
@@ -10,8 +11,8 @@ type Props = {
     content: string;
     annotations?: Annotation[];
     isSelected: boolean;
-    isLast: boolean;
     showAnnotations: boolean;
+    toggleVisibleSentence: (id: string, visible: boolean) => void
 
 }
 
@@ -21,33 +22,29 @@ export const Sentence: React.FC<Props> = ({
     content,
     annotations = [],
     isSelected,
-    isLast,
-    showAnnotations
+    showAnnotations,
+    toggleVisibleSentence
 }) => {
 
     const [inScreen, setInScreen] = useState(true);
     const ref = useRef<HTMLSpanElement>(null);
 
-    // useEffect(() => {
-    //     const observer = new IntersectionObserver((entries) => {
-    //         entries.forEach(entry => {
-    //             if (entry.isIntersecting) {
-    //                 setInScreen(true);
-    //             } else {
-    //                 setInScreen(false);
-    //             }
-    //         });
-    //     }, {
-    //         root: null,
-    //         threshold: 1
-    //     });
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                toggleVisibleSentence(id, entry.isIntersecting)
+            });
+        }, {
+            root: null,
+            threshold: .1
+        });
 
-    //     observer.observe(ref.current!);
+        observer.observe(ref.current!);
 
-    //     return () => {
-    //         observer.disconnect();
-    //     }
-    // }, [])
+        return () => {
+            observer.disconnect();
+        }
+    }, [])
 
     return <>
         <span
