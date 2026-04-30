@@ -3,6 +3,8 @@ import type { Annotation } from "../assets/bbdd";
 import { Paragraph } from "./Paragraph";
 import { Button } from "./Button";
 
+import styles from "./TextEntrySection.module.css"
+
 type Props = {
     text: string;
     annotations: Annotation[];
@@ -41,7 +43,7 @@ export const TextEntrySection: React.FC<Props> = ({ text, annotations, selectedS
             }
             return null
         })}
-        <Button className={"show-annotations-button"} onClick={handleToggleAnnotations}>
+        <Button className={styles.showAnnotationsButton} onClick={handleToggleAnnotations}>
             <img src={showAnnotations ? "/eye.svg" : "/eye-closed.svg"} />
         </Button>
     </section>

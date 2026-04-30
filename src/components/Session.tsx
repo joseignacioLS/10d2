@@ -5,6 +5,8 @@ import { Button } from "./Button";
 import { CommentSection } from "./CommentSection";
 import { TextEntrySection } from "./TextEntrySection";
 
+import styles from "./Session.module.css"
+
 type Props = {
     sessionId: TSession["id"];
 }
@@ -66,14 +68,17 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
         });
     }
 
+    const campaign = campaigns.find((c) => c.id === sessionId.split("-").slice(0, 2).join("-"));
+    console.log({ campaign })
 
-    return <div className={"session-summary"} onClick={() => setSelectedSentence({
+    return <div className={styles.sessionSummary} onClick={() => setSelectedSentence({
         text: "",
         id: ""
     })}>
-        <header>
+        <header className={styles.sessionSummaryHeader}>
             <h2>
-                {session?.title}
+                <a href={`/campaigns/${campaign?.id}`}>{campaign?.name}</a>
+                <span>{session?.title}</span>
             </h2>
         </header>
         {session && <TextEntrySection
@@ -84,9 +89,9 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
         />}
         {session && <CommentSection comments={session?.summary.comments || []} />}
 
-        {selectedSentence.id && <div className="backdrop" />}
+        {selectedSentence.id && <div className={styles.backdrop} />}
         <section
-            className={`session-annotation-input-wrapper ${selectedSentence.id ? "enabled" : ""}`}
+            className={`${styles.sessionAnnotationInputWrapper} ${selectedSentence.id ? styles.enabled : ""}`}
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -98,7 +103,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
                 onInput={(e) => {
                     setUserInput(e.currentTarget.value)
                 }}></textarea>
-            <div className="controls" >
+            <div className={styles.controls} >
                 <Button onClick={() => setSelectedSentence({
                     text: "",
                     id: ""

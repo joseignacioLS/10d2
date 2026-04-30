@@ -1,20 +1,22 @@
 import { Characters, type Annotation } from "../assets/bbdd";
 
+import styles from "./Annotations.module.css";
+
 type Props = { annotations: Annotation[], showAnnotations: boolean }
 
 export const Annotations: React.FC<Props> = ({ annotations, showAnnotations }) => {
-    return <span className={`annotations-wrapper ${showAnnotations ? "show" : ""}`}>
+    return <span className={`${styles.annotationsWrapper} ${showAnnotations ? styles.show : ""}`}>
         {
             annotations.map(({ text, character }, index) => {
                 const char = Characters.find((c) => c.id === character);
                 return <span
                     key={index}
-                    className={`annotation`}
+                    className={styles.annotation}
                     style={{
                         backgroundColor: char?.color
                     }}
                 >
-                    <img className="annotation-avatar" src="/cat.svg" />
+                    <img className={styles.annotationAvatar} src="/cat.svg" />
                     <span>
                         <span>
                             {text}

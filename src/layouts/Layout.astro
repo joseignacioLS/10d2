@@ -23,6 +23,11 @@ import { Font } from "astro:assets";
 		--egg-shell: #eeeedd;
 	}
 
+	:root {
+		interpolate-size: allow-keywords;
+		/* 👈 */
+	}
+
 	html {
 		background-color: var(--egg-shell);
 		color: var(--night-sky);

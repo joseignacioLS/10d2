@@ -1,0 +1,11 @@
+.commentWrapper {
+    .comment {
+        padding: 4px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        border-radius: 4px;
+        background-color: #444;
+    }
+}

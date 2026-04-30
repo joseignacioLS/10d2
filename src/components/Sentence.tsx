@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Characters, type Annotation } from "../assets/bbdd";
 import { Annotations } from "./Annotations";
 
+import styles from "./Sentence.module.css"
+
 type Props = {
     id: string;
     handleSelectSentence: ({ id, text }: { id: string, text: string }) => void;
@@ -50,7 +52,7 @@ export const Sentence: React.FC<Props> = ({
     return <>
         <span
             ref={ref}
-            className={`session-summary-sentence ${isSelected ? "selected" : ""} ${annotations.length > 0 ? "annotated" : ""}`}
+            className={`${styles.sessionSummarySentence} ${isSelected ? styles.selected : ""} ${annotations.length > 0 ? styles.annotated : ""}`}
             onClick={() => { handleSelectSentence({ id, text: content }) }}
             dangerouslySetInnerHTML={{
                 __html: content
