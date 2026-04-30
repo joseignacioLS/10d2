@@ -69,7 +69,6 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     }
 
     const campaign = campaigns.find((c) => c.id === sessionId.split("-").slice(0, 2).join("-"));
-    console.log({ campaign })
 
     return <div className={styles.sessionSummary} onClick={() => setSelectedSentence({
         text: "",
