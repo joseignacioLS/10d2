@@ -1,7 +1,10 @@
+"use client";
+
 import { useMemo } from "react"
 import { Campaigns, Groups, Members, } from "../assets/bbdd"
 import { type Member, type Campaign } from "../types/ttrpg"
 import { CrumbsHeader } from "./Core/CrumbsHeader"
+import Link from "next/link";
 
 type Props = { groupId: string }
 
@@ -41,9 +44,9 @@ export const Group: React.FC<Props> = ({ groupId }) => {
             <ul>
                 {campaigns.map(({ id, name }) => {
                     return <li key={id}>
-                        <a href={`/campaigns/${id}`}>
+                        <Link href={`/campaigns/${id}`}>
                             {name}
-                        </a>
+                        </Link>
                     </li>
                 })
                 }

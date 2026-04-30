@@ -1,20 +1,20 @@
-import { useStore } from "@nanostores/react";
+"use client";
+
 import type React from "react";
 import { useState } from "react";
-import { login } from "../api/user";
-import { user } from "../store/user";
 import { Button } from "./Core/Button";
 
 import styles from "./UserButton.module.css"
+import { login } from "@/src/api/user";
 
 export const UserButton: React.FC<{}> = ({ }) => {
-    const $user = useStore(user);
+    const user = { username: undefined }
     const [loading, setLoading] = useState(false);
 
 
     const handleClick = async () => {
         if (loading) return;
-        if ($user.username === undefined) {
+        if (user.username === undefined) {
             try {
                 setLoading(true);
                 const { data, error } = await login("jose", "");
@@ -36,7 +36,7 @@ export const UserButton: React.FC<{}> = ({ }) => {
 
     return <Button className={styles.userButton} onClick={handleClick}>
         {loading && "..."}
-        {!loading && !$user.username && "Login"}
-        {!loading && $user.username && $user.username}
+        {!loading && !user.username && "Login"}
+        {!loading && user.username && user.username}
     </Button>
 }

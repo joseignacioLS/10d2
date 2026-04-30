@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./CrumbsHeader.module.css"
+import Link from "next/link";
 
 type Props = {
     title: string;
@@ -14,7 +15,7 @@ export const CrumbsHeader: React.FC<Props> = ({ title, crumbs = [] }) => {
         <h2>
             {crumbs.map(({ name, href }) => {
                 return <React.Fragment key={href}>
-                    <a href={href} >{name}</a>{" > "}
+                    <Link href={href} >{name}</Link>{" > "}
                 </React.Fragment>
             })}
             <span>{title}</span>

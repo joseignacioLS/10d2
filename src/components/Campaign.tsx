@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Campaigns, Characters, Groups, Members, Sessions, } from "../assets/bbdd";
 import { type Campaign as TCampaign } from "../types/ttrpg";
 import { CrumbsHeader } from "./Core/CrumbsHeader";
@@ -35,7 +36,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
 
             {campaign.sessions.map((id) => {
                 const session = Sessions.find((s) => s.id === id);
-                return <a key={id} href={`/sessions/${id}`}>#{(session?.number ?? 0) + 1} {session?.title}</a>
+                return <Link key={id} href={`/sessions/${id}`}>#{(session?.number ?? 0) + 1} {session?.title}</Link>
             })}
         </div>
     </section>

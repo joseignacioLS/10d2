@@ -1,3 +1,5 @@
+"use client";
+
 // src/Tiptap.tsx
 import { EditorContent, useEditor } from '@tiptap/react'
 import { BubbleMenu } from '@tiptap/react/menus'
