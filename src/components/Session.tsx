@@ -2,7 +2,7 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { Campaigns, Groups, Sessions, } from "../assets/bbdd";
 import { type Session as TSession } from "../types/ttrpg";
-import { Button } from "./Button";
+import { Button } from "./Core/Button";
 import { CommentSection } from "./CommentSection";
 import { TextEntrySection } from "./TextEntrySection";
 

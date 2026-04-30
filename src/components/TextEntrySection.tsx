@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Annotation } from "../types/ttrpg";
 import { Paragraph } from "./Paragraph";
-import { Button } from "./Button";
+import { Button } from "./Core/Button";
 
 import styles from "./TextEntrySection.module.css"
 

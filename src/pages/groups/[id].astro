@@ -6,9 +6,6 @@ const { id } = Astro.params;
 ---
 
 <Layout>
-    <header>
-        <h1>10d2</h1>
-    </header>
     <main>
         <Group groupId={id ?? ""} client:load />
     </main>
