@@ -19,8 +19,7 @@ export const Paragraph: React.FC<Props> = ({
     const sentences = plainText
         .replaceAll(/([\.\?\!] )/g, "$1\n")
         .split("\n")
-    return <p key={lineIndex}> {
-
+    return <div key={lineIndex}> {
         sentences.map((sentence, sentenceIndex) => {
             const sentenceId = `${lineIndex}-${sentenceIndex}`;
             return <Sentence
@@ -32,5 +31,5 @@ export const Paragraph: React.FC<Props> = ({
                 isSelected={selectedSentence === sentenceId}
             />
         })
-    }</p >
+    }</div >
 }

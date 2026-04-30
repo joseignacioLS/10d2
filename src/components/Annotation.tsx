@@ -1,5 +1,5 @@
 import type { Character } from "../types/ttrpg";
-import styles from "./Annotation.module.css"
+import { UserTextBubble } from "./Core/UserTextBubble";
 
 type Props = {
     text: string;
@@ -7,18 +7,13 @@ type Props = {
 }
 
 export const Annotation: React.FC<Props> = ({ text, character = { color: "#ddd", name: "Unknown" } }) => {
-    return <article
-        className={styles.annotation}
-        style={{
-            backgroundColor: character?.color
-        }}
-    >
-        <img className={styles.annotationAvatar} src="/cat.svg" />
+    return <UserTextBubble
+        color={character?.color}>
         <span>
-            <span>
-                {text}
-            </span>
-            <span><i> - {character?.name}</i></span>
+            {text}
         </span>
-    </article>
+        <span><i> - {character?.name}</i></span>
+    </UserTextBubble>
+
+
 }

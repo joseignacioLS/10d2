@@ -11,7 +11,7 @@ export const Annotations: React.FC<Props> = ({ annotations, showAnnotations }) =
         {
             annotations.map(({ text, character }, index) => {
                 const char = Characters.find((c) => c.id === character);
-                return <Annotation text={text} character={char} />
+                return <Annotation key={index} text={text} character={char} />
             })
         }
     </span>
