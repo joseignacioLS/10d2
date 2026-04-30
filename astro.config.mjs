@@ -5,6 +5,8 @@ import react from '@astrojs/react';
 
 import netlify from "@astrojs/netlify";
 
+
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [react()],
@@ -14,7 +16,6 @@ export default defineConfig({
     name: "Open Sans",
     cssVariable: "--font-open-sans",
   }],
-
   output: "server",
-  adapter: netlify()
+  adapter: netlify(),
 });

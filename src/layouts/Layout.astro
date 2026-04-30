@@ -1,5 +1,6 @@
 ---
 import { Font } from "astro:assets";
+import { UserButton } from "../components/UserButton";
 ---
 
 <!doctype html>
@@ -15,6 +16,7 @@ import { Font } from "astro:assets";
 	<body>
 		<header>
 			<h1><a href="/">10d2</a></h1>
+			<UserButton client:load />
 		</header>
 		<slot />
 	</body>
