@@ -6,6 +6,7 @@ export type Group = {
     name: string;
     members: Member["id"][];
     campaigns: Campaign["id"][];
+    state: "open" | "closed" | "inactive"
 }
 
 export type Member = {
@@ -21,6 +22,7 @@ export type Campaign = {
     characters: Character["id"][];
     sessions: Session["id"][];
     summary: string;
+    state: "on-going" | "finished" | "not-started" | "on-a-break"
 }
 
 export type Session = {

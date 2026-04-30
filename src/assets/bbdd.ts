@@ -7,7 +7,8 @@ export const Groups: Group[] = [
         id: "0",
         name: "LCDA",
         members: ["0", "1"],
-        campaigns: ["0-0"]
+        campaigns: ["0-0"],
+        state: "closed"
     }
 ]
 
@@ -57,7 +58,8 @@ export const Campaigns: Campaign[] = [
             "0-0-0",
             "0-0-4",
         ],
-        summary: "Las historias del grupo de héroes: Los Cazadores de Aurovita"
+        summary: "Las historias del grupo de héroes: Los Cazadores de Aurovita",
+        state: "on-going"
     }
 ];
 
