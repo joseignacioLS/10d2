@@ -29,10 +29,14 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     });
 
     useEffect(() => {
-        fetchSession(sessionId).then((data) => {
-            if (!data) alert("wops");
-            setSession(data);
-        })
+        fetchSession(sessionId)
+            .then((data) => {
+                if (!data) alert("wops");
+                setSession(data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }, [sessionId])
 
 
