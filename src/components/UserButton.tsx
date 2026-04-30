@@ -1,25 +1,26 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../store/user";
 import { Button } from "./Core/Button";
-
-import styles from "./UserButton.module.css"
-import { login } from "@/src/api/user";
+import styles from "./UserButton.module.css";
+import { useRouter } from "next/navigation";
 
 export const UserButton: React.FC<{}> = ({ }) => {
-    const user = { username: undefined }
+    const { username, login } = useContext(UserContext)
     const [loading, setLoading] = useState(false);
+    const router = useRouter()
 
 
     const handleClick = async () => {
         if (loading) return;
-        if (user.username === undefined) {
+        if (username === undefined) {
             try {
                 setLoading(true);
-                const { data, error } = await login("jose", "");
-                if (error) throw error
-                if (!data) throw alert("Ha habido un problema con las credenciales");
+                const username = prompt("Username") ?? ""
+                const password = prompt("Password") ?? ""
+                await login(username, password);
             }
             catch (err) {
                 console.log(err)
@@ -30,13 +31,14 @@ export const UserButton: React.FC<{}> = ({ }) => {
             return
         }
 
-        window.location.href = "/profile"
-
+        router.push("/profile");
     }
 
-    return <Button className={styles.userButton} onClick={handleClick}>
-        {loading && "..."}
-        {!loading && !user.username && "Login"}
-        {!loading && user.username && user.username}
-    </Button>
+    return <>
+        <Button className={styles.userButton} onClick={handleClick}>
+            {loading && "..."}
+            {!loading && !username && "Login"}
+            {!loading && username && username.substring(0, 1).toUpperCase()}
+        </Button>
+    </>
 }

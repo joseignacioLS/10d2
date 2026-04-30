@@ -1,9 +1,9 @@
 import { UserButton } from "@/src/components/UserButton";
+import { UserProvider } from "@/src/store/user";
 import type { Metadata } from "next";
+import { Open_Sans } from 'next/font/google';
 import Link from "next/link";
 import "./globals.css";
-
-import { Open_Sans } from 'next/font/google'
 
 const opensans = Open_Sans({
   subsets: ['latin'],
@@ -24,15 +24,17 @@ export default function RootLayout({
     <html
       lang="en"
     >
-      <body className={opensans.className} >
-        <header>
-          <h1>
-            <Link href="/">10d2</Link>
-          </h1>
-          <UserButton />
-        </header>
-        {children}
-      </body>
+      <UserProvider>
+        <body className={opensans.className} >
+          <header>
+            <h1>
+              <Link href="/">10d2</Link>
+            </h1>
+            <UserButton />
+          </header>
+          {children}
+        </body>
+      </UserProvider>
     </html>
   );
 }
