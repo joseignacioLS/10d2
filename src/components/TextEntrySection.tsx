@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Annotation } from "../assets/bbdd";
+import type { Annotation } from "../types/ttrpg";
 import { Paragraph } from "./Paragraph";
 import { Button } from "./Button";
 

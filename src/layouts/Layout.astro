@@ -21,24 +21,26 @@ import { Font } from "astro:assets";
 	:root {
 		--night-sky: #060610;
 		--egg-shell: #eeeedd;
+
+		--main-bg-color: var(--egg-shell);
+		--main-fg-color: var(--night-sky);
 	}
 
 	:root {
 		interpolate-size: allow-keywords;
 		/* 👈 */
 	}
-
-	html {
-		background-color: var(--egg-shell);
-		color: var(--night-sky);
-		font-family: var(--font-open-sans);
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--main-bg-color: var(--night-sky);
+			--main-fg-color: var(--egg-shell);
+		}
 	}
 
-	@media (prefers-color-scheme: dark) {
-		html {
-			background-color: var(--night-sky);
-			color: var(--egg-shell);
-		}
+	html {
+		background-color: var(--main-bg-color);
+		color: var(--main-fg-color);
+		font-family: var(--font-open-sans);
 	}
 
 	* {

@@ -20,7 +20,7 @@
         margin-bottom: 4px;
 
         background-color: #444;
-        color: inherit;
+        color: var(--egg-shell);
 
         border-radius: 6px;
 

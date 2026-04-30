@@ -1,4 +1,5 @@
-import { Characters, type Annotation } from "../assets/bbdd";
+import { Characters } from "../assets/bbdd";
+import type { Annotation } from "../types/ttrpg";
 
 import styles from "./Annotations.module.css";
 

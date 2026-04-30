@@ -8,7 +8,7 @@
     padding: 8px;
     border-radius: 1000px;
 
-    background-color: var(--egg-shell);
+    background-color: var(--main-fg-color);
     border: 0;
 
     display: flex;

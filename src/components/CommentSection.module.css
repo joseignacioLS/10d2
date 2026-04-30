@@ -7,5 +7,6 @@
 
         border-radius: 4px;
         background-color: #444;
+        color: var(--egg-shell);
     }
 }

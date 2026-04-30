@@ -1,4 +1,5 @@
-import { Members, type Comment } from "../assets/bbdd";
+import { Members, } from "../assets/bbdd";
+import type { Comment } from "../types/ttrpg";
 
 import styles from "./CommentSection.module.css";
 
@@ -11,18 +12,18 @@ export const CommentSection: React.FC<Props> = ({ comments }) => {
         <h2>Comentarios</h2>
         <div className={styles.commentWrapper}>
 
-        {comments.map(({ text, member: memberId, date }, index) => {
-            const member = Members.find(({ id }) => id === memberId);
-            return <div key={index} className={styles.comment} >
-                <div>
-                    <p>
-                        {text}
-                    </p>
+            {comments.map(({ text, member: memberId, date }, index) => {
+                const member = Members.find(({ id }) => id === memberId);
+                return <div key={index} className={styles.comment} >
+                    <div>
+                        <p>
+                            {text}
+                        </p>
 
-                    <span><i>{member?.name}</i> - {date.toLocaleString()}</span>
+                        <span><i>{member?.name}</i> - {date.toLocaleString()}</span>
+                    </div>
                 </div>
-            </div>
-        })}
-    </div>
+            })}
+        </div>
     </section >
 }

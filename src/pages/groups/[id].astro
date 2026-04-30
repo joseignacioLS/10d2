@@ -1,6 +1,6 @@
 ---
+import { Group } from "../../components/Group";
 import Layout from "../../layouts/Layout.astro";
-import { Session } from "../../components/Session";
 
 const { id } = Astro.params;
 ---
@@ -10,6 +10,6 @@ const { id } = Astro.params;
         <h1>10d2</h1>
     </header>
     <main>
-        <Session sessionId={id ?? ""} client:load />
+        <Group groupId={id ?? ""} client:load />
     </main>
 </Layout>

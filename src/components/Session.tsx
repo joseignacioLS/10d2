@@ -1,21 +1,20 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import { campaigns, type Session as TSession } from "../assets/bbdd";
+import { Campaigns, Groups, Sessions, } from "../assets/bbdd";
+import { type Session as TSession } from "../types/ttrpg";
 import { Button } from "./Button";
 import { CommentSection } from "./CommentSection";
 import { TextEntrySection } from "./TextEntrySection";
 
 import styles from "./Session.module.css"
+import { CrumbsHeader } from "./Core/CrumbsHeader";
 
 type Props = {
     sessionId: TSession["id"];
 }
 
 const fetchSession = async (sessionId: TSession["id"]): Promise<TSession | undefined> => {
-    const groupId = sessionId.split("-")[0];
-    const campaignId = groupId + "-" + sessionId.split("-")[1]
-
-    const session = campaigns.find(({ id }) => id === campaignId)?.sessions.find(({ id }) => id === sessionId)
+    const session = Sessions.find(({ id }) => id === sessionId)
     return session
 }
 
@@ -68,18 +67,26 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
         });
     }
 
-    const campaign = campaigns.find((c) => c.id === sessionId.split("-").slice(0, 2).join("-"));
+
+    const group = Groups.find(({ id }) => id === sessionId.split("-")[0]);
+    const campaign = Campaigns.find((c) => c.id === sessionId.split("-").slice(0, 2).join("-"));
 
     return <div className={styles.sessionSummary} onClick={() => setSelectedSentence({
         text: "",
         id: ""
     })}>
-        <header className={styles.sessionSummaryHeader}>
-            <h2>
-                <a href={`/campaigns/${campaign?.id}`}>{campaign?.name}</a>
-                <span>{session?.title}</span>
-            </h2>
-        </header>
+        <CrumbsHeader
+            title={session?.title || ""}
+            crumbs={[
+                {
+                    name: group?.name || "",
+                    href: `/groups/${group?.id}`
+                },
+                {
+                    name: campaign?.name || "",
+                    href: `/campaigns/${campaign?.id}`
+                }
+            ]} />
         {session && <TextEntrySection
             text={session.summary.text}
             annotations={session.summary.annotations}
