@@ -1,3 +1,4 @@
+import { LoginModal } from "@/src/components/LoginModal";
 import { UserButton } from "@/src/components/UserButton";
 import { UserProvider } from "@/src/store/user";
 import type { Metadata } from "next";
@@ -32,6 +33,7 @@ export default function RootLayout({
             </div>
           </header>
           {children}
+          <LoginModal />
         </body>
       </UserProvider>
     </html>

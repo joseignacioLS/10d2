@@ -8,23 +8,14 @@ import { Button } from "./Core/Button";
 import styles from "./UserButton.module.css";
 
 export const UserButton: React.FC<{}> = ({}) => {
-  const { username, login } = useContext(UserContext);
+  const { username, login, openLoginModal } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleClick = async () => {
     if (loading) return;
     if (username === undefined) {
-      try {
-        setLoading(true);
-        const username = prompt("Username") ?? "";
-        const password = prompt("Password") ?? "";
-        await login(username, password);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+      openLoginModal();
       return;
     }
 
