@@ -29,20 +29,21 @@ export const Characters: Character[] = [
         id: "0-0",
         name: "GM",
         player: "0",
-        color: "#005500"
-
+        color: "#005500",
+        campaign: "0-0",
     },
     {
         id: "1-0",
         name: "Itri",
         player: "1",
-        color: "#550000"
+        color: "#550000",
+        campaign: "0-0",
     }, {
         id: "0-1",
         name: "Kote",
         player: "0",
-        color: "#000055"
-
+        color: "#000055",
+        campaign: "0-0",
     },
 ]
 

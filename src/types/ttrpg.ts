@@ -56,6 +56,7 @@ export type Comment = {
 export type Character = {
     id: string;
     name: string;
+    campaign: Campaign["id"];
     player: Member["id"];
     color: string;
 }
