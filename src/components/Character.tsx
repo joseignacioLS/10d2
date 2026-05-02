@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
-import { Campaigns, Characters, Groups } from "../assets/bbdd";
-import { Character as TCharacter } from "../types/ttrpg";
-import { CrumbsHeader } from "./Core/CrumbsHeader";
 import { useGameData } from "../hooks/useGameData";
+import { CrumbsHeader } from "./Core/CrumbsHeader";
 
 type Props = {
   characterId: string;
 };
 
 export const Character: React.FC<Props> = ({ characterId }) => {
-  const { character } = useGameData({
+  const { character, campaign, group } = useGameData({
     characterId,
   });
 
@@ -19,8 +16,19 @@ export const Character: React.FC<Props> = ({ characterId }) => {
 
   return (
     <section>
-      <CrumbsHeader title={""} crumbs={[]} />
-      <h3>{character.name}</h3>
+      <CrumbsHeader
+        title={character.name}
+        crumbs={[
+          {
+            href: `/groups/${group?.id}`,
+            name: group?.name ?? "",
+          },
+          {
+            href: `/campaigns/${campaign?.id}`,
+            name: campaign?.name ?? "",
+          },
+        ]}
+      />
     </section>
   );
 };

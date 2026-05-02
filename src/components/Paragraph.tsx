@@ -2,34 +2,37 @@ import type { Annotation } from "../types/ttrpg";
 import { Sentence } from "./Sentence";
 
 type Props = {
-    lineIndex: number;
-    plainText: string;
-    annotations: Annotation[],
-    selectedSentence: string | undefined,
-    handleSelectSentence: ({ id, text }: { id: string, text: string }) => void;
-}
+  lineIndex: number;
+  plainText: string;
+  annotations: Annotation[];
+  selectedSentence: string | undefined;
+  handleSelectSentence: ({ id, text }: { id: string; text: string }) => void;
+};
 
 export const Paragraph: React.FC<Props> = ({
-    lineIndex,
-    plainText,
-    annotations,
-    selectedSentence,
-    handleSelectSentence,
+  lineIndex,
+  plainText,
+  annotations,
+  selectedSentence,
+  handleSelectSentence,
 }) => {
-    const sentences = plainText
-        .replaceAll(/([\.\?\!] )/g, "$1\n")
-        .split("\n")
-    return <div key={lineIndex}> {
-        sentences.map((sentence, sentenceIndex) => {
-            const sentenceId = `${lineIndex}-${sentenceIndex}`;
-            return <Sentence
-                key={sentenceIndex}
-                id={`${lineIndex}-${sentenceIndex}`}
-                handleSelectSentence={handleSelectSentence}
-                content={sentence}
-                annotations={annotations.filter(({ id }) => id === sentenceId)}
-                isSelected={selectedSentence === sentenceId}
-            />
-        })
-    }</div >
-}
+  const sentences = plainText.replaceAll(/([\.\?\!] )/g, "$1\n").split("\n");
+  return (
+    <div key={lineIndex}>
+      {" "}
+      {sentences.map((sentence, sentenceIndex) => {
+        const sentenceId = `${lineIndex}-${sentenceIndex}`;
+        return (
+          <Sentence
+            key={sentenceIndex}
+            id={`${lineIndex}-${sentenceIndex}`}
+            handleSelectSentence={handleSelectSentence}
+            content={sentence}
+            annotations={annotations.filter(({ id }) => id === sentenceId)}
+            isSelected={selectedSentence === sentenceId}
+          />
+        );
+      })}
+    </div>
+  );
+};

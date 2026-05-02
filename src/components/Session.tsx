@@ -2,16 +2,16 @@
 
 import type React from "react";
 import { useEffect, useState } from "react";
-import { Campaigns, Groups, Sessions } from "../assets/bbdd";
+import { Sessions } from "../assets/bbdd";
 import { type Session as TSession } from "../types/ttrpg";
 import { CommentSection } from "./CommentSection";
 import { Button } from "./Core/Button";
 import { TextEntrySection } from "./TextEntrySection";
 
+import { useGameData } from "../hooks/useGameData";
 import { Backdrop } from "./Core/Backdrop";
 import { CrumbsHeader } from "./Core/CrumbsHeader";
 import styles from "./Session.module.css";
-import { useGameData } from "../hooks/useGameData";
 
 type Props = {
   sessionId: TSession["id"];

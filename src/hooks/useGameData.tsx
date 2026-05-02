@@ -44,12 +44,21 @@ export const useGameData = ({
       campaignId: undefined,
       memberId: undefined,
     };
-    if (!groupId && (campaignId || sessionId)) {
+
+    const memberData = Members.find(
+      ({ id }) => id === (memberId ?? fallbackIds.memberId),
+    );
+    const characterData = Characters.find(({ id }) => id === characterId);
+
+    if (!groupId && (campaignId || sessionId || characterData?.campaign)) {
       fallbackIds.groupId =
-        campaignId?.split("-")[0] ?? sessionId?.split("-")[0];
+        campaignId?.split("-")[0] ??
+        sessionId?.split("-")[0] ??
+        characterData?.campaign?.split("-")[0];
     }
-    if (!campaignId && sessionId) {
-      fallbackIds.campaignId = sessionId.split("-").slice(0, 2).join("-");
+    if (!campaignId && (sessionId || characterData?.campaign)) {
+      fallbackIds.campaignId =
+        sessionId?.split("-").slice(0, 2).join("-") ?? characterData?.campaign;
     }
 
     if (!memberId && characterId) {
@@ -64,11 +73,6 @@ export const useGameData = ({
       ({ id }) => id === (campaignId ?? fallbackIds.campaignId),
     );
     const sessionData = Sessions.find(({ id }) => id === sessionId);
-
-    const memberData = Members.find(
-      ({ id }) => id === (memberId ?? fallbackIds.memberId),
-    );
-    const characterData = Characters.find(({ id }) => id === characterId);
 
     setData({
       group: groupData,
