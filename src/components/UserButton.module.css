@@ -2,4 +2,8 @@
   display: block;
   min-height: 32px;
   max-width: 32px;
+
+  img {
+    filter: invert(1);
+  }
 }
