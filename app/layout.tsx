@@ -1,14 +1,13 @@
 import { UserButton } from "@/src/components/UserButton";
 import { UserProvider } from "@/src/store/user";
 import type { Metadata } from "next";
-import { Open_Sans } from 'next/font/google';
+import { Open_Sans } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 
 const opensans = Open_Sans({
-  subsets: ['latin'],
-})
-
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "10d2",
@@ -21,16 +20,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-    >
+    <html lang="en">
       <UserProvider>
-        <body className={opensans.className} >
-          <header>
+        <body className={opensans.className}>
+          <header className={"mainHeader"}>
             <h1>
               <Link href="/">10d2</Link>
             </h1>
-            <UserButton />
+            <div className="loginButtonWrapper">
+              <UserButton />
+            </div>
           </header>
           {children}
         </body>

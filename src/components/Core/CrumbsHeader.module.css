@@ -1,7 +1,10 @@
 .crumbsHeader {
-    position: sticky;
-    top: 0;
-    padding: 8px 0;
-    background-color: var(--main-bg-color);
-    z-index: 1;
+  position: sticky;
+  top: 0;
+  padding: 8px 0;
+  background-color: var(--main-bg-color);
+  z-index: 1;
+
+  font-size: 12px;
+  text-wrap: pretty;
 }
