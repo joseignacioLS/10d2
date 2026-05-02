@@ -1,0 +1,9 @@
+.inputsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  input {
+    text-align: center;
+  }
+}

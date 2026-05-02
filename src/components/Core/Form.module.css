@@ -1,0 +1,5 @@
+.submitBtn {
+  margin-left: auto;
+  background-color: transparent;
+  color: var(--main-fg-color);
+}

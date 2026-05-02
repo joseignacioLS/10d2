@@ -5,6 +5,7 @@ type Props = {
   className?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   type?: HTMLButtonElement["type"];
+  disabled?: boolean;
 };
 
 export const Button: React.FC<Props> = ({
@@ -12,12 +13,14 @@ export const Button: React.FC<Props> = ({
   className = "",
   onClick = () => {},
   type = "button",
+  disabled,
 }) => {
   return (
     <button
       type={type}
       className={`${styles.button} ${className}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>

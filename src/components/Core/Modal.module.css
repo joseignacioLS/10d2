@@ -10,11 +10,26 @@
   align-items: center;
 
   .modalWindow {
+    position: relative;
     z-index: 10;
     padding: 16px;
     background-color: var(--main-bg-color);
     box-shadow:
       2px 2px 2px var(--main-fg-color),
       -2px -2px 2px black;
+    .modalTitle {
+      min-height: 3ch;
+    }
+    .closeBtn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+
+      background-color: transparent;
+      color: var(--main-fg-color);
+    }
+
+    .modalBody {
+    }
   }
 }

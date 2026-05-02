@@ -4,9 +4,13 @@ import { Backdrop } from "./Backdrop";
 import { Button } from "./Button";
 import styles from "./Modal.module.css";
 
-type Props = { children: React.ReactElement; onClose: () => void };
+type Props = {
+  children: React.ReactElement;
+  onClose: () => void;
+  title?: string;
+};
 
-export const Modal: React.FC<Props> = ({ children, onClose }) => {
+export const Modal: React.FC<Props> = ({ children, onClose, title = "" }) => {
   return (
     <div className={styles.modalWrapper}>
       <Backdrop />
@@ -14,7 +18,8 @@ export const Modal: React.FC<Props> = ({ children, onClose }) => {
         <Button className={styles.closeBtn} onClick={onClose}>
           X
         </Button>
-        {children}
+        <p className={styles.modalTitle}>{title}</p>
+        <section className={styles.modalBody}>{children}</section>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export default function Home() {
   }, [username]);
   return (
     <main>
-      <h2>Perfil</h2>
+      <h2>Perfil de {username}</h2>
       <Button onClick={logout}>Logout</Button>
     </main>
   );

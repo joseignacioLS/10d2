@@ -1,9 +1,10 @@
 .userButton {
   display: block;
-  min-height: 32px;
-  max-width: 32px;
+  height: 32px;
+  min-width: 32px;
 
   img {
+    height: 16px;
     filter: invert(1);
   }
 }

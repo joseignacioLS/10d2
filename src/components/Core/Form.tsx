@@ -1,9 +1,15 @@
 import { ReactElement, useRef } from "react";
 import { Button } from "./Button";
 
-type Props = { children: ReactElement; onSubmit: (data: any) => void };
+import styles from "./Form.module.css";
 
-export const Form: React.FC<Props> = ({ children, onSubmit }) => {
+type Props = {
+  children: ReactElement;
+  onSubmit: (data: any) => void;
+  disabled?: boolean;
+};
+
+export const Form: React.FC<Props> = ({ children, onSubmit, disabled }) => {
   const formRef = useRef<HTMLFormElement>(null);
   return (
     <form
@@ -22,7 +28,9 @@ export const Form: React.FC<Props> = ({ children, onSubmit }) => {
       }}
     >
       {children}
-      <Button type="submit">Enviar</Button>
+      <Button type="submit" className={styles.submitBtn} disabled={disabled}>
+        Enviar
+      </Button>
     </form>
   );
 };
