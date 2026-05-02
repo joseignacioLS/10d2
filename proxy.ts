@@ -5,5 +5,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/profile", "/profile/:path"], // Apply middleware only to protected routes
+    matcher: ["/proxy"] // Apply middleware only to protected routes
 };
