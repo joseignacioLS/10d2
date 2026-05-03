@@ -14,17 +14,17 @@ export const Group: React.FC<Props> = ({ groupId }) => {
     return "Cargando...";
   }
 
-  if (error) {
+  if (error !== null) {
     return "Ha habido un error cargando el contenido";
   }
 
   return (
     <section>
-      <CrumbsHeader title={group?.name || ""} />
+      <CrumbsHeader title={group.name || ""} />
       <section>
         <h3>Miembros</h3>
         <ul>
-          {group?.members.map(({ id, name }) => {
+          {group.members.map(({ id, name }) => {
             return <li key={id}>{name}</li>;
           })}
         </ul>
@@ -32,7 +32,7 @@ export const Group: React.FC<Props> = ({ groupId }) => {
       <section>
         <h3>Campañas</h3>
         <ul>
-          {group?.campaigns.map(({ id, name }) => {
+          {group.campaigns.map(({ id, name }) => {
             return (
               <li key={id}>
                 <Link href={`/campaigns/${id}`}>{name}</Link>

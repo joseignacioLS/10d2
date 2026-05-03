@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { getCampaign, getGroup } from "../api/ttrpg";
-import { Sessions } from "../assets/bbdd";
+import { getCampaign } from "../api/ttrpg";
 import { useFetchData } from "../hooks/useFetchData";
 import { type Campaign as TCampaign } from "../types/ttrpg";
 import { CrumbsHeader } from "./Core/CrumbsHeader";
@@ -10,26 +9,34 @@ type Props = {
 };
 
 export const Campaign: React.FC<Props> = ({ campaignId }) => {
-  const { data: campaign, loading } = useFetchData(getCampaign, [campaignId]);
+  const {
+    data: campaign,
+    loading,
+    error,
+  } = useFetchData(getCampaign, [campaignId]);
 
   if (loading) {
     return "Cargando...";
   }
+  if (error !== null) {
+    return "Ha habido un error";
+  }
+
   return (
     <section>
       <CrumbsHeader
-        title={campaign?.name ?? ""}
+        title={campaign.name ?? ""}
         crumbs={[
           {
-            name: campaign?.group?.name || "",
-            href: `/groups/${campaign?.group?.id}`,
+            name: campaign.group?.name || "",
+            href: `/groups/${campaign.group?.id}`,
           },
         ]}
       />
-      <p>{campaign?.summary}</p>
+      <p>{campaign.summary}</p>
       <h3>Personajes</h3>
       <ul>
-        {campaign?.characters.map(({ id, name }) => {
+        {campaign.characters.map(({ id, name }) => {
           return (
             <li key={name}>
               <Link href={`/characters/${id}`}>
@@ -38,11 +45,11 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
             </li>
           );
         })}
-        <li>GM ({campaign?.GM.name})</li>
+        <li>GM ({campaign.GM.name})</li>
       </ul>
       <h3>Sesiones</h3>
       <ul>
-        {campaign?.sessions.map(({ id, number, title }) => {
+        {campaign.sessions.map(({ id, number, title }) => {
           return (
             <li key={id}>
               <Link href={`/sessions/${id}`}>

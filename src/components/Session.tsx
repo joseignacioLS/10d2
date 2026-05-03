@@ -18,7 +18,11 @@ type Props = {
 };
 
 export const Session: React.FC<Props> = ({ sessionId }) => {
-  const { data: session } = useFetchData(getSession, [sessionId]);
+  const {
+    data: session,
+    loading,
+    error,
+  } = useFetchData(getSession, [sessionId]);
 
   const [userInput, setUserInput] = useState<string>("");
   const [selectedSentence, setSelectedSentence] = useState<{
@@ -53,6 +57,13 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
       id: "",
     });
   };
+  if (loading) {
+    return "Cargando...";
+  }
+
+  if (error !== null) {
+    return "Ha habido un error";
+  }
 
   return (
     <div
@@ -65,11 +76,11 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
       }
     >
       <CrumbsHeader
-        title={session?.title || ""}
+        title={session.title || ""}
         crumbs={[
           {
-            name: session?.campaign?.name || "",
-            href: `/campaigns/${session?.campaign?.id}`,
+            name: session.campaign?.name || "",
+            href: `/campaigns/${session.campaign?.id}`,
           },
         ]}
       />
@@ -83,7 +94,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
           />
         )}
         {session && (
-          <CommentSection comments={session?.summary.comments || []} />
+          <CommentSection comments={session.summary.comments || []} />
         )}
       </div>
       {selectedSentence.id && <Backdrop />}

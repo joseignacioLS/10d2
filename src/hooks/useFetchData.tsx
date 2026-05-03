@@ -5,11 +5,17 @@ export const useFetchData = <T,>(
   service: (...args: any) => Promise<ServiceResponse<T>>,
   args: any[],
   onError?: (error: string) => void,
-): {
-  data: T | null;
-  loading: boolean;
-  error: string | null;
-} => {
+):
+  | {
+      data: T;
+      loading: boolean;
+      error: null;
+    }
+  | {
+      data: null;
+      loading: boolean;
+      error: string;
+    } => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
@@ -36,5 +42,23 @@ export const useFetchData = <T,>(
       });
   }, [memoService, onError]);
 
-  return { data, loading, error };
+  if (error) {
+    return {
+      data: null,
+      loading,
+      error,
+    };
+  }
+  if (data) {
+    return {
+      data,
+      loading,
+      error: null,
+    };
+  }
+  return {
+    data: null,
+    loading: true,
+    error: "",
+  };
 };
