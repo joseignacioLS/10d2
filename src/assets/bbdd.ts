@@ -7,7 +7,7 @@ export const Groups: Group[] = [
         id: "0",
         name: "LCDA",
         members: ["0", "1"],
-        campaigns: ["0-0"],
+        campaigns: ["0"],
         state: "closed"
     }
 ]
@@ -16,48 +16,53 @@ export const Members: Member[] = [
     {
         id: "0",
         name: "Jose",
-        role: ["GM"]
+        role: ["GM"],
+        groups: ["0"],
+        campaigns: ["0"]
     }, {
         id: "1",
         name: "Alex",
-        role: ["Player"]
+        role: ["Player"],
+        groups: ["0"],
+        campaigns: ["0"]
     }
 ]
 
 export const Characters: Character[] = [
     {
-        id: "0-0",
+        id: "0",
         name: "GM",
-        player: "0",
+        member: "0",
         color: "#005500",
-        campaign: "0-0",
+        campaign: "0",
     },
     {
-        id: "1-0",
+        id: "1",
         name: "Itri",
-        player: "1",
+        member: "1",
         color: "#550000",
-        campaign: "0-0",
+        campaign: "0",
     }, {
-        id: "0-1",
+        id: "2",
         name: "Kote",
-        player: "0",
+        member: "0",
         color: "#000055",
-        campaign: "0-0",
+        campaign: "0",
     },
 ]
 
 export const Campaigns: Campaign[] = [
     {
-        id: "0-0",
+        id: "0",
         name: "Los Cazadores de Aurovita",
+        group: "0",
         GM: "0",
         characters: [
-            "1-0"
+            "1"
         ],
         sessions: [
-            "0-0-0",
-            "0-0-4",
+            "0",
+            "4",
         ],
         summary: "Las historias del grupo de héroes: Los Cazadores de Aurovita",
         state: "on-going"
@@ -66,10 +71,11 @@ export const Campaigns: Campaign[] = [
 
 export const Sessions: Session[] = [
     {
-        id: "0-0-0",
+        id: "0",
+        campaign: "0",
         number: 0,
         title: "El Crisol del Grupo",
-        author: "1-0",
+        author: "0",
         date: Temporal.PlainDate.from("2024-11-02"),
         summary: {
             text: `<p>Para aquellos que no hayan estado en Tantir, es un lugar tranquilo en los lindes del bosque al norte de Merth. El aire allí huele a resina fresca y, al entrar en contacto con la piel, te hace sentir ese frío de motnaña que a los amantes de la naturaleza nos reconforta tanto. Sus gentes viven de la caza y el forrajeo, pero sobre todo del comercio. No dudéis en visitar sus tiendas y su taberna, Tantir está lleno de lugares encantadores y gentes amables.</p>
@@ -81,12 +87,12 @@ export const Sessions: Session[] = [
                 {
                     id: "1-2",
                     text: "A excepción de Jurenay, a quién habían atrapado en mitad de un robo.",
-                    character: "0-1"
+                    character: "0"
                 },
                 {
                     id: "4-3",
                     text: "Bueno, tendríamos que hablar de la pelea en la que Volk me dejó sin aire...",
-                    character: "1-0"
+                    character: "1"
                 }
             ],
             comments: [
@@ -100,10 +106,11 @@ export const Sessions: Session[] = [
         }
     },
     {
-        id: "0-0-4",
+        id: "4",
+        campaign: "0",
         number: 5,
         title: "El Cristal Vivo",
-        author: "1-0",
+        author: "0",
         date: Temporal.PlainDate.from("2024-12-13"),
         summary: {
             text: `
@@ -116,22 +123,22 @@ export const Sessions: Session[] = [
                 {
                     id: "1-1",
                     text: "Conocido como “Jefe Goblin”. Estas posiciones están ocupadas por seres ligeramente más inteligentes y que portan algún distintivo. En este caso era una copa dorada sobre la cabeza. Como curiosidad, este afirmaba ser primo de Boblin",
-                    character: "0-1"
+                    character: "2"
                 },
                 {
                     id: "2-1",
                     text: "Siendo goblins, me cuesta imaginar que esperasen a que sus compatriotas fallecieran para obtener sus calaveras",
-                    character: "0-1"
+                    character: "2"
                 },
                 {
                     id: "2-1",
                     text: "La Aurovita es un cristal rojo capaz de potenciar enormemente la magia. Por desgracia es difícil de encontrar hoy en día.",
-                    character: "0-1"
+                    character: "2"
                 },
                 {
                     id: "3-3",
                     text: "Al parecer desde entonces Fi tiene visiones de esta entidad con cierta frecuencia. Él sigue insistiendo en que es “su tío”",
-                    character: "0-1"
+                    character: "2"
                 }
             ],
             comments: [

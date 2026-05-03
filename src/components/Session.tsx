@@ -1,14 +1,14 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useState } from "react";
-import { Sessions } from "../assets/bbdd";
+import { useState } from "react";
 import { type Session as TSession } from "../types/ttrpg";
 import { CommentSection } from "./CommentSection";
 import { Button } from "./Core/Button";
 import { TextEntrySection } from "./TextEntrySection";
 
-import { useGameData } from "../hooks/useGameData";
+import { getSession } from "../api/ttrpg";
+import { useFetchData } from "../hooks/useFetchData";
 import { Backdrop } from "./Core/Backdrop";
 import { CrumbsHeader } from "./Core/CrumbsHeader";
 import styles from "./Session.module.css";
@@ -17,15 +17,8 @@ type Props = {
   sessionId: TSession["id"];
 };
 
-const fetchSession = async (
-  sessionId: TSession["id"],
-): Promise<TSession | undefined> => {
-  const session = Sessions.find(({ id }) => id === sessionId);
-  return session;
-};
-
 export const Session: React.FC<Props> = ({ sessionId }) => {
-  const { session, campaign, group } = useGameData({ sessionId });
+  const { data: session } = useFetchData(getSession, [sessionId]);
 
   const [userInput, setUserInput] = useState<string>("");
   const [selectedSentence, setSelectedSentence] = useState<{
@@ -35,17 +28,6 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     text: "",
     id: "",
   });
-
-  useEffect(() => {
-    fetchSession(sessionId)
-      .then((data) => {
-        if (!data) alert("wops");
-        // setSession(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [sessionId]);
 
   const handleAnnotate = (text: string, id: string) => {
     // setSession((prev) => {
@@ -86,12 +68,8 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
         title={session?.title || ""}
         crumbs={[
           {
-            name: group?.name || "",
-            href: `/groups/${group?.id}`,
-          },
-          {
-            name: campaign?.name || "",
-            href: `/campaigns/${campaign?.id}`,
+            name: session?.campaign?.name || "",
+            href: `/campaigns/${session?.campaign?.id}`,
           },
         ]}
       />

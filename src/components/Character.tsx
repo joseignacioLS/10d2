@@ -1,4 +1,5 @@
-import { useGameData } from "../hooks/useGameData";
+import { getCampaign, getCharacter, getGroup } from "../api/ttrpg";
+import { useFetchData } from "../hooks/useFetchData";
 import { CrumbsHeader } from "./Core/CrumbsHeader";
 
 type Props = {
@@ -6,9 +7,7 @@ type Props = {
 };
 
 export const Character: React.FC<Props> = ({ characterId }) => {
-  const { character, campaign, group } = useGameData({
-    characterId,
-  });
+  const { data: character } = useFetchData(getCharacter, [characterId]);
 
   if (!character) {
     return "Cargando...";
@@ -17,15 +16,11 @@ export const Character: React.FC<Props> = ({ characterId }) => {
   return (
     <section>
       <CrumbsHeader
-        title={character.name}
+        title={character?.name}
         crumbs={[
           {
-            href: `/groups/${group?.id}`,
-            name: group?.name ?? "",
-          },
-          {
-            href: `/campaigns/${campaign?.id}`,
-            name: campaign?.name ?? "",
+            href: `/campaigns/${character?.campaign?.id}`,
+            name: character?.campaign.name ?? "",
           },
         ]}
       />

@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Characters, Members, Sessions } from "../assets/bbdd";
-import { useGameData } from "../hooks/useGameData";
+import { getCampaign, getGroup } from "../api/ttrpg";
+import { Sessions } from "../assets/bbdd";
+import { useFetchData } from "../hooks/useFetchData";
 import { type Campaign as TCampaign } from "../types/ttrpg";
 import { CrumbsHeader } from "./Core/CrumbsHeader";
 
@@ -9,48 +10,43 @@ type Props = {
 };
 
 export const Campaign: React.FC<Props> = ({ campaignId }) => {
-  const { group, campaign } = useGameData({ campaignId });
+  const { data: campaign, loading } = useFetchData(getCampaign, [campaignId]);
 
-  if (!campaign || !group) {
+  if (loading) {
     return "Cargando...";
   }
   return (
     <section>
       <CrumbsHeader
-        title={campaign?.name}
+        title={campaign?.name ?? ""}
         crumbs={[
           {
-            name: group?.name || "",
-            href: `/groups/${group?.id}`,
+            name: campaign?.group?.name || "",
+            href: `/groups/${campaign?.group?.id}`,
           },
         ]}
       />
-      <p>{campaign.summary}</p>
+      <p>{campaign?.summary}</p>
       <h3>Personajes</h3>
       <ul>
-        {campaign.characters.map((id) => {
-          const { name, player } = Characters.find((c) => c.id === id) ?? {
-            name: "",
-            player: "",
-          };
+        {campaign?.characters.map(({ id, name }) => {
           return (
             <li key={name}>
               <Link href={`/characters/${id}`}>
-                {name} ({Members.find((m) => m.id === player)?.name})
+                {name} ({name})
               </Link>
             </li>
           );
         })}
-        <li>GM ({Members.find((m) => m.id === campaign.GM)?.name})</li>
+        <li>GM ({campaign?.GM.name})</li>
       </ul>
       <h3>Sesiones</h3>
       <ul>
-        {campaign.sessions.map((id) => {
-          const session = Sessions.find((s) => s.id === id);
+        {campaign?.sessions.map(({ id, number, title }) => {
           return (
             <li key={id}>
               <Link href={`/sessions/${id}`}>
-                #{(session?.number ?? 0) + 1} {session?.title}
+                #{(number ?? 0) + 1} {title}
               </Link>
             </li>
           );

@@ -9,15 +9,34 @@ export type Group = {
     state: "open" | "closed" | "inactive"
 }
 
+export type FilledGroup = {
+    id: string;
+    name: string;
+    members: Member[];
+    campaigns: Campaign[];
+    state: "open" | "closed" | "inactive"
+
+}
+
 export type Member = {
     id: string;
     name: string;
     role: ("Player" | "GM")[]
+    groups: Group["id"][];
+    campaigns: Campaign["id"][]
+}
+export type FilledMember = {
+    id: string;
+    name: string;
+    role: ("Player" | "GM")[]
+    groups: Group[];
+    campaigns: Campaign[]
 }
 
 export type Campaign = {
     id: string;
     name: string;
+    group: Group["id"];
     GM: Member["id"];
     characters: Character["id"][];
     sessions: Session["id"][];
@@ -25,11 +44,33 @@ export type Campaign = {
     state: "on-going" | "finished" | "not-started" | "on-a-break"
 }
 
+export type FilledCampaign = {
+    id: string;
+    name: string;
+    group: Group;
+    GM: Member
+    characters: Character[];
+    sessions: Session[];
+    summary: string;
+    state: "on-going" | "finished" | "not-started" | "on-a-break"
+}
+
 export type Session = {
     id: string;
     number: number;
+    campaign: Campaign["id"],
     title: string;
     author: Character["id"];
+    summary: SessionSummary;
+    date: Temporal.PlainDate
+}
+
+export type FilledSession = {
+    id: string;
+    number: number;
+    campaign: Campaign,
+    title: string;
+    author: Character;
     summary: SessionSummary;
     date: Temporal.PlainDate
 }
@@ -57,6 +98,14 @@ export type Character = {
     id: string;
     name: string;
     campaign: Campaign["id"];
-    player: Member["id"];
+    member: Member["id"];
+    color: string;
+}
+
+export type FilledCharacter = {
+    id: string;
+    name: string;
+    campaign: Campaign;
+    member: Member;
     color: string;
 }
