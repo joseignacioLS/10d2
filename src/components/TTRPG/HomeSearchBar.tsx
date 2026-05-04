@@ -34,12 +34,16 @@ export const HomeSearchBar: React.FC<Props> = ({}) => {
   const handleSearch = async (search: string) => {
     setNoResults(false);
     const { data } = await searchFetch(search);
-    if (!data) return;
+    if (!data) {
+      setSearchResults({
+        groups: [],
+        campaigns: [],
+      });
+      return;
+    }
     setNoResults(data.groups.length === 0 && data.campaigns.length === 0);
     setSearchResults(data);
   };
-
-  console.log({ noResults });
 
   return (
     <section>

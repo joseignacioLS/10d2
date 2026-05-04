@@ -14,10 +14,8 @@ export const Dashboard = () => {
   const [lastGroups, setLastGroups] = useState<Group[]>([]);
   const [lastCampaigns, setLastCampaigns] = useState<Campaign[]>([]);
   const [lastSessions, setLastSessions] = useState<FilledSession[]>([]);
-  console.log("HOME");
 
   useEffect(() => {
-    console.log("fetch");
     getLastGroups(5).then((data) => {
       if (data.data) {
         setLastGroups(data.data);
