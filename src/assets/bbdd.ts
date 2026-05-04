@@ -64,6 +64,7 @@ export const Campaigns: Campaign[] = [
   {
     id: "0",
     name: "Los Cazadores de Aurovita",
+    short: "LCDA",
     group: "0",
     GM: "0",
     characters: ["1"],
@@ -78,7 +79,7 @@ export const Sessions: Session[] = [
   {
     id: "0",
     campaign: "0",
-    number: 0,
+    number: 1,
     title: "El Crisol del Grupo",
     author: "0",
     date: Temporal.PlainDate.from("2024-11-02"),
@@ -113,7 +114,7 @@ export const Sessions: Session[] = [
   {
     id: "4",
     campaign: "0",
-    number: 5,
+    number: 6,
     title: "El Cristal Vivo",
     author: "0",
     date: Temporal.PlainDate.from("2024-12-13"),

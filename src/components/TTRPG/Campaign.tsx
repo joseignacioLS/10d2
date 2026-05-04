@@ -53,7 +53,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           return (
             <li key={id}>
               <Link href={`/sessions/${id}`}>
-                #{(number ?? 0) + 1} {title}
+                #{number ?? 1} {title}
               </Link>
             </li>
           );

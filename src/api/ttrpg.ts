@@ -14,7 +14,6 @@ import {
   FilledGroup,
   FilledSession,
   Group,
-  Session,
 } from "../types/ttrpg";
 
 export const getSearch = (
@@ -68,12 +67,17 @@ export const getLastCampaigns = (
 
 export const getLastSessions = (
   count: number = 3,
-): Promise<ServiceResponse<Session[]>> => {
+): Promise<ServiceResponse<FilledSession[]>> => {
   return new Promise((res) => {
-    const sessions = Sessions.sort((a, b) => -a.date.since(b.date).days).slice(
-      0,
-      count,
-    );
+    const sessions = Sessions.sort((a, b) => -a.date.since(b.date).days)
+      .slice(0, count)
+      .map((session) => {
+        return {
+          ...session,
+          campaign: Campaigns.find(({ id }) => id === session.campaign),
+          author: Characters.find(({ id }) => id === session.author),
+        };
+      }) as FilledSession[];
     res({
       data: sessions,
       error: null,

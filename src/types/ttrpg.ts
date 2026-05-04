@@ -31,6 +31,7 @@ export type FilledMember = Omit<Member, "groups" | "campaigns"> & {
 export type Campaign = {
   id: string;
   name: string;
+  short: string;
   group: Group["id"];
   GM: Member["id"];
   characters: Character["id"][];

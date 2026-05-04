@@ -6,14 +6,14 @@ import {
   getLastSessions,
 } from "@/src/api/ttrpg";
 import { HomeSearchBar } from "@/src/components/TTRPG/HomeSearchBar";
-import { Campaign, Group, Session } from "@/src/types/ttrpg";
+import { Campaign, FilledSession, Group } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [lastGroups, setLastGroups] = useState<Group[]>([]);
   const [lastCampaigns, setLastCampaigns] = useState<Campaign[]>([]);
-  const [lastSessions, setLastSessions] = useState<Session[]>([]);
+  const [lastSessions, setLastSessions] = useState<FilledSession[]>([]);
   console.log("HOME");
 
   useEffect(() => {
@@ -46,7 +46,9 @@ export default function Home() {
           {lastSessions.map((session) => {
             return (
               <li key={session.id}>
-                <Link href={`/sessions/${session.id}`}>{session.title}</Link>
+                <Link href={`/sessions/${session.id}`}>
+                  {session.title} ({session.campaign.short}#{session.number})
+                </Link>
               </li>
             );
           })}
