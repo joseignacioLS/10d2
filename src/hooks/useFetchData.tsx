@@ -8,22 +8,25 @@ export const useFetchData = <T,>(
 ):
   | {
       data: T;
-      loading: boolean;
+      loading: false;
       error: null;
     }
   | {
       data: null;
-      loading: boolean;
+      loading: false;
       error: string;
+    }
+  | {
+      data: null;
+      loading: true;
+      error: null;
     } => {
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>("");
 
   const memoService = useMemo(async () => await service(...args), [...args]);
 
   useEffect(() => {
-    setLoading(true);
     setError("");
     setData(null);
     memoService
@@ -36,29 +39,26 @@ export const useFetchData = <T,>(
       .catch((error) => {
         setError(error);
         onError?.(error);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   }, [memoService, onError]);
 
   if (error) {
     return {
       data: null,
-      loading,
+      loading: false,
       error,
     };
   }
   if (data) {
     return {
       data,
-      loading,
+      loading: false,
       error: null,
     };
   }
   return {
     data: null,
     loading: true,
-    error: "",
+    error: null,
   };
 };
