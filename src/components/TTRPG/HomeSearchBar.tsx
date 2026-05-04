@@ -63,6 +63,7 @@ export const HomeSearchBar: React.FC<Props> = ({}) => {
         searchResult.campaigns.length > 0) && (
         <Card>
           <>
+            <h2>Resultados de la búsqueda</h2>
             {searchResult.groups.map((group) => {
               return (
                 <Link key={group.id} href={`/groups/${group.id}`}>

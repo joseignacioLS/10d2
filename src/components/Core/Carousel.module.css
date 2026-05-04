@@ -1,0 +1,12 @@
+.carouselWrapper {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  display: flex;
+  scroll-snap-type: x mandatory;
+  > * {
+    flex-shrink: 0;
+    scroll-snap-align: center;
+  }
+}

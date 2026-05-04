@@ -7,8 +7,8 @@ import { Campaign, FilledSession, Group } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Card } from "../Core/Card";
-
-import styles from "./Dashboard.module.css";
+import { Carousel } from "../Core/Carousel";
+import { HomeSearchBar } from "../TTRPG/HomeSearchBar";
 
 export const Dashboard = () => {
   const [lastGroups, setLastGroups] = useState<Group[]>([]);
@@ -34,59 +34,59 @@ export const Dashboard = () => {
   }, []);
   return (
     <>
-      <section className={styles.dashboardSection}>
-        <Card>
-          <>
-            <h2>Últimas Sesiones</h2>
-            <ul>
-              {lastSessions.map((session) => {
-                return (
-                  <li key={session.id}>
-                    <Link href={`/sessions/${session.id}`}>
-                      {session.title} ({session.campaign.short}#{session.number}
-                      )
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </>
-        </Card>
-      </section>
-      <section className={styles.dashboardSection}>
-        <Card>
-          <>
-            <h2>Novedades en Campañas</h2>
-            <ul>
-              {lastCampaigns.map((campaign) => {
-                return (
-                  <li key={campaign.id}>
-                    <Link href={`/campaigns/${campaign.id}`}>
-                      {campaign.name}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </>
-        </Card>
-      </section>
-      <section className={styles.dashboardSection}>
-        <Card>
-          <>
-            <h2>Novedades en Grupos</h2>
-            <ul>
-              {lastGroups.map((group) => {
-                return (
-                  <li key={group.id}>
-                    <Link href={`/groups/${group.id}`}>{group.name}</Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </>
-        </Card>
-      </section>
+      <Card>
+        <>
+          <h2>Anuncios</h2>
+          <Carousel srcs={["/chicken.svg", "/cat.svg"]}></Carousel>
+        </>
+      </Card>
+      <HomeSearchBar />
+      <Card>
+        <>
+          <h2>Últimas Sesiones</h2>
+          <ul>
+            {lastSessions.map((session) => {
+              return (
+                <li key={session.id}>
+                  <Link href={`/sessions/${session.id}`}>
+                    {session.title} ({session.campaign.short}#{session.number})
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      </Card>
+      <Card>
+        <>
+          <h2>Novedades en Campañas</h2>
+          <ul>
+            {lastCampaigns.map((campaign) => {
+              return (
+                <li key={campaign.id}>
+                  <Link href={`/campaigns/${campaign.id}`}>
+                    {campaign.name}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      </Card>
+      <Card>
+        <>
+          <h2>Novedades en Grupos</h2>
+          <ul>
+            {lastGroups.map((group) => {
+              return (
+                <li key={group.id}>
+                  <Link href={`/groups/${group.id}`}>{group.name}</Link>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      </Card>
     </>
   );
 };
