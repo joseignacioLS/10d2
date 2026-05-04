@@ -1,11 +1,12 @@
 import styles from "./Input.module.css";
 
 type Props = {
-  label: string;
+  label?: string;
   id: string;
   name: string;
   type?: "text" | "number";
   placeholder: string;
+  min: number;
 };
 
 export const Input: React.FC<Props> = ({
@@ -14,16 +15,18 @@ export const Input: React.FC<Props> = ({
   name,
   type = "text",
   placeholder,
+  min,
 }) => {
   return (
     <div className={styles.inputWrapper}>
-      <label htmlFor={id}>{label}</label>
+      {label && <label htmlFor={id}>{label}</label>}
       <input
         id={id}
         name={name}
         type={type}
         placeholder={placeholder}
-        minLength={4}
+        min={min}
+        minLength={min}
         maxLength={32}
       />
     </div>

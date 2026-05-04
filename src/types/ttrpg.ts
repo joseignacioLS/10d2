@@ -7,14 +7,12 @@ export type Group = {
   campaigns: Campaign["id"][];
   state: "open" | "closed" | "inactive";
   creationDate: Temporal.PlainDate;
+  lastActivity: Temporal.PlainDate;
 };
 
-export type FilledGroup = {
-  id: string;
-  name: string;
+export type FilledGroup = Omit<Group, "members" | "campaigns"> & {
   members: Member[];
   campaigns: Campaign[];
-  state: "open" | "closed" | "inactive";
 };
 
 export type Member = {
@@ -24,10 +22,8 @@ export type Member = {
   groups: Group["id"][];
   campaigns: Campaign["id"][];
 };
-export type FilledMember = {
-  id: string;
-  name: string;
-  role: ("Player" | "GM")[];
+
+export type FilledMember = Omit<Member, "groups" | "campaigns"> & {
   groups: Group[];
   campaigns: Campaign[];
 };
@@ -41,17 +37,17 @@ export type Campaign = {
   sessions: Session["id"][];
   summary: string;
   state: "on-going" | "finished" | "not-started" | "on-a-break";
+  lastActivity: Temporal.PlainDate;
 };
 
-export type FilledCampaign = {
-  id: string;
-  name: string;
+export type FilledCampaign = Omit<
+  Campaign,
+  "group" | "GM" | "characters" | "sessions"
+> & {
   group: Group;
   GM: Member;
   characters: Character[];
   sessions: Session[];
-  summary: string;
-  state: "on-going" | "finished" | "not-started" | "on-a-break";
 };
 
 export type Session = {
@@ -64,14 +60,9 @@ export type Session = {
   date: Temporal.PlainDate;
 };
 
-export type FilledSession = {
-  id: string;
-  number: number;
+export type FilledSession = Omit<Session, "campaign" | "author"> & {
   campaign: Campaign;
-  title: string;
   author: Character;
-  summary: SessionSummary;
-  date: Temporal.PlainDate;
 };
 
 export type SessionSummary = {
@@ -101,10 +92,7 @@ export type Character = {
   color: string;
 };
 
-export type FilledCharacter = {
-  id: string;
-  name: string;
+export type FilledCharacter = Omit<Character, "campaign" | "member"> & {
   campaign: Campaign;
   member: Member;
-  color: string;
 };

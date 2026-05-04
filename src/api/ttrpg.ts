@@ -8,11 +8,78 @@ import {
 } from "../assets/bbdd";
 import { ServiceResponse } from "../types/api";
 import {
+  Campaign,
   FilledCampaign,
   FilledCharacter,
   FilledGroup,
   FilledSession,
+  Group,
+  Session,
 } from "../types/ttrpg";
+
+export const getSearch = (
+  search: string,
+): Promise<
+  ServiceResponse<{
+    groups: Group[];
+    campaigns: Campaign[];
+  }>
+> => {
+  return new Promise((res) => {
+    const result = {
+      groups: Groups.filter(({ name }) =>
+        new RegExp(search.toLowerCase()).test(name.toLowerCase()),
+      ).sort((a, b) => a.lastActivity.since(b.lastActivity).days),
+      campaigns: Campaigns.filter(({ name }) =>
+        new RegExp(search.toLowerCase()).test(name.toLowerCase()),
+      ).sort((a, b) => a.lastActivity.since(b.lastActivity).days),
+    };
+    res({ data: result, error: null });
+  });
+};
+
+export const getLastGroups = (
+  count: number = 3,
+): Promise<ServiceResponse<Group[]>> => {
+  return new Promise((res) => {
+    const groups = Groups.sort(
+      (a, b) => -a.lastActivity.since(b.lastActivity).days,
+    ).slice(0, count);
+    res({
+      data: groups,
+      error: null,
+    });
+  });
+};
+
+export const getLastCampaigns = (
+  count: number = 3,
+): Promise<ServiceResponse<Campaign[]>> => {
+  return new Promise((res) => {
+    const campaigns = Campaigns.sort(
+      (a, b) => -a.lastActivity.since(b.lastActivity).days,
+    ).slice(0, count);
+    res({
+      data: campaigns,
+      error: null,
+    });
+  });
+};
+
+export const getLastSessions = (
+  count: number = 3,
+): Promise<ServiceResponse<Session[]>> => {
+  return new Promise((res) => {
+    const sessions = Sessions.sort((a, b) => -a.date.since(b.date).days).slice(
+      0,
+      count,
+    );
+    res({
+      data: sessions,
+      error: null,
+    });
+  });
+};
 
 export const getGroup = (
   groupId: string,
@@ -55,6 +122,7 @@ export const postGroup = (name: string): Promise<ServiceResponse<boolean>> => {
       campaigns: [],
       state: "inactive",
       creationDate: Temporal.Now.plainDateISO(),
+      lastActivity: Temporal.Now.plainDateISO(),
     });
     res({
       data: true,

@@ -15,6 +15,7 @@ export const Groups: Group[] = [
     campaigns: ["0"],
     state: "closed",
     creationDate: Temporal.PlainDate.from("2024-11-29"),
+    lastActivity: Temporal.PlainDate.from("2026-05-01"),
   },
 ];
 
@@ -69,6 +70,7 @@ export const Campaigns: Campaign[] = [
     sessions: ["0", "4"],
     summary: "Las historias del grupo de héroes: Los Cazadores de Aurovita",
     state: "on-going",
+    lastActivity: Temporal.PlainDate.from("2026-05-01"),
   },
 ];
 
