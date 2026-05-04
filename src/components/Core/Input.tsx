@@ -7,6 +7,7 @@ type Props = {
   type?: "text" | "number";
   placeholder: string;
   min?: number;
+  onChange?: (value: string | number) => void;
 };
 
 export const Input: React.FC<Props> = ({
@@ -16,6 +17,7 @@ export const Input: React.FC<Props> = ({
   type = "text",
   placeholder,
   min = 1,
+  onChange = () => {},
 }) => {
   return (
     <div className={styles.inputWrapper}>
@@ -28,6 +30,7 @@ export const Input: React.FC<Props> = ({
         min={min}
         minLength={min}
         maxLength={32}
+        onChange={(e) => onChange(e.currentTarget.value)}
       />
     </div>
   );
