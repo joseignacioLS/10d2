@@ -7,6 +7,7 @@ import {
 } from "@/src/api/ttrpg";
 import { HomeSearchBar } from "@/src/components/TTRPG/HomeSearchBar";
 import { Campaign, Group, Session } from "@/src/types/ttrpg";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -45,7 +46,7 @@ export default function Home() {
           {lastSessions.map((session) => {
             return (
               <li key={session.id}>
-                <a href={`/sessions/${session.id}`}>{session.title}</a>
+                <Link href={`/sessions/${session.id}`}>{session.title}</Link>
               </li>
             );
           })}
@@ -57,7 +58,7 @@ export default function Home() {
           {lastCampaigns.map((campaign) => {
             return (
               <li key={campaign.id}>
-                <a href={`/campaigns/${campaign.id}`}>{campaign.name}</a>
+                <Link href={`/campaigns/${campaign.id}`}>{campaign.name}</Link>
               </li>
             );
           })}
@@ -69,7 +70,7 @@ export default function Home() {
           {lastGroups.map((group) => {
             return (
               <li key={group.id}>
-                <a href={`/groups/${group.id}`}>{group.name}</a>
+                <Link href={`/groups/${group.id}`}>{group.name}</Link>
               </li>
             );
           })}
