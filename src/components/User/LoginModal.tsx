@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../store/user";
 import { Form } from "../Core/Form";
 import { Modal } from "../Core/Modal";
@@ -10,24 +10,25 @@ import styles from "./LoginModal.module.css";
 type Props = {};
 
 export const LoginModal: React.FC<Props> = ({}) => {
-  const { loginModalOpen, closeLoginModal, login } = useContext(UserContext);
+  const { user, loginModalOpen, closeLoginModal, login } =
+    useContext(UserContext);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      closeLoginModal();
+    }
+  }, [user]);
+
   if (!loginModalOpen) return null;
+
   return (
     <Modal onClose={closeLoginModal} title="">
       <Form
         onSubmit={async ({ name, password }) => {
           setLoading(true);
-          await login(name, password)
-            .then(() => {
-              closeLoginModal();
-            })
-            .catch((err) => {
-              alert(err);
-            })
-            .finally(() => {
-              setLoading(false);
-            });
+          await login(name, password);
+          setLoading(false);
         }}
         disabled={loading}
       >

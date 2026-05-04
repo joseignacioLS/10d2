@@ -2,31 +2,36 @@
 
 import React, { createContext, useReducer } from "react";
 import { loginRequest } from "../api/user";
+import { FilledMember } from "../types/ttrpg";
 
 type UserState = {
-  username: string | undefined;
+  user: string | undefined;
   loginModalOpen: boolean;
 };
 
-type UserAction = {
-  type: "login" | "logout" | "open_login_modal" | "close_login_modal";
-  payload?: string;
-};
+type UserAction =
+  | {
+      type: "login";
+      payload: string;
+    }
+  | {
+      type: "logout" | "open_login_modal" | "close_login_modal";
+    };
 
 const initialState: UserState = {
-  username: undefined,
+  user: undefined,
   loginModalOpen: false,
 };
 
 export const UserContext = createContext<{
-  username: string | undefined;
+  user: string | undefined;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   loginModalOpen: boolean;
   openLoginModal: () => void;
   closeLoginModal: () => void;
 }>({
-  username: undefined,
+  user: undefined,
   login: () => new Promise(() => {}),
   logout: () => new Promise(() => {}),
   loginModalOpen: false,
@@ -39,12 +44,12 @@ const userReducer = (state: UserState, action: UserAction) => {
     case "login":
       return {
         ...state,
-        username: action.payload,
+        user: action.payload,
       };
     case "logout": {
       return {
         ...state,
-        username: undefined,
+        user: undefined,
       };
     }
     case "open_login_modal":
@@ -71,13 +76,14 @@ export const UserProvider = ({ children }: Props) => {
 
   const login = async (username: string, password: string) => {
     try {
-      const { error } = await loginRequest(username, password);
-      if (error) {
+      const { data: user, error } = await loginRequest(username, password);
+      console.log({ user, error });
+      if (error !== null) {
         throw error;
       }
       dispatch({
         type: "login",
-        payload: username,
+        payload: user.id,
       });
     } catch (err) {
       console.log(err);
@@ -105,7 +111,7 @@ export const UserProvider = ({ children }: Props) => {
   return (
     <UserContext.Provider
       value={{
-        username: state.username,
+        user: state.user,
         login,
         logout,
         loginModalOpen: state.loginModalOpen,

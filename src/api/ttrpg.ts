@@ -117,17 +117,24 @@ export const getGroup = (
   });
 };
 
-export const postGroup = (name: string): Promise<ServiceResponse<boolean>> => {
+export const postGroup = (
+  name: string,
+  userId: string,
+): Promise<ServiceResponse<boolean>> => {
   return new Promise((res) => {
     Groups.push({
       id: "23132",
       name,
-      members: [],
+      members: [userId],
       campaigns: [],
       state: "inactive",
       creationDate: Temporal.Now.plainDateISO(),
       lastActivity: Temporal.Now.plainDateISO(),
     });
+    const member = Members.find(({ id }) => id === userId);
+    if (member) {
+      member.groups.push("23132");
+    }
     res({
       data: true,
       error: null,

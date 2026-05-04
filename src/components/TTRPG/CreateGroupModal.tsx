@@ -10,8 +10,11 @@ type Props = {
 };
 
 export const CreateGroupModal: React.FC<Props> = ({ onClose }) => {
+  const { user } = useContext(UserContext);
   const handleCreateGroup = (values: { name: string }) => {
-    postGroup(values.name); // TODO: add user as member
+    if (!user) return;
+    postGroup(values.name, user); // TODO: add user as member
+    onClose();
   };
   return (
     <Modal onClose={onClose}>
