@@ -1,6 +1,6 @@
 "use client";
 
-import { Group } from "@/src/components/Group";
+import { Group } from "@/src/components/TTRPG/Group";
 import { useParams } from "next/navigation";
 
 

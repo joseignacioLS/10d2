@@ -1,6 +1,6 @@
 "use client";
 
-import { Character } from "@/src/components/Character";
+import { Character } from "@/src/components/TTRPG/Character";
 import { useParams } from "next/navigation";
 
 export default function Home() {

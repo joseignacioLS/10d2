@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import type React from "react";
 import { useContext } from "react";
-import { UserContext } from "../store/user";
-import { Button } from "./Core/Button";
+import { UserContext } from "../../store/user";
+import { Button } from "../Core/Button";
 import styles from "./UserButton.module.css";
 
 export const UserButton: React.FC<{}> = ({}) => {

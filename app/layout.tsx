@@ -1,5 +1,5 @@
-import { LoginModal } from "@/src/components/LoginModal";
-import { UserButton } from "@/src/components/UserButton";
+import { LoginModal } from "@/src/components/User/LoginModal";
+import { UserButton } from "@/src/components/User/UserButton";
 import { UserProvider } from "@/src/store/user";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";

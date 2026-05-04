@@ -1,6 +1,6 @@
 "use client"
 
-import { Campaign } from "@/src/components/Campaign";
+import { Campaign } from "@/src/components/TTRPG/Campaign";
 import { useParams } from "next/navigation";
 
 

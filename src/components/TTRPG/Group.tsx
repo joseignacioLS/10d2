@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { getGroup } from "../api/ttrpg";
-import { useFetchData } from "../hooks/useFetchData";
-import { CrumbsHeader } from "./Core/CrumbsHeader";
+import { getGroup } from "../../api/ttrpg";
+import { useFetchData } from "../../hooks/useFetchData";
+import { CrumbsHeader } from "../Core/CrumbsHeader";
 
 type Props = { groupId: string };
 

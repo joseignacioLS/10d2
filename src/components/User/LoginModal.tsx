@@ -1,9 +1,9 @@
 "use client";
 
 import { useContext, useState } from "react";
-import { UserContext } from "../store/user";
-import { Form } from "./Core/Form";
-import { Modal } from "./Core/Modal";
+import { UserContext } from "../../store/user";
+import { Form } from "../Core/Form";
+import { Modal } from "../Core/Modal";
 
 import styles from "./LoginModal.module.css";
 

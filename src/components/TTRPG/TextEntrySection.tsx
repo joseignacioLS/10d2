@@ -1,4 +1,4 @@
-import type { Annotation } from "../types/ttrpg";
+import type { Annotation } from "../../types/ttrpg";
 import { Paragraph } from "./Paragraph";
 
 type Props = {

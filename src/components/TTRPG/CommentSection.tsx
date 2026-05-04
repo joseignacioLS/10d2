@@ -1,7 +1,7 @@
-import { Members } from "../assets/bbdd";
-import type { Comment } from "../types/ttrpg";
+import { Members } from "../../assets/bbdd";
+import type { Comment } from "../../types/ttrpg";
 import styles from "./CommentSection.module.css";
-import { UserTextBubble } from "./Core/UserTextBubble";
+import { UserTextBubble } from "../Core/UserTextBubble";
 
 type Props = {
   comments: Comment[];

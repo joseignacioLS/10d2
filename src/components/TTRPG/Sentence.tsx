@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Annotations } from "./Annotations";
 
-import type { Annotation } from "../types/ttrpg";
+import type { Annotation } from "../../types/ttrpg";
 import styles from "./Sentence.module.css";
 
 type Props = {

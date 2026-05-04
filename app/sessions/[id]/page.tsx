@@ -1,6 +1,6 @@
 "use client";
 
-import { Session } from "@/src/components/Session";
+import { Session } from "@/src/components/TTRPG/Session";
 import { useParams } from "next/navigation";
 
 
