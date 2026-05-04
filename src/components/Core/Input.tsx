@@ -6,7 +6,7 @@ type Props = {
   name: string;
   type?: "text" | "number";
   placeholder: string;
-  min: number;
+  min?: number;
 };
 
 export const Input: React.FC<Props> = ({
@@ -15,7 +15,7 @@ export const Input: React.FC<Props> = ({
   name,
   type = "text",
   placeholder,
-  min,
+  min = 1,
 }) => {
   return (
     <div className={styles.inputWrapper}>
