@@ -68,7 +68,7 @@ export const Campaigns: Campaign[] = [
     group: "0",
     GM: "0",
     characters: ["1"],
-    sessions: ["0", "4"],
+    sessions: ["4", "0"],
     summary: "Las historias del grupo de héroes: Los Cazadores de Aurovita",
     state: "on-going",
     lastActivity: Temporal.PlainDate.from("2026-05-01"),

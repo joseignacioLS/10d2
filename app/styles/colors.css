@@ -4,9 +4,11 @@
   --violet: #725ac1;
   --orange: #ff6978;
   --water: #00dbcd;
+  --old-water: #014440;
 
   --main-bg-color: var(--egg-shell);
   --main-fg-color: var(--night-sky);
   --accent-color: var(--orange);
   --interactive-color: var(--water);
+  --secondary-color: var(--old-water);
 }

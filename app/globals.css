@@ -99,3 +99,8 @@ img {
 a {
   color: var(--accent-color);
 }
+
+ul {
+  list-style: none;
+  list-style-type: none;
+}

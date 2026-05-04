@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCampaign } from "../../api/ttrpg";
 import { useFetchData } from "../../hooks/useFetchData";
 import { type Campaign as TCampaign } from "../../types/ttrpg";
+import { Card } from "../Core/Card";
 import { CrumbsHeader } from "../Core/CrumbsHeader";
 
 type Props = {
@@ -33,32 +34,42 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           },
         ]}
       />
-      <p>{campaign.summary}</p>
-      <h3>Personajes</h3>
-      <ul>
-        {campaign.characters.map(({ id, name }) => {
-          return (
-            <li key={name}>
-              <Link href={`/characters/${id}`}>
-                {name} ({name})
-              </Link>
-            </li>
-          );
-        })}
-        <li>GM ({campaign.GM.name})</li>
-      </ul>
-      <h3>Sesiones</h3>
-      <ul>
-        {campaign.sessions.map(({ id, number, title }) => {
-          return (
-            <li key={id}>
-              <Link href={`/sessions/${id}`}>
-                #{number ?? 1} {title}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <Card>
+        <p>{campaign.summary}</p>
+      </Card>
+      <Card>
+        <>
+          <h3>Personajes</h3>
+          <ul>
+            {campaign.characters.map(({ id, name }) => {
+              return (
+                <li key={name}>
+                  <Link href={`/characters/${id}`}>
+                    {name} ({name})
+                  </Link>
+                </li>
+              );
+            })}
+            <li>GM ({campaign.GM.name})</li>
+          </ul>
+        </>
+      </Card>
+      <Card>
+        <>
+          <h3>Sesiones</h3>
+          <ul>
+            {campaign.sessions.map(({ id, number, title }) => {
+              return (
+                <li key={id}>
+                  <Link href={`/sessions/${id}`}>
+                    #{number ?? 1} {title}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      </Card>
     </section>
   );
 };
