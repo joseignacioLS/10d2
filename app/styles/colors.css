@@ -1,0 +1,12 @@
+:root {
+  --night-sky: #060610;
+  --egg-shell: #eeeedd;
+  --violet: #725ac1;
+  --orange: #ff6978;
+  --water: #00dbcd;
+
+  --main-bg-color: var(--egg-shell);
+  --main-fg-color: var(--night-sky);
+  --accent-color: var(--orange);
+  --interactive-color: var(--water);
+}

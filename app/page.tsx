@@ -13,39 +13,33 @@ export default function Home() {
       <h2>Grupos Actuales</h2>
       <h3>Abiertos</h3>
       <ul>
-        {
-          Groups.filter((g) => g.state === "open").map((g) => {
-            return (
-              <li key={g.id}>
-                <Link href={`/groups/${g.id}`}>{g.name}</Link>
-              </li>
-            );
-          })
-        }
+        {Groups.filter((g) => g.state === "open").map((g) => {
+          return (
+            <li key={g.id}>
+              <Link href={`/groups/${g.id}`}>{g.name}</Link>
+            </li>
+          );
+        })}
       </ul>
       <h3>Cerrados</h3>
       <ul>
-        {
-          Groups.filter((g) => g.state === "closed").map((g) => {
-            return (
-              <li key={g.id}>
-                <Link href={`/groups/${g.id}`}>{g.name}</Link>
-              </li>
-            );
-          })
-        }
+        {Groups.filter((g) => g.state === "closed").map((g) => {
+          return (
+            <li key={g.id}>
+              <Link href={`/groups/${g.id}`}>{g.name}</Link>
+            </li>
+          );
+        })}
       </ul>
       <h3>Inactivos</h3>
       <ul>
-        {
-          Groups.filter((g) => g.state === "inactive").map((g) => {
-            return (
-              <li key={g.id}>
-                <Link href={`/groups/${g.id}`}>{g.name}</Link>
-              </li>
-            );
-          })
-        }
+        {Groups.filter((g) => g.state === "inactive").map((g) => {
+          return (
+            <li key={g.id}>
+              <Link href={`/groups/${g.id}`}>{g.name}</Link>
+            </li>
+          );
+        })}
       </ul>
     </main>
   );

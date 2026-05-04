@@ -14,5 +14,6 @@
 
     &.annotated {
         text-decoration: underline;
+        color: var(--interactive-color);
     }
 }

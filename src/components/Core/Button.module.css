@@ -4,8 +4,8 @@
   justify-content: center;
   align-items: center;
   border: 0;
-  background-color: var(--main-fg-color);
-  color: var(--main-bg-color);
+  background-color: var(--interactive-color);
+  color: var(--main-fg-color);
   border-radius: 1000px;
 
   &:disabled {
