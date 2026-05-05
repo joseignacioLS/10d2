@@ -73,7 +73,8 @@ export type SessionSummary = {
 };
 
 export type Annotation = {
-  id: any;
+  id: string;
+  position: number[];
   character: Character["id"];
   text: string;
 };

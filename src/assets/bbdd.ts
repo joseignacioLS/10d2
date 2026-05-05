@@ -91,12 +91,14 @@ export const Sessions: Session[] = [
 <p>¿Tuvieron acaso alguna alternativa más que aceptar la oferta del alcade? Armados y equipados, su primera hazaña fuer la defensa del mercado de Tantir esa misma noche. Allí disuadieron a un enjambre de escarabajos cristalinos. Nada mal para tres aventureros principiantes empezando a forjar su leyenda.</p>`,
       annotations: [
         {
-          id: "1-2",
+          id: "0",
+          position: [1, 2],
           text: "A excepción de Jurenay, a quién habían atrapado en mitad de un robo.",
           character: "0",
         },
         {
-          id: "4-3",
+          id: "1",
+          position: [4, 3],
           text: "Bueno, tendríamos que hablar de la pelea en la que Volk me dejó sin aire...",
           character: "1",
         },
@@ -127,22 +129,26 @@ export const Sessions: Session[] = [
 <p>A falta de cobrar la recompensa, su libertad, los Cazadores habían completado su primera misión juntos.</p>`,
       annotations: [
         {
-          id: "1-1",
+          id: "0",
+          position: [1, 1],
           text: "Conocido como “Jefe Goblin”. Estas posiciones están ocupadas por seres ligeramente más inteligentes y que portan algún distintivo. En este caso era una copa dorada sobre la cabeza. Como curiosidad, este afirmaba ser primo de Boblin",
           character: "2",
         },
         {
-          id: "2-1",
+          id: "1",
+          position: [2, 1],
           text: "Siendo goblins, me cuesta imaginar que esperasen a que sus compatriotas fallecieran para obtener sus calaveras",
           character: "2",
         },
         {
-          id: "2-1",
+          id: "2",
+          position: [2, 1],
           text: "La Aurovita es un cristal rojo capaz de potenciar enormemente la magia. Por desgracia es difícil de encontrar hoy en día.",
           character: "2",
         },
         {
-          id: "3-3",
+          id: "3",
+          position: [3, 3],
           text: "Al parecer desde entonces Fi tiene visiones de esta entidad con cierta frecuencia. Él sigue insistiendo en que es “su tío”",
           character: "2",
         },

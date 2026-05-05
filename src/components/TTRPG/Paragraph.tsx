@@ -28,7 +28,10 @@ export const Paragraph: React.FC<Props> = ({
             id={`${lineIndex}-${sentenceIndex}`}
             handleSelectSentence={handleSelectSentence}
             content={sentence}
-            annotations={annotations.filter(({ id }) => id === sentenceId)}
+            annotations={annotations.filter(
+              ({ position }) =>
+                position[0] === lineIndex && position[1] === sentenceIndex,
+            )}
             isSelected={selectedSentence === sentenceId}
           />
         );
