@@ -4,22 +4,24 @@ type Props = {
   label?: string;
   id: string;
   name: string;
-  type?: "text" | "number";
   placeholder: string;
+  type?: "text" | "password";
   min?: number;
   max?: number;
-  onChange?: (value: string | number) => void;
+  value: string;
+  onChange: (name: string, value: string) => void;
 };
 
 export const Input: React.FC<Props> = ({
   label,
   id,
   name,
-  type = "text",
   placeholder,
+  type = "text",
   min = 1,
   max = 32,
-  onChange = () => {},
+  value,
+  onChange,
 }) => {
   return (
     <div className={styles.inputWrapper}>
@@ -32,7 +34,10 @@ export const Input: React.FC<Props> = ({
         min={min}
         minLength={min}
         maxLength={max}
-        onChange={(e) => onChange(e.currentTarget.value)}
+        value={value}
+        onChange={(e) => {
+          onChange(name, e.currentTarget.value);
+        }}
       />
     </div>
   );

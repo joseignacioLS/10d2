@@ -5,7 +5,7 @@ import { Modal } from "@/src/components/Core/Modal";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { UserContext } from "@/src/store/user";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 type Props = {
   onClose: () => void;
@@ -14,21 +14,30 @@ type Props = {
 export const CreateGroupModal: React.FC<Props> = ({ onClose }) => {
   const { user } = useContext(UserContext);
   const router = useRouter();
+  const [input, setInput] = useState<{
+    name: string;
+  }>({
+    name: "",
+  });
 
-  const handleCreateGroup = useWrapFnWithToast(
-    async (values: { name: string }) => {
-      if (!user) throw "No existe el usuario";
+  const handleCreateGroup = useWrapFnWithToast(async () => {
+    if (!user) throw "No existe el usuario";
 
-      const { data: groupId } = await postGroup(values.name, user.id); // TODO: add user as member
+    const { data: groupId } = await postGroup(input.name, user.id); // TODO: add user as member
 
-      if (!groupId) throw "No se ha podido crear el grupo";
+    if (!groupId) throw "No se ha podido crear el grupo";
 
-      router.push(`/groups/${groupId}`);
-      onClose();
+    router.push(`/groups/${groupId}`);
+    onClose();
 
-      return "Grupo creado con éxito";
-    },
-  );
+    return "Grupo creado con éxito";
+  });
+
+  const handleChange = (name: string, value: string) => {
+    setInput((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
 
   return (
     <Modal onClose={onClose}>
@@ -37,8 +46,9 @@ export const CreateGroupModal: React.FC<Props> = ({ onClose }) => {
           label="Nombre"
           id="name"
           name="name"
-          type="text"
           placeholder="Nombre del grupo"
+          value={input.name}
+          onChange={handleChange}
         ></Input>
       </Form>
     </Modal>

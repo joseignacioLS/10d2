@@ -5,7 +5,7 @@ import styles from "./Form.module.css";
 
 type Props = {
   children: ReactElement;
-  onSubmit: (data: any) => void;
+  onSubmit: () => void;
   disabled?: boolean;
 };
 
@@ -17,14 +17,7 @@ export const Form: React.FC<Props> = ({ children, onSubmit, disabled }) => {
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        const form = formRef.current;
-        if (!form) return;
-
-        const data = new FormData(form);
-        const values = Object.fromEntries(data.entries());
-
-        onSubmit(values);
+        onSubmit();
       }}
     >
       {children}
