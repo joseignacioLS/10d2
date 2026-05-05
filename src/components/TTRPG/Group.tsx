@@ -1,15 +1,21 @@
 "use client";
 
 import { getGroup } from "@/src/api/ttrpg";
+import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
+import { CreateCampaignModal } from "@/src/components/TTRPG/CreateCampaignModal";
 import { useFetchData } from "@/src/hooks/useFetchData";
+import { UserContext } from "@/src/store/user";
 import Link from "next/link";
+import { useContext, useState } from "react";
 
 type Props = { groupId: string };
 
 export const Group: React.FC<Props> = ({ groupId }) => {
+  const { user } = useContext(UserContext);
   const { data: group, loading, error } = useFetchData(getGroup, [groupId]);
+  const [showCreateCampaignModal, setShowCreateCampaignModal] = useState(false);
 
   if (loading) {
     return "Cargando...";
@@ -38,7 +44,18 @@ export const Group: React.FC<Props> = ({ groupId }) => {
       </Card>
       <Card>
         <>
-          <h3>Campañas</h3>
+          <h3>
+            Campañas
+            {group.members.find(({ id }) => id === user?.id) && (
+              <Button
+                onClick={() => {
+                  setShowCreateCampaignModal(true);
+                }}
+              >
+                +
+              </Button>
+            )}
+          </h3>
           <ul>
             {group.campaigns.map(({ id, name }) => {
               return (
@@ -50,6 +67,12 @@ export const Group: React.FC<Props> = ({ groupId }) => {
           </ul>
         </>
       </Card>
+      {showCreateCampaignModal && (
+        <CreateCampaignModal
+          groupId={groupId}
+          onClose={() => setShowCreateCampaignModal(false)}
+        ></CreateCampaignModal>
+      )}
     </section>
   );
 };

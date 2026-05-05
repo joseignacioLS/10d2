@@ -161,8 +161,9 @@ export const getCampaign = (
 ): Promise<ServiceResponse<FilledCampaign>> => {
   return new Promise((res) => {
     const campaign = Campaigns.find(({ id }) => id === campaignId);
-    const group = Groups.find(({ id }) => id === campaign?.id);
+    const group = Groups.find(({ id }) => id === campaign?.group);
     const GM = Members.find(({ id }) => id === campaign?.GM);
+
     if (!campaign || !group || !GM) {
       res({
         data: null,
@@ -182,6 +183,51 @@ export const getCampaign = (
       .filter((v) => v !== undefined);
     res({
       data: { ...campaign, group, sessions, GM, characters },
+      error: null,
+    });
+  });
+};
+
+export const postCampaign = (
+  userId: string,
+  groupId: string,
+  name: string,
+  short: string,
+  summary: string,
+): Promise<ServiceResponse<string>> => {
+  return new Promise((res) => {
+    const member = Members.find(({ id }) => id === userId);
+    const group = Groups.find(({ id }) => id === groupId)
+    if (!member || !group) {
+      res({
+        data: null,
+        error: "No member found"
+      })
+      return
+    }
+    const id = String(group.campaigns.length + 1)
+    Campaigns.push({
+      id,
+      name,
+      characters: [],
+      short,
+      group: groupId,
+      GM: userId,
+      sessions: [],
+      summary,
+      state: "not-started",
+      lastActivity: Temporal.Now.plainDateISO()
+    });
+    member.campaigns.push(id);
+    group.campaigns.push(id);
+
+    Events.unshift({
+      id: String(Events.length + 1),
+      message: `${member.name} ha creado la campaña "${name}"`,
+      date: Temporal.Now.plainDateISO()
+    })
+    res({
+      data: id,
       error: null,
     });
   });

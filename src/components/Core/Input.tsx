@@ -7,6 +7,7 @@ type Props = {
   type?: "text" | "number";
   placeholder: string;
   min?: number;
+  max?: number;
   onChange?: (value: string | number) => void;
 };
 
@@ -17,6 +18,7 @@ export const Input: React.FC<Props> = ({
   type = "text",
   placeholder,
   min = 1,
+  max = 32,
   onChange = () => {},
 }) => {
   return (
@@ -29,7 +31,7 @@ export const Input: React.FC<Props> = ({
         placeholder={placeholder}
         min={min}
         minLength={min}
-        maxLength={32}
+        maxLength={max}
         onChange={(e) => onChange(e.currentTarget.value)}
       />
     </div>
