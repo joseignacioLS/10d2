@@ -26,8 +26,12 @@ export const Group: React.FC<Props> = ({ groupId }) => {
         <>
           <h3>Miembros</h3>
           <ul>
-            {group.members.map(({ id, name }) => {
-              return <li key={id}>{name}</li>;
+            {group.members.map(({ id, name, role }) => {
+              return (
+                <li key={id}>
+                  {name} ({role.join(", ")})
+                </li>
+              );
             })}
           </ul>
         </>
