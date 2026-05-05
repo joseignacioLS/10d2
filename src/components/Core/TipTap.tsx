@@ -2,20 +2,30 @@
 
 // src/Tiptap.tsx
 import { Button } from "@/src/components/Core/Button";
+import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 
-type Props = { name: string };
+type Props = {
+  name: string;
+  value: string;
+  onChange: (name: string, value: string) => void;
+  placeholder?: string;
+};
 
-const Tiptap: React.FC<Props> = ({ name }) => {
+const Tiptap: React.FC<Props> = ({
+  name,
+  value,
+  onChange,
+  placeholder = "",
+}) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: {
-          levels: [3], // solo h3
+          levels: [3],
         },
-        // Desactiva lo que no quieres
         bulletList: false,
         orderedList: false,
         codeBlock: false,
@@ -25,18 +35,27 @@ const Tiptap: React.FC<Props> = ({ name }) => {
         strike: false,
         code: false,
       }),
+      Placeholder.configure({
+        placeholder,
+      }),
+      CharacterCount.configure({
+        limit: 8192,
+      }),
     ],
-    content: "¡Escribe aquí tu sesión!", // initial content
+    content: value,
     immediatelyRender: false,
+    onUpdate: ({ editor }) => {
+      onChange(name, editor.getHTML().toString());
+    },
   });
 
   if (!editor) {
-    return null; // Prevent rendering until the editor is initialized
+    return null;
   }
 
   return (
     <>
-      <EditorContent editor={editor} name={name} />
+      <EditorContent editor={editor} />
       <BubbleMenu editor={editor}>
         <div style={{ display: "flex", gap: "4px" }}>
           <Button
@@ -52,7 +71,6 @@ const Tiptap: React.FC<Props> = ({ name }) => {
           <Button onClick={() => editor.chain().focus().toggleItalic().run()}>
             Cursiva
           </Button>
-          <Button onClick={() => console.log(editor.getHTML())}>HTML</Button>
         </div>
       </BubbleMenu>
     </>

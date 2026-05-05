@@ -6,6 +6,7 @@ import { UserContext } from "@/src/store/user";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { Input } from "../Core/Input";
+import Tiptap from "../Core/TipTap";
 
 type Props = {
   groupId: string;
@@ -33,6 +34,7 @@ export const CreateCampaignModal: React.FC<Props> = ({ onClose, groupId }) => {
       input.short,
       input.summary,
     );
+    console.log({ input });
     if (!campaignId) throw "Error creando la campaña";
 
     router.push(`/campaigns/${campaignId}`);
@@ -41,6 +43,7 @@ export const CreateCampaignModal: React.FC<Props> = ({ onClose, groupId }) => {
   });
 
   const handleChange = (name: string, value: string) => {
+    console.log({ name, value });
     setInput((prev) => {
       return { ...prev, [name]: value };
     });
@@ -66,7 +69,7 @@ export const CreateCampaignModal: React.FC<Props> = ({ onClose, groupId }) => {
             onChange={handleChange}
             value={input.short}
           />
-          <Input
+          {/* <Input
             id="summary"
             name="summary"
             placeholder="Resumen de la partida"
@@ -74,6 +77,12 @@ export const CreateCampaignModal: React.FC<Props> = ({ onClose, groupId }) => {
             max={512}
             onChange={handleChange}
             value={input.summary}
+          /> */}
+          <Tiptap
+            name="summary"
+            value={input.summary}
+            onChange={handleChange}
+            placeholder={"Introducción a la campaña"}
           />
         </>
       </Form>

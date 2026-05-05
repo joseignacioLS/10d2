@@ -15,7 +15,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     loading,
     error,
   } = useFetchData(getCampaign, [campaignId]);
-
+  console.log({ campaign });
   if (loading) {
     return "Cargando...";
   }
@@ -35,7 +35,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
         ]}
       />
       <Card>
-        <p>{campaign.summary}</p>
+        <p dangerouslySetInnerHTML={{ __html: campaign.summary }}></p>
       </Card>
       <Card>
         <>
