@@ -9,6 +9,7 @@ import { useState } from "react";
 type Props = {};
 
 export const HomeSearchBar: React.FC<Props> = ({}) => {
+  const [input, setInput] = useState("");
   const [searchResult, setSearchResults] = useState<{
     groups: Group[];
     campaigns: Campaign[];
@@ -52,7 +53,11 @@ export const HomeSearchBar: React.FC<Props> = ({}) => {
         name="search"
         placeholder="Busca campañas o grupos"
         min={3}
-        onChange={(value) => handleSearch(String(value))}
+        onChange={(name, value) => {
+          setInput(value);
+          handleSearch(String(value));
+        }}
+        value={input}
       ></Input>
       {noResults && (
         <Card>
