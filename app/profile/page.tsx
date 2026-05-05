@@ -24,7 +24,7 @@ export default function Home() {
 
   const getUserData = async () => {
     if (!user) return;
-    getMember(user).then(({ data }) => {
+    getMember(user.id).then(({ data }) => {
       if (!data) return;
       setUserData(data);
     });

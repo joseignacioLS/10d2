@@ -22,7 +22,11 @@ export const UserButton: React.FC<{}> = ({}) => {
   return (
     <>
       <Button className={styles.userButton} onClick={handleClick}>
-        {user ? "O" : <img src="/chicken.svg" />}
+        {user ? (
+          <span>{user.username.substring(0, 1).toUpperCase()}</span>
+        ) : (
+          <img src="/chicken.svg" />
+        )}
       </Button>
     </>
   );

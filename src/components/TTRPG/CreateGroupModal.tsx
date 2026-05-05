@@ -13,7 +13,7 @@ export const CreateGroupModal: React.FC<Props> = ({ onClose }) => {
   const { user } = useContext(UserContext);
   const handleCreateGroup = (values: { name: string }) => {
     if (!user) return;
-    postGroup(values.name, user); // TODO: add user as member
+    postGroup(values.name, user.id); // TODO: add user as member
     onClose();
   };
   return (

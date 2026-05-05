@@ -5,9 +5,10 @@ import { FilledMember } from "../types/ttrpg";
 export const loginRequest = async (
   username: string,
   password: string,
-): Promise<ServiceResponse<FilledMember>> => {
+): Promise<ServiceResponse<string>> => {
   return new Promise((resolve) => {
     const member = Members.find(({ name }) => name === username);
+    console.log({ member });
     setTimeout(() => {
       if (!member) {
         resolve({
@@ -17,15 +18,7 @@ export const loginRequest = async (
         return;
       }
       resolve({
-        data: {
-          ...member,
-          groups: member.groups
-            .map((groupId) => Groups.find(({ id }) => id === groupId))
-            .filter((v) => v !== undefined),
-          campaigns: member.campaigns
-            .map((campaignId) => Campaigns.find(({ id }) => id === campaignId))
-            .filter((v) => v !== undefined),
-        },
+        data: member.id,
         error: null,
       });
     }, 1000);

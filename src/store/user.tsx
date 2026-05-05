@@ -2,18 +2,14 @@
 
 import React, { createContext, useReducer } from "react";
 import { loginRequest } from "../api/user";
-import { FilledMember } from "../types/ttrpg";
 
 type UserState = {
-  user: string | undefined;
+  user: { id: string; username: string } | undefined;
   loginModalOpen: boolean;
 };
 
 type UserAction =
-  | {
-      type: "login";
-      payload: string;
-    }
+  | { type: "login"; payload: { id: string; username: string } }
   | {
       type: "logout" | "open_login_modal" | "close_login_modal";
     };
@@ -24,7 +20,7 @@ const initialState: UserState = {
 };
 
 export const UserContext = createContext<{
-  user: string | undefined;
+  user: { id: string; username: string } | undefined;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   loginModalOpen: boolean;
@@ -76,14 +72,13 @@ export const UserProvider = ({ children }: Props) => {
 
   const login = async (username: string, password: string) => {
     try {
-      const { data: user, error } = await loginRequest(username, password);
-      console.log({ user, error });
+      const { data: id, error } = await loginRequest(username, password);
       if (error !== null) {
         throw error;
       }
       dispatch({
         type: "login",
-        payload: user.id,
+        payload: { id, username },
       });
     } catch (err) {
       console.log(err);
