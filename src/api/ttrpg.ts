@@ -137,6 +137,7 @@ export const postGroup = (
       id,
       name,
       members: [userId],
+      admins: [userId],
       campaigns: [],
       state: "inactive",
       creationDate: Temporal.Now.plainDateISO(),

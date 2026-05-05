@@ -4,6 +4,7 @@ export type Group = {
   id: string;
   name: string;
   members: Member["id"][];
+  admins: Member["id"][];
   campaigns: Campaign["id"][];
   state: "open" | "closed" | "inactive";
   creationDate: Temporal.PlainDate;

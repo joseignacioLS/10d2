@@ -13,6 +13,7 @@ export const Groups: Group[] = [
     id: "0",
     name: "LCDA",
     members: ["0", "1"],
+    admins: ["0"],
     campaigns: ["0"],
     state: "closed",
     creationDate: Temporal.PlainDate.from("2024-11-29"),

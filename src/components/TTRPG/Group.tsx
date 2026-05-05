@@ -31,14 +31,33 @@ export const Group: React.FC<Props> = ({ groupId }) => {
       <Card>
         <>
           <h3>Miembros</h3>
+          <h4>Administradores</h4>
           <ul>
-            {group.members.map(({ id, name, role }) => {
-              return (
-                <li key={id}>
-                  {name} ({role.join(", ")})
-                </li>
-              );
-            })}
+            {group.members
+              .filter(({ id }) => {
+                return group.admins.includes(id);
+              })
+              .map(({ id, name, role }) => {
+                return (
+                  <li key={id}>
+                    {name} ({role.join(", ")})
+                  </li>
+                );
+              })}
+          </ul>
+          <h4>Jugadores</h4>
+          <ul>
+            {group.members
+              .filter(({ id }) => {
+                return !group.admins.includes(id);
+              })
+              .map(({ id, name, role }) => {
+                return (
+                  <li key={id}>
+                    {name} ({role.join(", ")})
+                  </li>
+                );
+              })}
           </ul>
         </>
       </Card>
@@ -46,7 +65,7 @@ export const Group: React.FC<Props> = ({ groupId }) => {
         <>
           <h3>
             Campañas
-            {group.members.find(({ id }) => id === user?.id) && (
+            {group.admins.includes(user?.id ?? "-1") && (
               <Button
                 onClick={() => {
                   setShowCreateCampaignModal(true);
