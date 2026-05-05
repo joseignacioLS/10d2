@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { Event } from "../types/events";
 import type {
   Campaign,
   Character,
@@ -164,3 +165,5 @@ export const Sessions: Session[] = [
     },
   },
 ];
+
+export const Events: Event[] = [];
