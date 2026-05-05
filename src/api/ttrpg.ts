@@ -206,7 +206,7 @@ export const postCampaign = (
       })
       return
     }
-    const id = String(group.campaigns.length + 1)
+    const id = String(Campaigns.length + 1)
     Campaigns.push({
       id,
       name,
@@ -255,6 +255,53 @@ export const getSession = (
     });
   });
 };
+
+export const postSession = (
+  userId: string,
+  campaignId: string,
+  title: string,
+  summary: string,
+  author: string
+): Promise<ServiceResponse<string>> => {
+  return new Promise((res) => {
+    const member = Members.find(({ id }) => id === userId);
+    const campaign = Campaigns.find(({ id }) => id === campaignId)
+    if (!member || !campaign) {
+      res({
+        data: null,
+        error: "No member found"
+      })
+      return
+    }
+    const id = String(Sessions.length + 1)
+    Sessions.push({
+      id,
+      title,
+      campaign: campaignId,
+      number: campaign.sessions.length + 1,
+      author,
+      summary: {
+        text: summary,
+        annotations: [],
+        comments: []
+      },
+      date: Temporal.Now.plainDateISO()
+    });
+    campaign.sessions.unshift(id);
+
+    Events.unshift({
+      id: String(Events.length + 1),
+      message: `${author} (${campaign.short}) ha escrito una nueva sesión "${title}"`,
+      date: Temporal.Now.plainDateISO()
+    })
+    res({
+      data: id,
+      error: null,
+    });
+  });
+};
+
+
 export const getCharacter = (
   characterId: string,
 ): Promise<ServiceResponse<FilledCharacter>> => {
@@ -285,4 +332,29 @@ export const getLastEvents = (count: number = 3): Promise<ServiceResponse<Event[
       error: null
     })
   })
+}
+
+export const annotateSentence = (sessionId: string, position: number[], text: string, character: string): Promise<ServiceResponse<boolean>> => {
+  return new Promise(res => {
+    const session = Sessions.find(({ id }) => sessionId === id)
+
+    if (!session) {
+      res({
+        data: null,
+        error: "No session"
+      })
+      return
+    }
+    session.summary.annotations.push({
+      id: String(session.summary.annotations.length),
+      position,
+      text,
+      character
+    })
+    res({
+      data: true,
+      error: null
+    })
+  })
+
 }

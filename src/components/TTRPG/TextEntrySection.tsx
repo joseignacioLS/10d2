@@ -4,8 +4,14 @@ import type { Annotation } from "@/src/types/ttrpg";
 type Props = {
   text: string;
   annotations: Annotation[];
-  selectedSentence: string | undefined;
-  handleSelectSentence: ({ id, text }: { id: string; text: string }) => void;
+  selectedSentence: number[] | undefined;
+  handleSelectSentence: ({
+    position,
+    text,
+  }: {
+    position: number[];
+    text: string;
+  }) => void;
 };
 
 export const TextEntrySection: React.FC<Props> = ({

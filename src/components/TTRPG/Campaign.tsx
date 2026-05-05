@@ -4,18 +4,25 @@ import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
+import { Button } from "../Core/Button";
+import { useContext, useState } from "react";
+import { UserContext } from "@/src/store/user";
+import { CreateSessionModal } from "./CreateSessionModal";
 
 type Props = {
   campaignId: TCampaign["id"];
 };
 
 export const Campaign: React.FC<Props> = ({ campaignId }) => {
+  const { user } = useContext(UserContext);
   const {
     data: campaign,
     loading,
     error,
   } = useFetchData(getCampaign, [campaignId]);
-  console.log({ campaign });
+  const [showCreateSessionModal, setShowCreateSessionModal] = useState(false);
+  const author = campaign?.characters.find(({ member }) => member === user?.id);
+
   if (loading) {
     return "Cargando...";
   }
@@ -41,22 +48,32 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
         <>
           <h3>Personajes</h3>
           <ul>
-            {campaign.characters.map(({ id, name }) => {
+            {campaign.characters.map(({ id, name, member }) => {
               return (
                 <li key={name}>
                   <Link href={`/characters/${id}`}>
-                    {name} ({name})
+                    {name} ({member})
                   </Link>
                 </li>
               );
             })}
-            <li>GM ({campaign.GM.name})</li>
           </ul>
         </>
       </Card>
       <Card>
         <>
-          <h3>Sesiones</h3>
+          <h3>
+            Sesiones{" "}
+            {author && (
+              <Button
+                onClick={() => {
+                  setShowCreateSessionModal(true);
+                }}
+              >
+                +
+              </Button>
+            )}
+          </h3>
           <ul>
             {campaign.sessions.map(({ id, number, title }) => {
               return (
@@ -70,6 +87,15 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           </ul>
         </>
       </Card>
+      {showCreateSessionModal && author && (
+        <CreateSessionModal
+          onClose={() => {
+            setShowCreateSessionModal(false);
+          }}
+          campaignId={campaignId}
+          author={author.id}
+        />
+      )}
     </section>
   );
 };

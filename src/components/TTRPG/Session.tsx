@@ -1,7 +1,6 @@
 "use client";
 
-import { getSession } from "@/src/api/ttrpg";
-import { Backdrop } from "@/src/components/Core/Backdrop";
+import { annotateSentence, getSession } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { CommentSection } from "@/src/components/TTRPG/CommentSection";
@@ -10,6 +9,8 @@ import { useFetchData } from "@/src/hooks/useFetchData";
 import { type Session as TSession } from "@/src/types/ttrpg";
 import type React from "react";
 import { useState } from "react";
+import { Input } from "../Core/Input";
+import { Modal } from "../Core/Modal";
 import styles from "./Session.module.css";
 
 type Props = {
@@ -26,36 +27,24 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
   const [userInput, setUserInput] = useState<string>("");
   const [selectedSentence, setSelectedSentence] = useState<{
     text: string;
-    id: string;
+    position: number[];
   }>({
     text: "",
-    id: "",
+    position: [0, 0],
   });
 
-  const handleAnnotate = (text: string, id: string) => {
-    // setSession((prev) => {
-    //   if (!prev) return prev;
-    //   return {
-    //     ...prev,
-    //     summary: {
-    //       ...prev.summary,
-    //       annotations: [
-    //         ...prev.summary.annotations,
-    //         {
-    //           id,
-    //           character: "0-0",
-    //           text,
-    //         },
-    //       ],
-    //     },
-    //   };
-    // });
+  const handleAnnotate = async (text: string, position: number[]) => {
+    const { error } = await annotateSentence(sessionId, position, text, "0");
+    if (error) {
+      return;
+    }
     setUserInput("");
     setSelectedSentence({
       text: "",
-      id: "",
+      position: [0, 0],
     });
   };
+
   if (loading) {
     return "Cargando...";
   }
@@ -65,15 +54,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
   }
 
   return (
-    <div
-      className={styles.sessionSummary}
-      onClick={() =>
-        setSelectedSentence({
-          text: "",
-          id: "",
-        })
-      }
-    >
+    <div className={styles.sessionSummary}>
       <CrumbsHeader
         title={session.title || ""}
         crumbs={[
@@ -88,7 +69,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
           <TextEntrySection
             text={session.summary.text}
             annotations={session.summary.annotations}
-            selectedSentence={selectedSentence.id}
+            selectedSentence={selectedSentence.position}
             handleSelectSentence={setSelectedSentence}
           />
         )}
@@ -96,45 +77,42 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
           <CommentSection comments={session.summary.comments || []} />
         )}
       </div>
-      {selectedSentence.id && <Backdrop />}
-      <section
-        className={`${styles.sessionAnnotationInputWrapper} ${selectedSentence.id ? styles.enabled : ""}`}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
-        {selectedSentence.id && <p>{selectedSentence.text}</p>}
-        <textarea
-          disabled={selectedSentence === undefined}
-          value={userInput}
-          onInput={(e) => {
-            setUserInput(e.currentTarget.value);
+      {selectedSentence.text && (
+        <Modal
+          onClose={() => {
+            setSelectedSentence({
+              position: [0, 0],
+              text: "",
+            });
           }}
-        ></textarea>
-        <div className={styles.controls}>
-          <Button
-            onClick={() =>
-              setSelectedSentence({
-                text: "",
-                id: "",
-              })
-            }
-          >
-            Cerrar
-          </Button>
-          <Button
-            onClick={() => {
-              if (!selectedSentence) {
-                return;
-              }
-              handleAnnotate(userInput, selectedSentence.id);
-            }}
-          >
-            Guardar
-          </Button>
-        </div>
-      </section>
+        >
+          <>
+            {selectedSentence.text && <p>{selectedSentence.text}</p>}
+            <Input
+              id="annotation"
+              name="annotation"
+              value={userInput}
+              placeholder="Escribe aquí"
+              max={256}
+              onChange={(_, value) => {
+                setUserInput(value);
+              }}
+            />
+            <div className={styles.controls}>
+              <Button
+                onClick={() => {
+                  if (!selectedSentence) {
+                    return;
+                  }
+                  handleAnnotate(userInput, selectedSentence.position);
+                }}
+              >
+                Guardar
+              </Button>
+            </div>
+          </>
+        </Modal>
+      )}
     </div>
   );
 };

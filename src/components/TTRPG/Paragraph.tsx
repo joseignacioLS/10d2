@@ -5,8 +5,14 @@ type Props = {
   lineIndex: number;
   plainText: string;
   annotations: Annotation[];
-  selectedSentence: string | undefined;
-  handleSelectSentence: ({ id, text }: { id: string; text: string }) => void;
+  selectedSentence: number[] | undefined;
+  handleSelectSentence: ({
+    position,
+    text,
+  }: {
+    position: number[];
+    text: string;
+  }) => void;
 };
 
 export const Paragraph: React.FC<Props> = ({
@@ -21,7 +27,6 @@ export const Paragraph: React.FC<Props> = ({
     <div key={lineIndex}>
       {" "}
       {sentences.map((sentence, sentenceIndex) => {
-        const sentenceId = `${lineIndex}-${sentenceIndex}`;
         return (
           <Sentence
             key={sentenceIndex}
@@ -32,7 +37,10 @@ export const Paragraph: React.FC<Props> = ({
               ({ position }) =>
                 position[0] === lineIndex && position[1] === sentenceIndex,
             )}
-            isSelected={selectedSentence === sentenceId}
+            isSelected={
+              selectedSentence?.[0] === lineIndex &&
+              selectedSentence?.[1] === sentenceIndex
+            }
           />
         );
       })}

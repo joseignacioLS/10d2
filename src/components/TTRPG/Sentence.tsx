@@ -8,7 +8,13 @@ import styles from "./Sentence.module.css";
 
 type Props = {
   id: string;
-  handleSelectSentence: ({ id, text }: { id: string; text: string }) => void;
+  handleSelectSentence: ({
+    position,
+    text,
+  }: {
+    position: number[];
+    text: string;
+  }) => void;
   content: string;
   annotations?: Annotation[];
   isSelected: boolean;
@@ -27,7 +33,10 @@ export const Sentence: React.FC<Props> = ({
       <span
         className={`${styles.sessionSummarySentence} ${isSelected ? styles.selected : ""} ${annotations.length > 0 ? styles.annotated : ""}`}
         onClick={() => {
-          // handleSelectSentence({ id, text: content });
+          handleSelectSentence({
+            position: id.split("-").map(Number),
+            text: content,
+          });
           setShowAnnotations((v) => !v);
         }}
         dangerouslySetInnerHTML={{
