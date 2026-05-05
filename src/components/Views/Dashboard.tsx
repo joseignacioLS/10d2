@@ -2,12 +2,14 @@
 
 import {
   getLastCampaigns,
+  getLastEvents,
   getLastGroups,
   getLastSessions,
 } from "@/src/api/ttrpg";
 import { Card } from "@/src/components/Core/Card";
 import { Carousel } from "@/src/components/Core/Carousel";
 import { HomeSearchBar } from "@/src/components/TTRPG/HomeSearchBar";
+import { Event } from "@/src/types/events";
 import { Campaign, FilledSession, Group } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -16,6 +18,7 @@ export const Dashboard = () => {
   const [lastGroups, setLastGroups] = useState<Group[]>([]);
   const [lastCampaigns, setLastCampaigns] = useState<Campaign[]>([]);
   const [lastSessions, setLastSessions] = useState<FilledSession[]>([]);
+  const [lastEvents, setLastEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     getLastGroups(5).then((data) => {
@@ -34,6 +37,15 @@ export const Dashboard = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    getLastEvents(10).then((data) => {
+      if (data.data) {
+        setLastEvents(data.data);
+      }
+    });
+  }, []);
+
   return (
     <main>
       <Card>
@@ -85,6 +97,16 @@ export const Dashboard = () => {
                   <Link href={`/groups/${group.id}`}>{group.name}</Link>
                 </li>
               );
+            })}
+          </ul>
+        </>
+      </Card>
+      <Card>
+        <>
+          <h2>Últimos Eventos</h2>
+          <ul>
+            {lastEvents.map((event) => {
+              return <li key={event.id}>{event.message}</li>;
             })}
           </ul>
         </>

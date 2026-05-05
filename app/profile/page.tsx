@@ -57,7 +57,6 @@ export default function Home() {
         <CreateGroupModal
           onClose={() => {
             setShowCreateGroupModal(false);
-            getUserData();
           }}
         />
       )}

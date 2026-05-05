@@ -1,11 +1,13 @@
 import {
   Campaigns,
   Characters,
+  Events,
   Groups,
   Members,
   Sessions,
 } from "@/src/assets/bbdd";
 import { ServiceResponse } from "@/src/types/api";
+import { Event } from "@/src/types/events";
 import {
   Campaign,
   FilledCampaign,
@@ -120,10 +122,19 @@ export const getGroup = (
 export const postGroup = (
   name: string,
   userId: string,
-): Promise<ServiceResponse<boolean>> => {
+): Promise<ServiceResponse<string>> => {
   return new Promise((res) => {
+    const member = Members.find(({ id }) => id === userId);
+    if (!member) {
+      res({
+        data: null,
+        error: "No member found"
+      })
+      return
+    }
+    const id = String(Groups.length + 1)
     Groups.push({
-      id: "23132",
+      id,
       name,
       members: [userId],
       campaigns: [],
@@ -131,12 +142,15 @@ export const postGroup = (
       creationDate: Temporal.Now.plainDateISO(),
       lastActivity: Temporal.Now.plainDateISO(),
     });
-    const member = Members.find(({ id }) => id === userId);
-    if (member) {
-      member.groups.push("23132");
-    }
+    member.groups.push(id);
+
+    Events.unshift({
+      id: String(Events.length + 1),
+      message: `${member.name} ha creado el grupo "${name}"`,
+      date: Temporal.Now.plainDateISO()
+    })
     res({
-      data: true,
+      data: id,
       error: null,
     });
   });
@@ -216,3 +230,12 @@ export const getCharacter = (
     });
   });
 };
+
+export const getLastEvents = (count: number = 3): Promise<ServiceResponse<Event[]>> => {
+  return new Promise(res => {
+    res({
+      data: Events.slice(0, count),
+      error: null
+    })
+  })
+}

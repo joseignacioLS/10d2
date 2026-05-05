@@ -8,7 +8,7 @@ export const loginRequest = async (
 ): Promise<ServiceResponse<string>> => {
   return new Promise((resolve) => {
     const member = Members.find(({ name }) => name === username);
-    console.log({ member });
+
     setTimeout(() => {
       if (!member) {
         resolve({

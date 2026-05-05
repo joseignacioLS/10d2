@@ -86,7 +86,7 @@ export const UserProvider = ({ children }: Props) => {
       }
       dispatch({
         type: "login",
-        payload: { id, username, info: `Bienvenido ${username}` },
+        payload: { id, username, info: `Hola ${username}` },
       });
     } catch (err) {
       dispatch({
