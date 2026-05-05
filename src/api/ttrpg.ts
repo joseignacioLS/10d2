@@ -1,12 +1,11 @@
-import { Temporal } from "temporal-polyfill";
 import {
   Campaigns,
   Characters,
   Groups,
   Members,
   Sessions,
-} from "../assets/bbdd";
-import { ServiceResponse } from "../types/api";
+} from "@/src/assets/bbdd";
+import { ServiceResponse } from "@/src/types/api";
 import {
   Campaign,
   FilledCampaign,
@@ -14,7 +13,8 @@ import {
   FilledGroup,
   FilledSession,
   Group,
-} from "../types/ttrpg";
+} from "@/src/types/ttrpg";
+import { Temporal } from "temporal-polyfill";
 
 export const getSearch = (
   search: string,

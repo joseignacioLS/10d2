@@ -1,5 +1,5 @@
-import type { Annotation } from "../../types/ttrpg";
-import { Sentence } from "./Sentence";
+import { Sentence } from "@/src/components/TTRPG/Sentence";
+import type { Annotation } from "@/src/types/ttrpg";
 
 type Props = {
   lineIndex: number;

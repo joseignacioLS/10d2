@@ -1,14 +1,16 @@
+"use client";
+
 import {
   getLastCampaigns,
   getLastGroups,
   getLastSessions,
 } from "@/src/api/ttrpg";
+import { Card } from "@/src/components/Core/Card";
+import { Carousel } from "@/src/components/Core/Carousel";
+import { HomeSearchBar } from "@/src/components/TTRPG/HomeSearchBar";
 import { Campaign, FilledSession, Group } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Card } from "../Core/Card";
-import { Carousel } from "../Core/Carousel";
-import { HomeSearchBar } from "../TTRPG/HomeSearchBar";
 
 export const Dashboard = () => {
   const [lastGroups, setLastGroups] = useState<Group[]>([]);
@@ -33,7 +35,7 @@ export const Dashboard = () => {
     });
   }, []);
   return (
-    <>
+    <main>
       <Card>
         <>
           <h2>Anuncios</h2>
@@ -87,6 +89,6 @@ export const Dashboard = () => {
           </ul>
         </>
       </Card>
-    </>
+    </main>
   );
 };

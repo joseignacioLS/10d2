@@ -1,5 +1,5 @@
+import { Button } from "@/src/components/Core/Button";
 import { ReactElement, useRef } from "react";
-import { Button } from "./Button";
 
 import styles from "./Form.module.css";
 

@@ -1,10 +1,10 @@
 "use client";
 
+import { getGroup } from "@/src/api/ttrpg";
+import { Card } from "@/src/components/Core/Card";
+import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
+import { useFetchData } from "@/src/hooks/useFetchData";
 import Link from "next/link";
-import { getGroup } from "../../api/ttrpg";
-import { useFetchData } from "../../hooks/useFetchData";
-import { Card } from "../Core/Card";
-import { CrumbsHeader } from "../Core/CrumbsHeader";
 
 type Props = { groupId: string };
 

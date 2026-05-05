@@ -1,6 +1,6 @@
-import { Campaigns, Groups, Members } from "../assets/bbdd";
-import type { ServiceResponse } from "../types/api";
-import { FilledMember } from "../types/ttrpg";
+import { Campaigns, Groups, Members } from "@/src/assets/bbdd";
+import type { ServiceResponse } from "@/src/types/api";
+import { FilledMember } from "@/src/types/ttrpg";
 
 export const loginRequest = async (
   username: string,

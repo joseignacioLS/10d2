@@ -1,5 +1,5 @@
+import { ServiceResponse } from "@/src/types/api";
 import { useRef } from "react";
-import { ServiceResponse } from "../types/api";
 
 export const useDebounce = <T,>(
   fn: (...params: any) => Promise<ServiceResponse<T>>,

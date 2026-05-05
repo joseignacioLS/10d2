@@ -1,5 +1,5 @@
-import type { Character } from "../../types/ttrpg";
-import { UserTextBubble } from "../Core/UserTextBubble";
+import { UserTextBubble } from "@/src/components/Core/UserTextBubble";
+import type { Character } from "@/src/types/ttrpg";
 
 type Props = {
   text: string;

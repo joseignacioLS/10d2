@@ -1,9 +1,9 @@
+import { getCampaign } from "@/src/api/ttrpg";
+import { Card } from "@/src/components/Core/Card";
+import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
+import { useFetchData } from "@/src/hooks/useFetchData";
+import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
-import { getCampaign } from "../../api/ttrpg";
-import { useFetchData } from "../../hooks/useFetchData";
-import { type Campaign as TCampaign } from "../../types/ttrpg";
-import { Card } from "../Core/Card";
-import { CrumbsHeader } from "../Core/CrumbsHeader";
 
 type Props = {
   campaignId: TCampaign["id"];

@@ -1,7 +1,7 @@
+import { Backdrop } from "@/src/components/Core/Backdrop";
+import { Button } from "@/src/components/Core/Button";
 import React from "react";
 
-import { Backdrop } from "./Backdrop";
-import { Button } from "./Button";
 import styles from "./Modal.module.css";
 
 type Props = {

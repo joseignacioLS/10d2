@@ -1,5 +1,5 @@
+import { ServiceResponse } from "@/src/types/api";
 import { useEffect, useMemo, useState } from "react";
-import { ServiceResponse } from "../types/api";
 
 export const useFetchData = <T,>(
   service: (...args: any) => Promise<ServiceResponse<T>>,

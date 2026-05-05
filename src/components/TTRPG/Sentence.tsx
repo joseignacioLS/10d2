@@ -1,9 +1,9 @@
 "use client";
 
+import { Annotations } from "@/src/components/TTRPG/Annotations";
+import type { Annotation } from "@/src/types/ttrpg";
 import { useState } from "react";
-import { Annotations } from "./Annotations";
 
-import type { Annotation } from "../../types/ttrpg";
 import styles from "./Sentence.module.css";
 
 type Props = {

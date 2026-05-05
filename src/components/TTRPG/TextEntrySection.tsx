@@ -1,5 +1,5 @@
-import type { Annotation } from "../../types/ttrpg";
-import { Paragraph } from "./Paragraph";
+import { Paragraph } from "@/src/components/TTRPG/Paragraph";
+import type { Annotation } from "@/src/types/ttrpg";
 
 type Props = {
   text: string;

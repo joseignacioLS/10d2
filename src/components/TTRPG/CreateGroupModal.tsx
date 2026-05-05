@@ -1,9 +1,9 @@
 import { postGroup } from "@/src/api/ttrpg";
-import { Form } from "../Core/Form";
-import { Input } from "../Core/Input";
-import { Modal } from "../Core/Modal";
-import { useContext } from "react";
+import { Form } from "@/src/components/Core/Form";
+import { Input } from "@/src/components/Core/Input";
+import { Modal } from "@/src/components/Core/Modal";
 import { UserContext } from "@/src/store/user";
+import { useContext } from "react";
 
 type Props = {
   onClose: () => void;

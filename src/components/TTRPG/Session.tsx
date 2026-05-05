@@ -1,16 +1,15 @@
 "use client";
 
+import { getSession } from "@/src/api/ttrpg";
+import { Backdrop } from "@/src/components/Core/Backdrop";
+import { Button } from "@/src/components/Core/Button";
+import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
+import { CommentSection } from "@/src/components/TTRPG/CommentSection";
+import { TextEntrySection } from "@/src/components/TTRPG/TextEntrySection";
+import { useFetchData } from "@/src/hooks/useFetchData";
+import { type Session as TSession } from "@/src/types/ttrpg";
 import type React from "react";
 import { useState } from "react";
-import { type Session as TSession } from "../../types/ttrpg";
-import { CommentSection } from "./CommentSection";
-import { Button } from "../Core/Button";
-import { TextEntrySection } from "./TextEntrySection";
-
-import { getSession } from "../../api/ttrpg";
-import { useFetchData } from "../../hooks/useFetchData";
-import { Backdrop } from "../Core/Backdrop";
-import { CrumbsHeader } from "../Core/CrumbsHeader";
 import styles from "./Session.module.css";
 
 type Props = {

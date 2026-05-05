@@ -1,12 +1,12 @@
-import { Temporal } from "temporal-polyfill";
-import { Event } from "../types/events";
+import { Event } from "@/src/types/events";
 import type {
   Campaign,
   Character,
   Group,
   Member,
   Session,
-} from "../types/ttrpg";
+} from "@/src/types/ttrpg";
+import { Temporal } from "temporal-polyfill";
 
 export const Groups: Group[] = [
   {

@@ -1,6 +1,6 @@
-import { getCampaign, getCharacter, getGroup } from "../../api/ttrpg";
-import { useFetchData } from "../../hooks/useFetchData";
-import { CrumbsHeader } from "../Core/CrumbsHeader";
+import { getCharacter } from "@/src/api/ttrpg";
+import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
+import { useFetchData } from "@/src/hooks/useFetchData";
 
 type Props = {
   characterId: string;
