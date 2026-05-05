@@ -1,7 +1,10 @@
 "use client";
 
-import React, { createContext, useReducer } from "react";
-import { loginRequest } from "../api/user";
+import React, { createContext, useContext } from "react";
+import { loginRequest } from "@/src/api/user";
+import { useReducerWithMiddleware } from "@/src/hooks/useReducerWithMiddleware";
+
+import { ToastContext } from "./toast";
 
 type UserState = {
   user: { id: string; username: string } | undefined;
@@ -9,6 +12,7 @@ type UserState = {
 };
 
 type UserAction =
+  | { type: "error"; payload: string }
   | { type: "login"; payload: { id: string; username: string } }
   | {
       type: "logout" | "open_login_modal" | "close_login_modal";
@@ -68,7 +72,12 @@ type Props = {
 };
 
 export const UserProvider = ({ children }: Props) => {
-  const [state, dispatch] = useReducer(userReducer, initialState);
+  const { middleware } = useContext(ToastContext);
+  const [state, dispatch] = useReducerWithMiddleware(
+    userReducer,
+    initialState,
+    middleware,
+  );
 
   const login = async (username: string, password: string) => {
     try {
@@ -78,16 +87,22 @@ export const UserProvider = ({ children }: Props) => {
       }
       dispatch({
         type: "login",
-        payload: { id, username },
+        payload: { id, username, info: `Bienvenido ${username}` },
       });
     } catch (err) {
-      console.log(err);
+      dispatch({
+        type: "error",
+        payload: "Error en el login",
+      });
     }
   };
 
   const logout = async () => {
     dispatch({
       type: "logout",
+      payload: {
+        info: "¡Hasta la próxima!",
+      },
     });
   };
 

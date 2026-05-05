@@ -1,0 +1,39 @@
+.toast {
+  position: fixed;
+  z-index: 15;
+
+  bottom: 8px;
+  left: 50%;
+  transform: translate(-50%, calc(100%+8px));
+
+  max-width: min(50vw, 600px);
+
+  background-color: var(--interactive-color);
+  padding: 8px;
+  border-radius: 8px;
+
+  animation: fade forwards 4s;
+
+  &.error {
+    background-color: red;
+  }
+  &.warning {
+    background-color: yellow;
+    color: black;
+  }
+}
+
+@keyframes fade {
+  from {
+    transform: translate(-50%, calc(200%));
+  }
+  10% {
+    transform: translate(-50%, 0%);
+  }
+  90% {
+    transform: translate(-50%, 0%);
+  }
+  to {
+    transform: translate(-50%, calc(200%));
+  }
+}
