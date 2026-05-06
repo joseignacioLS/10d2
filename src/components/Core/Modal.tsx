@@ -8,13 +8,19 @@ type Props = {
   children: React.ReactElement;
   onClose: () => void;
   title?: string;
+  className?: string;
 };
 
-export const Modal: React.FC<Props> = ({ children, onClose, title = "" }) => {
+export const Modal: React.FC<Props> = ({
+  children,
+  onClose,
+  title = "",
+  className = "",
+}) => {
   return (
-    <div className={styles.modalWrapper}>
+    <div className={`${styles.modalWrapper}`}>
       <Backdrop />
-      <div className={styles.modalWindow}>
+      <div className={`${styles.modalWindow} ${className}`}>
         <Button className={styles.closeBtn} onClick={onClose}>
           X
         </Button>

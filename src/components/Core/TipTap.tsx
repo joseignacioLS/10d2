@@ -7,11 +7,14 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 
+import styles from "./TipTap.module.css";
+
 type Props = {
   name: string;
   value: string;
   onChange: (name: string, value: string) => void;
   placeholder?: string;
+  label?: string;
 };
 
 const Tiptap: React.FC<Props> = ({
@@ -19,6 +22,7 @@ const Tiptap: React.FC<Props> = ({
   value,
   onChange,
   placeholder = "",
+  label,
 }) => {
   const editor = useEditor({
     extensions: [
@@ -55,7 +59,8 @@ const Tiptap: React.FC<Props> = ({
 
   return (
     <>
-      <EditorContent editor={editor} />
+      {label && <label htmlFor={name}>{label}</label>}
+      <EditorContent id={name} editor={editor} className={styles.tiptap} />
       <BubbleMenu editor={editor}>
         <div style={{ display: "flex", gap: "4px" }}>
           <Button

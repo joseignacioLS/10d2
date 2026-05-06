@@ -19,8 +19,9 @@ export const Form: React.FC<Props> = ({ children, onSubmit, disabled }) => {
         e.stopPropagation();
         onSubmit();
       }}
+      className={styles.form}
     >
-      {children}
+      <div>{children}</div>
       <Button type="submit" className={styles.submitBtn} disabled={disabled}>
         Enviar
       </Button>

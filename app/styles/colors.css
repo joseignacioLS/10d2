@@ -1,5 +1,6 @@
 :root {
   --night-sky: #060610;
+  --night-fall: #141441;
   --egg-shell: #eeeedd;
   --violet: #725ac1;
   --orange: #ff6978;
@@ -7,8 +8,9 @@
   --old-water: #014440;
 
   --main-bg-color: var(--egg-shell);
+  --secondary-bg-color: var(--night-fall);
   --main-fg-color: var(--night-sky);
+  --secondary-color: var(--old-water);
   --accent-color: var(--orange);
   --interactive-color: var(--water);
-  --secondary-color: var(--old-water);
 }

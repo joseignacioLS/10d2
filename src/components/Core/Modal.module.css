@@ -9,18 +9,24 @@
   justify-content: center;
   align-items: center;
 
+  z-index: 11;
+
   .modalWindow {
     position: relative;
     z-index: 10;
     padding: 16px;
     max-width: min(80vw, 800px);
+    max-height: 100%;
     background-color: var(--main-bg-color);
     box-shadow:
       2px 2px 2px var(--main-fg-color),
       -2px -2px 2px black;
+    display: grid;
+    grid-template-rows: auto 1fr;
     .modalTitle {
       min-height: 3ch;
     }
+
     .closeBtn {
       position: absolute;
       top: 4px;
@@ -31,6 +37,10 @@
     }
 
     .modalBody {
+      height: 100%;
+      max-height: 100%;
+      width: 100%;
+      overflow: hidden;
     }
   }
 }

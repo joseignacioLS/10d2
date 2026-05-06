@@ -8,6 +8,8 @@ import { UserContext } from "@/src/store/user";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 
+import styles from "./CreateSessionModal.module.css";
+
 type Props = {
   campaignId: string;
   author: string;
@@ -52,7 +54,7 @@ export const CreateSessionModal: React.FC<Props> = ({
   };
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} className={styles.createSessionModal}>
       <Form onSubmit={handleCreateCampaign}>
         <>
           <Input
@@ -61,12 +63,14 @@ export const CreateSessionModal: React.FC<Props> = ({
             placeholder="Nombre"
             onChange={handleChange}
             value={input.name}
+            label="Nombre de la sesión"
           />
           <Tiptap
             name="summary"
             value={input.summary}
             onChange={handleChange}
             placeholder={"Introducción a la campaña"}
+            label="Resumen de la sesión"
           />
         </>
       </Form>

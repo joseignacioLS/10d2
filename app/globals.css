@@ -9,6 +9,7 @@
 :root {
   --main-bg-color: var(--night-sky);
   --main-fg-color: var(--egg-shell);
+  --secondary-bg-color: var(--night-fall);
 }
 /* } */
 
