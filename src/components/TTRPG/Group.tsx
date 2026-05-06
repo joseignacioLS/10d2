@@ -25,6 +25,9 @@ export const Group: React.FC<Props> = ({ groupId }) => {
 
   const router = useRouter();
 
+  const isAdmin =
+    group?.members.find(({ id }) => id === user?.id)?.role === "admin";
+
   if (loading) {
     return "Cargando...";
   }
@@ -50,10 +53,10 @@ export const Group: React.FC<Props> = ({ groupId }) => {
           <h4>Administradores</h4>
           <ul>
             {group.members
-              .filter(({ id }) => {
-                return group.admins.includes(id);
+              .filter(({ role }) => {
+                return role === "admin";
               })
-              .map(({ id, name, role }) => {
+              .map(({ member: { id, name, role } }) => {
                 return (
                   <li key={id}>
                     {name} ({role.join(", ")})
@@ -64,10 +67,10 @@ export const Group: React.FC<Props> = ({ groupId }) => {
           <h4>Jugadores</h4>
           <ul>
             {group.members
-              .filter(({ id }) => {
-                return !group.admins.includes(id);
+              .filter(({ role }) => {
+                return role === "member";
               })
-              .map(({ id, name, role }) => {
+              .map(({ member: { id, name, role } }) => {
                 return (
                   <li key={id}>
                     {name} ({role.join(", ")})
@@ -76,14 +79,27 @@ export const Group: React.FC<Props> = ({ groupId }) => {
               })}
           </ul>
           <h4>Invitaciones</h4>
-          <InviteMember />
+          <ul>
+            {group.members
+              .filter(({ role }) => {
+                return role === "invited";
+              })
+              .map(({ member: { id, name, role } }) => {
+                return (
+                  <li key={id}>
+                    {name} ({role.join(", ")})
+                  </li>
+                );
+              })}
+          </ul>
+          {isAdmin && <InviteMember />}
         </>
       </Card>
       <Card>
         <>
           <h3 className="title_with_btn">
             Campañas
-            {group.admins.includes(user?.id ?? "-1") && (
+            {isAdmin && (
               <Button
                 onClick={() => {
                   setShowCreateCampaignModal(true);
@@ -110,7 +126,7 @@ export const Group: React.FC<Props> = ({ groupId }) => {
           onClose={() => setShowCreateCampaignModal(false)}
         ></CreateCampaignModal>
       )}
-      {group.admins.includes(user?.id ?? "-1") && (
+      {isAdmin && (
         <Button
           onClick={() => {
             setShowDeleteGroupModal(true);

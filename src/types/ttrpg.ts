@@ -2,11 +2,15 @@ import { Temporal } from "temporal-polyfill";
 
 export type GroupStates = "open" | "closed" | "inactive" | "deleted";
 
+export type GroupRoles = "admin" | "member" | "invited"
+
 export type Group = {
   id: string;
   name: string;
-  members: Member["id"][];
-  admins: Member["id"][];
+  members: {
+    id: Member["id"],
+    role: GroupRoles
+  }[];
   campaigns: Campaign["id"][];
   state: GroupStates;
   creationDate: Temporal.PlainDate;
@@ -14,7 +18,11 @@ export type Group = {
 };
 
 export type FilledGroup = Omit<Group, "members" | "campaigns"> & {
-  members: Member[];
+  members: {
+    id: Member["id"],
+    role: GroupRoles,
+    member: Member
+  }[];
   campaigns: Campaign[];
 };
 

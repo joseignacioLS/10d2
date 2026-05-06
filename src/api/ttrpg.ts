@@ -100,10 +100,11 @@ export const getGroup = (
         })
         .filter((v) => v !== undefined);
       const members = group.members
-        .map((i) => {
-          return Members.find(({ id }) => id === i);
+        .map((m) => {
+          return { ...m, member: Members.find(({ id }) => id === m.id) };
         })
-        .filter((v) => v !== undefined);
+        .filter(({ member }) => member !== undefined) as FilledGroup["members"];
+
       res({
         data: {
           ...group,
@@ -112,6 +113,7 @@ export const getGroup = (
         },
         error: null,
       });
+
     }
     res({
       data: null,
@@ -137,8 +139,7 @@ export const postGroup = (
     Groups.push({
       id,
       name,
-      members: [userId],
-      admins: [userId],
+      members: [{ id: userId, role: "admin" }],
       campaigns: [],
       state: "inactive",
       creationDate: Temporal.Now.plainDateISO(),
