@@ -24,6 +24,10 @@
   }
 }
 .annotateBtn {
-  height: 3ch;
-  background-color: transparent;
+  position: absolute;
+  height: 4ch;
+  width: 4ch;
+  bottom: 0;
+  left: 100%;
+  z-index: 1;
 }
