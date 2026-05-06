@@ -98,7 +98,6 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
       {showCreateAnnotationModal && (
         <Modal
           onClose={() => {
-            unselectSentence();
             closeCreateAnnotationModal();
           }}
         >
