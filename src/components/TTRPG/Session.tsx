@@ -85,7 +85,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
         title={session.title || ""}
         crumbs={[
           {
-            name: session.campaign?.name || "",
+            name: session.campaign?.short || "",
             href: `/campaigns/${session.campaign?.id}`,
           },
         ]}
