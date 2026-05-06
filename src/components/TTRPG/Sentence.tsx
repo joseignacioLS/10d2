@@ -47,19 +47,21 @@ export const Sentence: React.FC<Props> = ({
             __html: content,
           }}
         ></span>
-        {isSelected && userCharacter && (
-          <Button
-            className={styles.annotateBtn}
-            onClick={(e) => {
-              if (!userCharacter) return;
-              e.stopPropagation();
-              e.preventDefault();
-              openCreateAnnotationModal();
-            }}
-          >
-            <img src="/feather.svg" />
-          </Button>
-        )}
+        <div className={styles.annotateBtnWrapper}>
+          {isSelected && userCharacter && (
+            <Button
+              className={styles.annotateBtn}
+              onClick={(e) => {
+                if (!userCharacter) return;
+                e.stopPropagation();
+                e.preventDefault();
+                openCreateAnnotationModal();
+              }}
+            >
+              <img src="/feather.svg" />
+            </Button>
+          )}
+        </div>
       </span>
       {annotations.length > 0 && (
         <Annotations annotations={annotations} showAnnotations={isSelected} />
