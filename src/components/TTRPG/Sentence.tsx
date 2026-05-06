@@ -4,7 +4,7 @@ import { Button } from "@/src/components/Core/Button";
 import { Annotations } from "@/src/components/TTRPG/Annotations";
 import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
 import type { Annotation } from "@/src/types/ttrpg";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styles from "./Sentence.module.css";
 
 type Props = {
@@ -26,6 +26,7 @@ export const Sentence: React.FC<Props> = ({
     unselectSentence,
     openCreateAnnotationModal,
   } = useContext(TTRPGSessionContext);
+  const [showAnnotation, setShowAnnotation] = useState(false);
   return (
     <>
       <span
@@ -33,6 +34,13 @@ export const Sentence: React.FC<Props> = ({
       >
         <span
           onClick={() => {
+            if (annotations.length > 0) {
+              if (!isSelected) {
+                setShowAnnotation(true);
+              } else {
+                setShowAnnotation((v) => !v);
+              }
+            }
             if (annotations.length < 1 && !userCharacter) return;
             if (isSelected) {
               unselectSentence();
@@ -64,7 +72,10 @@ export const Sentence: React.FC<Props> = ({
         </div>
       </span>
       {annotations.length > 0 && (
-        <Annotations annotations={annotations} showAnnotations={isSelected} />
+        <Annotations
+          annotations={annotations}
+          showAnnotations={showAnnotation}
+        />
       )}
     </>
   );
