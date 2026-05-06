@@ -10,6 +10,7 @@ import { ServiceResponse } from "@/src/types/api";
 import { Event } from "@/src/types/events";
 import {
   Campaign,
+  Character,
   FilledCampaign,
   FilledCharacter,
   FilledGroup,
@@ -196,7 +197,7 @@ export const postCampaign = (
   short: string,
   summary: string,
 ): Promise<ServiceResponse<string>> => {
-  return new Promise((res) => {
+  return new Promise(async (res) => {
     const member = Members.find(({ id }) => id === userId);
     const group = Groups.find(({ id }) => id === groupId)
     if (!member || !group) {
@@ -227,6 +228,11 @@ export const postCampaign = (
       message: `${member.name} ha creado la campaña "${name}"`,
       date: Temporal.Now.plainDateISO()
     })
+    await postCharacter(
+      "GM",
+      id,
+      member.id
+    )
     res({
       data: id,
       error: null,
@@ -324,6 +330,35 @@ export const getCharacter = (
     });
   });
 };
+
+export const postCharacter = (
+  name: Character["name"],
+  campaignId: Character["campaign"],
+  memberId: Character["member"]
+): Promise<ServiceResponse<string>> => {
+  return new Promise(async (res) => {
+    const id = String(Characters.length)
+    const { data: campaign } = await getCampaign(campaignId)
+
+    if (!campaign) {
+      res({ data: null, error: "No se ha encontrado la campaña" })
+      return
+    }
+    Characters.push({
+      id,
+      name,
+      campaign: campaignId,
+      member: memberId,
+      color: "#550000"
+    })
+    Campaigns.find(({ id }) => campaignId === id)?.characters.push(id)
+    res({
+      data: id,
+      error: null
+    })
+  })
+}
+
 
 export const getLastEvents = (count: number = 3): Promise<ServiceResponse<Event[]>> => {
   return new Promise(res => {
