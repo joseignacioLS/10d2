@@ -1,12 +1,14 @@
 import { Temporal } from "temporal-polyfill";
 
+export type GroupStates = "open" | "closed" | "inactive" | "deleted";
+
 export type Group = {
   id: string;
   name: string;
   members: Member["id"][];
   admins: Member["id"][];
   campaigns: Campaign["id"][];
-  state: "open" | "closed" | "inactive";
+  state: GroupStates;
   creationDate: Temporal.PlainDate;
   lastActivity: Temporal.PlainDate;
 };
