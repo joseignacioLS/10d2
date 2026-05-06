@@ -55,7 +55,7 @@ export const Sentence: React.FC<Props> = ({
             __html: content,
           }}
         ></span>
-        <div className={styles.annotateBtnWrapper}>
+        <span className={styles.annotateBtnWrapper}>
           {isSelected && userCharacter && (
             <Button
               className={styles.annotateBtn}
@@ -69,7 +69,7 @@ export const Sentence: React.FC<Props> = ({
               <img src="/feather.svg" />
             </Button>
           )}
-        </div>
+        </span>
       </span>
       {annotations.length > 0 && (
         <Annotations
