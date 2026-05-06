@@ -4,22 +4,9 @@ import type { Annotation } from "@/src/types/ttrpg";
 type Props = {
   text: string;
   annotations: Annotation[];
-  selectedSentence: number[] | undefined;
-  handleSelectSentence: ({
-    position,
-    text,
-  }: {
-    position: number[];
-    text: string;
-  }) => void;
 };
 
-export const TextEntrySection: React.FC<Props> = ({
-  text,
-  annotations,
-  selectedSentence,
-  handleSelectSentence,
-}) => {
+export const TextEntrySection: React.FC<Props> = ({ text, annotations }) => {
   return (
     <section
       onClick={(e) => {
@@ -43,8 +30,6 @@ export const TextEntrySection: React.FC<Props> = ({
                 lineIndex={lineIndex}
                 plainText={line.substring(3, line.length - 4)}
                 annotations={annotations}
-                selectedSentence={selectedSentence}
-                handleSelectSentence={handleSelectSentence}
               ></Paragraph>
             );
           }

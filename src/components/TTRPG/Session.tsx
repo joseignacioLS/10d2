@@ -3,14 +3,18 @@
 import { annotateSentence, getSession } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
+import { Input } from "@/src/components/Core/Input";
+import { Modal } from "@/src/components/Core/Modal";
 import { CommentSection } from "@/src/components/TTRPG/CommentSection";
 import { TextEntrySection } from "@/src/components/TTRPG/TextEntrySection";
 import { useFetchData } from "@/src/hooks/useFetchData";
+import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
+import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
+import { UserContext } from "@/src/store/user";
 import { type Session as TSession } from "@/src/types/ttrpg";
 import type React from "react";
-import { useState } from "react";
-import { Input } from "../Core/Input";
-import { Modal } from "../Core/Modal";
+import { useContext, useEffect, useState } from "react";
+
 import styles from "./Session.module.css";
 
 type Props = {
@@ -24,26 +28,42 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     error,
   } = useFetchData(getSession, [sessionId]);
 
-  const [userInput, setUserInput] = useState<string>("");
-  const [selectedSentence, setSelectedSentence] = useState<{
-    text: string;
-    position: number[];
-  }>({
-    text: "",
-    position: [0, 0],
-  });
+  const { user } = useContext(UserContext);
 
-  const handleAnnotate = async (text: string, position: number[]) => {
-    const { error } = await annotateSentence(sessionId, position, text, "0");
-    if (error) {
-      return;
-    }
-    setUserInput("");
-    setSelectedSentence({
-      text: "",
-      position: [0, 0],
-    });
-  };
+  const [userInput, setUserInput] = useState<string>("");
+
+  const {
+    selectedSentence,
+    showCreateAnnotationModal,
+    unselectSentence,
+    closeCreateAnnotationModal,
+    getUserCharacter,
+    userCharacter,
+  } = useContext(TTRPGSessionContext);
+
+  const handleAnnotate = useWrapFnWithToast(
+    async (text: string, position: number[]) => {
+      if (!userCharacter)
+        throw "No tienes un personaje asignado en esta campaña";
+      const { error } = await annotateSentence(
+        sessionId,
+        position,
+        text,
+        userCharacter?.id,
+      );
+      if (error) {
+        throw "Ha habido un error anotando la frase";
+      }
+      setUserInput("");
+      closeCreateAnnotationModal();
+      return "Texto anotado";
+    },
+  );
+
+  useEffect(() => {
+    if (!session?.campaign) return;
+    getUserCharacter(session.campaign.id);
+  }, [session?.campaign.id, user]);
 
   if (loading) {
     return "Cargando...";
@@ -69,25 +89,21 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
           <TextEntrySection
             text={session.summary.text}
             annotations={session.summary.annotations}
-            selectedSentence={selectedSentence.position}
-            handleSelectSentence={setSelectedSentence}
           />
         )}
         {session && (
           <CommentSection comments={session.summary.comments || []} />
         )}
       </div>
-      {selectedSentence.text && (
+      {showCreateAnnotationModal && (
         <Modal
           onClose={() => {
-            setSelectedSentence({
-              position: [0, 0],
-              text: "",
-            });
+            unselectSentence();
+            closeCreateAnnotationModal();
           }}
         >
           <>
-            {selectedSentence.text && <p>{selectedSentence.text}</p>}
+            {selectedSentence && <p>{selectedSentence.text}</p>}
             <Input
               id="annotation"
               name="annotation"

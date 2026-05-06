@@ -1,13 +1,13 @@
 import { getCampaign } from "@/src/api/ttrpg";
+import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
+import { CreateSessionModal } from "@/src/components/TTRPG/CreateSessionModal";
 import { useFetchData } from "@/src/hooks/useFetchData";
+import { UserContext } from "@/src/store/user";
 import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
-import { Button } from "../Core/Button";
 import { useContext, useState } from "react";
-import { UserContext } from "@/src/store/user";
-import { CreateSessionModal } from "./CreateSessionModal";
 
 type Props = {
   campaignId: TCampaign["id"];

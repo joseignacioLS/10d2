@@ -1,20 +1,14 @@
 "use client";
 
+import { Button } from "@/src/components/Core/Button";
 import { Annotations } from "@/src/components/TTRPG/Annotations";
+import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
 import type { Annotation } from "@/src/types/ttrpg";
-import { useState } from "react";
-
+import { useContext } from "react";
 import styles from "./Sentence.module.css";
 
 type Props = {
   id: string;
-  handleSelectSentence: ({
-    position,
-    text,
-  }: {
-    position: number[];
-    text: string;
-  }) => void;
   content: string;
   annotations?: Annotation[];
   isSelected: boolean;
@@ -22,32 +16,53 @@ type Props = {
 
 export const Sentence: React.FC<Props> = ({
   id,
-  handleSelectSentence,
   content,
   annotations = [],
   isSelected,
 }) => {
-  const [showAnnotations, setShowAnnotations] = useState(false);
+  const {
+    userCharacter,
+    selectSentence,
+    unselectSentence,
+    openCreateAnnotationModal,
+  } = useContext(TTRPGSessionContext);
   return (
     <>
       <span
-        className={`${styles.sessionSummarySentence} ${isSelected ? styles.selected : ""} ${annotations.length > 0 ? styles.annotated : ""}`}
-        onClick={() => {
-          handleSelectSentence({
-            position: id.split("-").map(Number),
-            text: content,
-          });
-          setShowAnnotations((v) => !v);
-        }}
-        dangerouslySetInnerHTML={{
-          __html: content,
-        }}
-      ></span>
+        className={`${styles.sessionSummarySentence} ${userCharacter ? styles.canAnnotate : ""} ${isSelected ? styles.selected : ""} ${annotations.length > 0 ? styles.annotated : ""}`}
+      >
+        <span
+          onClick={() => {
+            if (annotations.length < 1 && !userCharacter) return;
+            if (isSelected) {
+              unselectSentence();
+              return;
+            }
+            selectSentence({
+              text: content,
+              position: [Number(id.split("-")[0]), Number(id.split("-")[1])],
+            });
+          }}
+          dangerouslySetInnerHTML={{
+            __html: content,
+          }}
+        ></span>
+        {isSelected && userCharacter && (
+          <Button
+            className={styles.annotateBtn}
+            onClick={(e) => {
+              if (!userCharacter) return;
+              e.stopPropagation();
+              e.preventDefault();
+              openCreateAnnotationModal();
+            }}
+          >
+            <img src="/feather.svg" />
+          </Button>
+        )}
+      </span>
       {annotations.length > 0 && (
-        <Annotations
-          annotations={annotations}
-          showAnnotations={showAnnotations}
-        />
+        <Annotations annotations={annotations} showAnnotations={isSelected} />
       )}
     </>
   );

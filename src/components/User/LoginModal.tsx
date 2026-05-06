@@ -1,11 +1,11 @@
 "use client";
 
 import { Form } from "@/src/components/Core/Form";
+import { Input } from "@/src/components/Core/Input";
 import { Modal } from "@/src/components/Core/Modal";
 import { UserContext } from "@/src/store/user";
 import { useContext, useEffect, useState } from "react";
 
-import { Input } from "../Core/Input";
 import styles from "./LoginModal.module.css";
 
 type Props = {};

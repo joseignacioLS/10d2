@@ -1,12 +1,16 @@
 "use client";
 
 import { Session } from "@/src/components/TTRPG/Session";
+import { TTRPGSessionProvider } from "@/src/store/ttrpgsession";
 import { useParams } from "next/navigation";
 
-
 export default function Home() {
-    const { id } = useParams();
-    return <main>
+  const { id } = useParams();
+  return (
+    <main>
+      <TTRPGSessionProvider>
         <Session sessionId={(id as string) ?? ""} />
+      </TTRPGSessionProvider>
     </main>
+  );
 }

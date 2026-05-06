@@ -1,19 +1,29 @@
-
 .sessionSummarySentence {
-    position: relative;
+  position: relative;
+  border-radius: 4px 0 4px 0;
+
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    font-weight 0.3s;
+
+  text-wrap: pretty;
+
+  &.canAnnotate {
     cursor: pointer;
-    border-radius: 4px 0 4px 0;
+  }
 
-    transition: background-color 0.3s, color 0.3s, font-weight 0.3s;
+  &.selected {
+    background-color: #151;
+  }
 
-    text-wrap: pretty;
-
-    &.selected {
-        background-color: #151;
-    }
-
-    &.annotated {
-        text-decoration: underline;
-        color: var(--interactive-color);
-    }
+  &.annotated {
+    text-decoration: underline;
+    color: var(--interactive-color);
+    cursor: pointer;
+  }
+}
+.annotateBtn {
+  height: 3ch;
+  background-color: transparent;
 }

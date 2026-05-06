@@ -1,5 +1,5 @@
+import { ToastContext } from "@/src/store/toast";
 import { useContext } from "react";
-import { ToastContext } from "../store/toast";
 
 export const useWrapFnWithToast = (fn: (...args: any) => Promise<string>) => {
   const { createToast } = useContext(ToastContext);
