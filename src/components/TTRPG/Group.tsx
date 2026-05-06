@@ -6,23 +6,28 @@ import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { CreateCampaignModal } from "@/src/components/TTRPG/CreateCampaignModal";
 import { useFetchData } from "@/src/hooks/useFetchData";
+import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 
 type Props = { groupId: string };
 
 export const Group: React.FC<Props> = ({ groupId }) => {
   const { user } = useContext(UserContext);
+  const { createToast } = useContext(ToastContext);
   const { data: group, loading, error } = useFetchData(getGroup, [groupId]);
   const [showCreateCampaignModal, setShowCreateCampaignModal] = useState(false);
-
+  const router = useRouter();
   if (loading) {
     return "Cargando...";
   }
 
   if (error !== null) {
-    return "Ha habido un error cargando el contenido";
+    createToast(error, "error");
+    router.push("/");
+    return null;
   }
 
   return (

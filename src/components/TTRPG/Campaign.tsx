@@ -4,9 +4,11 @@ import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { CreateSessionModal } from "@/src/components/TTRPG/CreateSessionModal";
 import { useFetchData } from "@/src/hooks/useFetchData";
+import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
 import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 
 type Props = {
@@ -15,6 +17,7 @@ type Props = {
 
 export const Campaign: React.FC<Props> = ({ campaignId }) => {
   const { user } = useContext(UserContext);
+  const { createToast } = useContext(ToastContext);
   const {
     data: campaign,
     loading,
@@ -22,12 +25,15 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
   } = useFetchData(getCampaign, [campaignId]);
   const [showCreateSessionModal, setShowCreateSessionModal] = useState(false);
   const author = campaign?.characters.find(({ member }) => member === user?.id);
-
+  const router = useRouter();
   if (loading) {
     return "Cargando...";
   }
+
   if (error !== null) {
-    return "Ha habido un error";
+    createToast(error, "error");
+    router.push("/");
+    return null;
   }
 
   return (

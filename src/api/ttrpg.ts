@@ -115,7 +115,7 @@ export const getGroup = (
     }
     res({
       data: null,
-      error: "No group found",
+      error: "No se ha encontrado el grupo",
     });
   });
 };
@@ -169,7 +169,7 @@ export const getCampaign = (
     if (!campaign || !group || !GM) {
       res({
         data: null,
-        error: "No campaign found",
+        error: "No se ha encontrado la campaña",
       });
       return;
     }
@@ -251,7 +251,7 @@ export const getSession = (
     if (!session || !campaign || !author) {
       res({
         data: null,
-        error: "No session found",
+        error: "No se ha encontrado la sesión",
       });
       return;
     }

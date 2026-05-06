@@ -16,6 +16,8 @@ import type React from "react";
 import { useContext, useEffect, useState } from "react";
 
 import styles from "./Session.module.css";
+import { ToastContext } from "@/src/store/toast";
+import { useRouter } from "next/navigation";
 
 type Props = {
   sessionId: TSession["id"];
@@ -29,13 +31,15 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
   } = useFetchData(getSession, [sessionId]);
 
   const { user } = useContext(UserContext);
+  const { createToast } = useContext(ToastContext);
+
+  const router = useRouter();
 
   const [userInput, setUserInput] = useState<string>("");
 
   const {
     selectedSentence,
     showCreateAnnotationModal,
-    unselectSentence,
     closeCreateAnnotationModal,
     getUserCharacter,
     userCharacter,
@@ -70,7 +74,9 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
   }
 
   if (error !== null) {
-    return "Ha habido un error";
+    createToast(error, "error");
+    router.push("/");
+    return null;
   }
 
   return (

@@ -3,6 +3,7 @@
 import { loginRequest } from "@/src/api/user";
 import { useReducerWithMiddleware } from "@/src/hooks/useReducerWithMiddleware";
 import { ToastContext } from "@/src/store/toast";
+import { useRouter } from "next/navigation";
 import React, { createContext, useContext } from "react";
 
 type UserState = {
@@ -77,6 +78,7 @@ export const UserProvider = ({ children }: Props) => {
     initialState,
     middleware,
   );
+  const router = useRouter();
 
   const login = async (username: string, password: string) => {
     try {
@@ -97,6 +99,7 @@ export const UserProvider = ({ children }: Props) => {
   };
 
   const logout = async () => {
+    router.push("/");
     dispatch({
       type: "logout",
       payload: {
