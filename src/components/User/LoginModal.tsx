@@ -7,6 +7,7 @@ import { UserContext } from "@/src/store/user";
 import { useContext, useEffect, useState } from "react";
 
 import styles from "./LoginModal.module.css";
+import { useHandleInput } from "@/src/hooks/useHandleInput";
 
 type Props = {};
 
@@ -14,25 +15,13 @@ export const LoginModal: React.FC<Props> = ({}) => {
   const { user, loginModalOpen, closeLoginModal, login } =
     useContext(UserContext);
   const [loading, setLoading] = useState(false);
-  const [input, setInput] = useState<{
-    name: string;
-    password: string;
-  }>({
-    name: "",
-    password: "",
-  });
+  const { input, handleInput } = useHandleInput(["name", "password"]);
 
   useEffect(() => {
     if (user) {
       closeLoginModal();
     }
   }, [user]);
-
-  const handleChange = (name: string, value: string) => {
-    setInput((prev) => {
-      return { ...prev, [name]: value };
-    });
-  };
 
   if (!loginModalOpen) return null;
 
@@ -55,7 +44,7 @@ export const LoginModal: React.FC<Props> = ({}) => {
             min={4}
             max={32}
             value={input.name}
-            onChange={handleChange}
+            onChange={handleInput}
           />
           <label htmlFor="password">Contraseña</label>
           <Input
@@ -66,7 +55,7 @@ export const LoginModal: React.FC<Props> = ({}) => {
             min={8}
             max={32}
             value={input.password}
-            onChange={handleChange}
+            onChange={handleInput}
           />
         </section>
       </Form>

@@ -2,6 +2,7 @@ import { postGroup } from "@/src/api/ttrpg";
 import { Form } from "@/src/components/Core/Form";
 import { Input } from "@/src/components/Core/Input";
 import { Modal } from "@/src/components/Core/Modal";
+import { useHandleInput } from "@/src/hooks/useHandleInput";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { UserContext } from "@/src/store/user";
 import { useRouter } from "next/navigation";
@@ -14,11 +15,7 @@ type Props = {
 export const CreateGroupModal: React.FC<Props> = ({ onClose }) => {
   const { user } = useContext(UserContext);
   const router = useRouter();
-  const [input, setInput] = useState<{
-    name: string;
-  }>({
-    name: "",
-  });
+  const { input, handleInput } = useHandleInput(["name"]);
 
   const handleCreateGroup = useWrapFnWithToast(async () => {
     if (!user) throw "No existe el usuario";
@@ -33,12 +30,6 @@ export const CreateGroupModal: React.FC<Props> = ({ onClose }) => {
     return "Grupo creado con éxito";
   });
 
-  const handleChange = (name: string, value: string) => {
-    setInput((prev) => {
-      return { ...prev, [name]: value };
-    });
-  };
-
   return (
     <Modal onClose={onClose}>
       <Form onSubmit={handleCreateGroup}>
@@ -48,7 +39,7 @@ export const CreateGroupModal: React.FC<Props> = ({ onClose }) => {
           name="name"
           placeholder="Nombre del grupo"
           value={input.name}
-          onChange={handleChange}
+          onChange={handleInput}
         ></Input>
       </Form>
     </Modal>

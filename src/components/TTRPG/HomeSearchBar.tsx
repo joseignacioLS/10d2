@@ -2,14 +2,16 @@ import { getSearch } from "@/src/api/ttrpg";
 import { Card } from "@/src/components/Core/Card";
 import { Input } from "@/src/components/Core/Input";
 import { useDebounce } from "@/src/hooks/useDebounce";
+import { useHandleInput } from "@/src/hooks/useHandleInput";
 import { Campaign, Group } from "@/src/types/ttrpg";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {};
 
 export const HomeSearchBar: React.FC<Props> = ({}) => {
-  const [input, setInput] = useState("");
+  const { input, handleInput } = useHandleInput(["search"]);
+
   const [searchResult, setSearchResults] = useState<{
     groups: Group[];
     campaigns: Campaign[];
@@ -46,6 +48,10 @@ export const HomeSearchBar: React.FC<Props> = ({}) => {
     setSearchResults(data);
   };
 
+  useEffect(() => {
+    handleSearch(input.search);
+  }, [input.search]);
+
   return (
     <section>
       <Input
@@ -53,11 +59,8 @@ export const HomeSearchBar: React.FC<Props> = ({}) => {
         name="search"
         placeholder="Busca campañas o grupos"
         min={3}
-        onChange={(name, value) => {
-          setInput(value);
-          handleSearch(String(value));
-        }}
-        value={input}
+        onChange={handleInput}
+        value={input.search}
       ></Input>
       {noResults && (
         <Card>

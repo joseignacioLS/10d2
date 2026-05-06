@@ -11,6 +11,8 @@ import { UserContext } from "@/src/store/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
+import { DeleteGroupModal } from "./DeleteGroupModal";
+import { InviteMember } from "./InviteMember";
 
 type Props = { groupId: string };
 
@@ -19,13 +21,22 @@ export const Group: React.FC<Props> = ({ groupId }) => {
   const { createToast } = useContext(ToastContext);
   const { data: group, loading, error } = useFetchData(getGroup, [groupId]);
   const [showCreateCampaignModal, setShowCreateCampaignModal] = useState(false);
+  const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
+
   const router = useRouter();
+
   if (loading) {
     return "Cargando...";
   }
 
   if (error !== null) {
     createToast(error, "error");
+    router.push("/");
+    return null;
+  }
+
+  if (group.state === "deleted") {
+    createToast("El grupo que buscas ya no existe", "error");
     router.push("/");
     return null;
   }
@@ -64,6 +75,8 @@ export const Group: React.FC<Props> = ({ groupId }) => {
                 );
               })}
           </ul>
+          <h4>Invitaciones</h4>
+          <InviteMember />
         </>
       </Card>
       <Card>
@@ -96,6 +109,26 @@ export const Group: React.FC<Props> = ({ groupId }) => {
           groupId={groupId}
           onClose={() => setShowCreateCampaignModal(false)}
         ></CreateCampaignModal>
+      )}
+      {group.admins.includes(user?.id ?? "-1") && (
+        <Button
+          onClick={() => {
+            setShowDeleteGroupModal(true);
+          }}
+        >
+          Eliminar Grupo
+        </Button>
+      )}
+      {showDeleteGroupModal && (
+        <DeleteGroupModal
+          onClose={() => {
+            setShowDeleteGroupModal(false);
+          }}
+          group={{
+            name: group.name,
+            id: group.id,
+          }}
+        />
       )}
     </section>
   );

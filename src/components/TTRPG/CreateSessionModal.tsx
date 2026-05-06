@@ -6,8 +6,9 @@ import Tiptap from "@/src/components/Core/TipTap";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { UserContext } from "@/src/store/user";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
+import { useHandleInput } from "@/src/hooks/useHandleInput";
 import styles from "./CreateSessionModal.module.css";
 
 type Props = {
@@ -22,13 +23,8 @@ export const CreateSessionModal: React.FC<Props> = ({
   campaignId,
 }) => {
   const { user } = useContext(UserContext);
-  const [input, setInput] = useState<{
-    name: string;
-    summary: string;
-  }>({
-    name: "",
-    summary: "",
-  });
+  const { input, handleInput } = useHandleInput(["name", "summary"]);
+
   const router = useRouter();
   const handleCreateCampaign = useWrapFnWithToast(async () => {
     if (!user || !campaignId) throw "User error";
@@ -46,13 +42,6 @@ export const CreateSessionModal: React.FC<Props> = ({
     return "Sesión creada con éxito";
   });
 
-  const handleChange = (name: string, value: string) => {
-    console.log({ name, value });
-    setInput((prev) => {
-      return { ...prev, [name]: value };
-    });
-  };
-
   return (
     <Modal onClose={onClose} className={styles.createSessionModal}>
       <Form onSubmit={handleCreateCampaign}>
@@ -61,14 +50,14 @@ export const CreateSessionModal: React.FC<Props> = ({
             id="name"
             name="name"
             placeholder="Nombre"
-            onChange={handleChange}
+            onChange={handleInput}
             value={input.name}
             label="Nombre de la sesión"
           />
           <Tiptap
             name="summary"
             value={input.summary}
-            onChange={handleChange}
+            onChange={handleInput}
             placeholder={"Introducción a la campaña"}
             label="Resumen de la sesión"
           />

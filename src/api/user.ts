@@ -36,7 +36,8 @@ export const getMember = (
           ...member,
           groups: member.groups
             .map((groupId) => Groups.find(({ id }) => id === groupId))
-            .filter((v) => v !== undefined),
+            .filter((v) => v !== undefined)
+            .filter((v) => v.state !== "deleted"),
           campaigns: member.campaigns
             .map((campaignId) => Campaigns.find(({ id }) => id === campaignId))
             .filter((v) => v !== undefined),

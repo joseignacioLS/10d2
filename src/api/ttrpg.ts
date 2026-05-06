@@ -44,7 +44,7 @@ export const getLastGroups = (
   count: number = 3,
 ): Promise<ServiceResponse<Group[]>> => {
   return new Promise((res) => {
-    const groups = Groups.sort(
+    const groups = Groups.filter(({ state }) => state !== "deleted").sort(
       (a, b) => -a.lastActivity.since(b.lastActivity).days,
     ).slice(0, count);
     res({
@@ -157,6 +157,24 @@ export const postGroup = (
     });
   });
 };
+
+export const deleteGroup = (groupId: Group["id"]): Promise<ServiceResponse<boolean>> => {
+  return new Promise(res => {
+    const group = Groups.find(({ id }) => groupId === id)
+    if (!group) {
+      res({
+        data: null,
+        error: "No se ha encontrado el grupo"
+      })
+      return
+    }
+    group.state = "deleted";
+    res({
+      data: true,
+      error: null
+    })
+  })
+}
 
 export const getCampaign = (
   campaignId: string,

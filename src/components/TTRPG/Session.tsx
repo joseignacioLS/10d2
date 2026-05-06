@@ -18,6 +18,7 @@ import { useContext, useEffect, useState } from "react";
 import styles from "./Session.module.css";
 import { ToastContext } from "@/src/store/toast";
 import { useRouter } from "next/navigation";
+import { useHandleInput } from "@/src/hooks/useHandleInput";
 
 type Props = {
   sessionId: TSession["id"];
@@ -35,7 +36,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
 
   const router = useRouter();
 
-  const [userInput, setUserInput] = useState<string>("");
+  const { input, handleInput, resetInput } = useHandleInput(["annotation"]);
 
   const {
     selectedSentence,
@@ -58,7 +59,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
       if (error) {
         throw "Ha habido un error anotando la frase";
       }
-      setUserInput("");
+      resetInput();
       closeCreateAnnotationModal();
       return "Texto anotado";
     },
@@ -112,12 +113,10 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
             <Input
               id="annotation"
               name="annotation"
-              value={userInput}
+              value={input.annotation}
               placeholder="Escribe aquí"
               max={256}
-              onChange={(_, value) => {
-                setUserInput(value);
-              }}
+              onChange={handleInput}
             />
             <div className={styles.controls}>
               <Button
@@ -125,7 +124,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
                   if (!selectedSentence) {
                     return;
                   }
-                  handleAnnotate(userInput, selectedSentence.position);
+                  handleAnnotate(input.annotation, selectedSentence.position);
                 }}
               >
                 Guardar
