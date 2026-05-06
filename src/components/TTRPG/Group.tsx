@@ -63,7 +63,7 @@ export const Group: React.FC<Props> = ({ groupId }) => {
       </Card>
       <Card>
         <>
-          <h3>
+          <h3 className="title_with_btn">
             Campañas
             {group.admins.includes(user?.id ?? "-1") && (
               <Button

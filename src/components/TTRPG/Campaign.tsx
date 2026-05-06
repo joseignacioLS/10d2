@@ -62,7 +62,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
       </Card>
       <Card>
         <>
-          <h3>
+          <h3 className="title_with_btn">
             Sesiones{" "}
             {author && (
               <Button

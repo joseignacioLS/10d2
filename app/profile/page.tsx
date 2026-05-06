@@ -36,11 +36,11 @@ export default function Home() {
 
   return (
     <main>
-      <h2>
+      <h2 className="title_with_btn">
         Perfil de {userData?.name}
         <Button onClick={logout}>Logout</Button>
       </h2>
-      <h3>
+      <h3 className="title_with_btn">
         Tus grupos{" "}
         <Button onClick={() => setShowCreateGroupModal(true)}>+</Button>
       </h3>
