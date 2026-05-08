@@ -14,7 +14,11 @@ import { useContext, useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const { user, logout } = useContext(UserContext);
+  const {
+    user,
+    userData: { subscriptions },
+    logout,
+  } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
   const [userData, setUserData] = useState<FilledMember | null>(null);
 
@@ -71,7 +75,7 @@ export default function Home() {
           <h3>Tus subscripciones</h3>
           <ul>
             {Events.filter(({ origin }) => {
-              return [""].includes(origin);
+              return subscriptions.includes(origin);
             }).map((event) => {
               return <li key={event.id}>{event.message}</li>;
             })}

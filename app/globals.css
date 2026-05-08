@@ -109,9 +109,12 @@ ul {
 h1,
 h2,
 h3,
-h4 {
+h4,
+p,
+span {
   &.title_with_button {
-    display: flex;
-    gap: 8px;
+    & > * {
+      display: inline-block;
+    }
   }
 }

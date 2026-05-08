@@ -415,3 +415,40 @@ export const annotateSentence = (sessionId: string, position: number[], text: st
   })
 
 }
+
+export const followCampaign = async (userId: string, campaignId: string): Promise<ServiceResponse<boolean>> => {
+  return new Promise(res => {
+    const member = Members.find(({ id }) => id === userId);
+    if (!member) {
+      res({
+        data: null,
+        error: "No existe el ususario"
+      })
+      return
+    }
+    if (member.subscriptions.includes(campaignId)) throw "Ya sigues a la campaña"
+    member.subscriptions.push(campaignId)
+    res({
+      data: true,
+      error: null
+    })
+  })
+}
+
+export const unfollowCampaign = async (userId: string, campaignId: string): Promise<ServiceResponse<boolean>> => {
+  return new Promise(res => {
+    const member = Members.find(({ id }) => id === userId);
+    if (!member) {
+      res({
+        data: null,
+        error: "No existe el ususario"
+      })
+      return
+    }
+    member.subscriptions = member.subscriptions.filter(id => id !== campaignId)
+    res({
+      data: true,
+      error: null
+    })
+  })
+}

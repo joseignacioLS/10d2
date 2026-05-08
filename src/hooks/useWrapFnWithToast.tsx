@@ -7,9 +7,11 @@ export const useWrapFnWithToast = (fn: (...args: any) => Promise<string>) => {
   const wrappedFn = async (...args: any) => {
     fn(...args)
       .then((successMsg) => {
+        if (successMsg === "") return;
         createToast(successMsg, "info");
       })
       .catch((error) => {
+        if (error === "") return;
         createToast(error, "error");
       });
   };

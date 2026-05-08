@@ -4,19 +4,25 @@ import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { CreateSessionModal } from "@/src/components/TTRPG/CreateSessionModal";
 import { useFetchData } from "@/src/hooks/useFetchData";
+import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
 import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 
 type Props = {
   campaignId: TCampaign["id"];
 };
 
 export const Campaign: React.FC<Props> = ({ campaignId }) => {
-  const { user } = useContext(UserContext);
+  const {
+    user,
+    userData: { subscriptions },
+    addCampaignToSubscriptions,
+    removeCampaignFromSubscriptions,
+  } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
   const {
     data: campaign,
@@ -26,6 +32,31 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
   const [showCreateSessionModal, setShowCreateSessionModal] = useState(false);
   const author = campaign?.characters.find(({ member }) => member === user?.id);
   const router = useRouter();
+
+  const canSubscribe = useMemo(
+    () =>
+      !campaign?.characters.find(
+        ({ member: memberId }) => memberId === user?.id,
+      ),
+    [campaign, user],
+  );
+  const userSubscribed = useMemo(
+    () => subscriptions?.includes(campaignId),
+    [subscriptions, campaignId],
+  );
+
+  const handleFollow = useWrapFnWithToast(async () => {
+    if (!user) throw "No estás logueado";
+    if (!campaign) throw "Campaña no encontrada";
+    if (!userSubscribed) {
+      await addCampaignToSubscriptions();
+      return "";
+    } else {
+      await removeCampaignFromSubscriptions();
+      return "";
+    }
+  });
+
   if (loading) {
     return "Cargando...";
   }
@@ -39,7 +70,16 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
   return (
     <section>
       <CrumbsHeader
-        title={campaign.name ?? ""}
+        title={
+          <span className="title_with_button">
+            {campaign.name ?? ""}{" "}
+            {canSubscribe && user && (
+              <Button onClick={handleFollow}>
+                {userSubscribed ? "Unfollow" : "Follow"}
+              </Button>
+            )}
+          </span>
+        }
         crumbs={[
           {
             name: campaign.group?.name || "",
