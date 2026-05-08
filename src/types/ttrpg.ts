@@ -32,6 +32,7 @@ export type Member = {
   role: ("Player" | "GM")[];
   groups: Group["id"][];
   campaigns: Campaign["id"][];
+  subscriptions: (Campaign["id"] | Group["id"])[]
 };
 
 export type FilledMember = Omit<Member, "groups" | "campaigns"> & {

@@ -33,6 +33,7 @@ export const Members: Member[] = [
     role: ["GM"],
     groups: ["0"],
     campaigns: ["0"],
+    subscriptions: []
   },
   {
     id: "1",
@@ -40,6 +41,7 @@ export const Members: Member[] = [
     role: ["Player"],
     groups: ["0"],
     campaigns: ["0"],
+    subscriptions: []
   },
 ];
 

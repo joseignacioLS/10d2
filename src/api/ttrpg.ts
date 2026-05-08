@@ -150,7 +150,8 @@ export const postGroup = (
     Events.unshift({
       id: String(Events.length + 1),
       message: `${member.name} ha creado el grupo "${name}"`,
-      date: Temporal.Now.plainDateISO()
+      date: Temporal.Now.plainDateISO(),
+      origin: id
     })
     res({
       data: id,
@@ -245,7 +246,8 @@ export const postCampaign = (
     Events.unshift({
       id: String(Events.length + 1),
       message: `${member.name} ha creado la campaña "${name}"`,
-      date: Temporal.Now.plainDateISO()
+      date: Temporal.Now.plainDateISO(),
+      origin: id
     })
     await postCharacter(
       "GM",
@@ -317,7 +319,8 @@ export const postSession = (
     Events.unshift({
       id: String(Events.length + 1),
       message: `${author} (${campaign.short}) ha escrito una nueva sesión "${title}"`,
-      date: Temporal.Now.plainDateISO()
+      date: Temporal.Now.plainDateISO(),
+      origin: campaignId
     })
     res({
       data: id,

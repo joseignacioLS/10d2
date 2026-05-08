@@ -1,7 +1,9 @@
 "use client";
 
 import { getMember } from "@/src/api/user";
+import { Events } from "@/src/assets/bbdd";
 import { Button } from "@/src/components/Core/Button";
+import { Card } from "@/src/components/Core/Card";
 import { CreateGroupModal } from "@/src/components/TTRPG/CreateGroupModal";
 import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
@@ -47,19 +49,35 @@ export default function Home() {
         Perfil de {userData?.name}
         <Button onClick={logout}>Logout</Button>
       </h2>
-      <h3 className="title_with_btn">
-        Tus grupos{" "}
-        <Button onClick={() => setShowCreateGroupModal(true)}>+</Button>
-      </h3>
-      <ul>
-        {userData?.groups.map((group) => {
-          return (
-            <li key={group.id}>
-              <Link href={`/groups/${group.id}`}>{group.name}</Link>
-            </li>
-          );
-        })}
-      </ul>
+      <Card>
+        <>
+          <h3 className="title_with_btn">
+            Tus grupos{" "}
+            <Button onClick={() => setShowCreateGroupModal(true)}>+</Button>
+          </h3>
+          <ul>
+            {userData?.groups.map((group) => {
+              return (
+                <li key={group.id}>
+                  <Link href={`/groups/${group.id}`}>{group.name}</Link>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      </Card>
+      <Card>
+        <>
+          <h3>Tus subscripciones</h3>
+          <ul>
+            {Events.filter(({ origin }) => {
+              return [""].includes(origin);
+            }).map((event) => {
+              return <li key={event.id}>{event.message}</li>;
+            })}
+          </ul>
+        </>
+      </Card>
       {showCreateGroupModal && (
         <CreateGroupModal
           onClose={() => {
