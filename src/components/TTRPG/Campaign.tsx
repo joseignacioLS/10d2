@@ -1,4 +1,4 @@
-import { getCampaign } from "@/src/api/ttrpg";
+import { getCampaignDetail } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
@@ -28,16 +28,15 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     data: campaign,
     loading,
     error,
-  } = useFetchData(getCampaign, [campaignId]);
+  } = useFetchData(getCampaignDetail, [campaignId]);
   const [showCreateSessionModal, setShowCreateSessionModal] = useState(false);
-  const author = campaign?.characters.find(({ member }) => member === user?.id);
+  const author = campaign?.characters.find(
+    ({ member: { id } }) => id === user?.id,
+  );
   const router = useRouter();
 
   const canSubscribe = useMemo(
-    () =>
-      !campaign?.characters.find(
-        ({ member: memberId }) => memberId === user?.id,
-      ),
+    () => !campaign?.characters.find(({ member: { id } }) => id === user?.id),
     [campaign, user],
   );
   const userSubscribed = useMemo(
@@ -98,7 +97,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
               return (
                 <li key={name}>
                   <Link href={`/characters/${id}`}>
-                    {name} ({member})
+                    {name} ({member.name})
                   </Link>
                 </li>
               );

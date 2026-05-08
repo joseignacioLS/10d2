@@ -29,7 +29,6 @@ export type FilledGroup = Omit<Group, "members" | "campaigns"> & {
 export type Member = {
   id: string;
   name: string;
-  role: ("Player" | "GM")[];
   groups: Group["id"][];
   campaigns: Campaign["id"][];
   subscriptions: (Campaign["id"] | Group["id"])[]
@@ -59,7 +58,7 @@ export type FilledCampaign = Omit<
 > & {
   group: Group;
   GM: Member;
-  characters: Character[];
+  characters: FilledCharacter[];
   sessions: Session[];
 };
 
@@ -110,3 +109,39 @@ export type FilledCharacter = Omit<Character, "campaign" | "member"> & {
   campaign: Campaign;
   member: Member;
 };
+
+export type CampaignDetail = {
+  name: string;
+  group: {
+    id: string;
+    name: string;
+  },
+  summary: string;
+  characters: {
+    id: string,
+    name: string,
+    member: {
+      id: string;
+      name: string;
+    }
+  }[],
+  sessions: {
+    id: string;
+    number: number;
+    title: string;
+  }[]
+}
+
+export type GroupDetail = {
+  name: string,
+  state: Group["state"],
+  members: {
+    id: Member["id"],
+    name: Member["name"]
+    role: GroupRoles,
+  }[],
+  campaigns: {
+    id: Campaign["id"],
+    name: Campaign["name"]
+  }[]
+}

@@ -1,12 +1,12 @@
 "use client";
 
-import { getCampaign } from "@/src/api/ttrpg";
+import { getUserCharacterInCampaign } from "@/src/api/ttrpg";
 import { UserContext } from "@/src/store/user";
 import { Character } from "@/src/types/ttrpg";
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 
 type TTRPGSessionState = {
-  userCharacter?: Character;
+  userCharacter?: { id: Character["id"] };
   showCreateAnnotationModal: boolean;
   selectedSentence:
     | {
@@ -34,7 +34,7 @@ export const TTRPGSessionContext = createContext<{
         position: [number, number];
       }
     | undefined;
-  userCharacter?: Character;
+  userCharacter?: { id: Character["id"] };
   showCreateAnnotationModal: boolean;
   openCreateAnnotationModal: () => void;
   closeCreateAnnotationModal: () => void;
@@ -132,15 +132,15 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
   };
 
   const getUserCharacter = (campaignId: string) => {
-    getCampaign(campaignId).then(({ data: campaign }) => {
-      const character = campaign?.characters.find(({ member }) => {
-        return member === user?.id;
-      });
-      dispatch({
-        type: "set-user-character",
-        payload: character,
-      });
-    });
+    getUserCharacterInCampaign(user?.id ?? "", campaignId).then(
+      ({ data, error }) => {
+        if (error) return;
+        dispatch({
+          type: "set-user-character",
+          payload: data,
+        });
+      },
+    );
   };
 
   useEffect(() => {}, []);

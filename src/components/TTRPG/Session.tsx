@@ -13,12 +13,12 @@ import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
 import { UserContext } from "@/src/store/user";
 import { type Session as TSession } from "@/src/types/ttrpg";
 import type React from "react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
-import styles from "./Session.module.css";
+import { useHandleInput } from "@/src/hooks/useHandleInput";
 import { ToastContext } from "@/src/store/toast";
 import { useRouter } from "next/navigation";
-import { useHandleInput } from "@/src/hooks/useHandleInput";
+import styles from "./Session.module.css";
 
 type Props = {
   sessionId: TSession["id"];

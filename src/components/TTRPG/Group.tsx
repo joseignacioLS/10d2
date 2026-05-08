@@ -1,6 +1,6 @@
 "use client";
 
-import { getGroup } from "@/src/api/ttrpg";
+import { getGroupDetail } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
@@ -19,7 +19,11 @@ type Props = { groupId: string };
 export const Group: React.FC<Props> = ({ groupId }) => {
   const { user } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
-  const { data: group, loading, error } = useFetchData(getGroup, [groupId]);
+  const {
+    data: group,
+    loading,
+    error,
+  } = useFetchData(getGroupDetail, [groupId]);
   const [showCreateCampaignModal, setShowCreateCampaignModal] = useState(false);
   const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
 
@@ -43,7 +47,6 @@ export const Group: React.FC<Props> = ({ groupId }) => {
     router.push("/");
     return null;
   }
-
   return (
     <section>
       <CrumbsHeader title={group.name || ""} />
@@ -56,12 +59,8 @@ export const Group: React.FC<Props> = ({ groupId }) => {
               .filter(({ role }) => {
                 return role === "admin";
               })
-              .map(({ member: { id, name, role } }) => {
-                return (
-                  <li key={id}>
-                    {name} ({role.join(", ")})
-                  </li>
-                );
+              .map(({ id, name }) => {
+                return <li key={id}>{name}</li>;
               })}
           </ul>
           <h4>Jugadores</h4>
@@ -70,12 +69,8 @@ export const Group: React.FC<Props> = ({ groupId }) => {
               .filter(({ role }) => {
                 return role === "member";
               })
-              .map(({ member: { id, name, role } }) => {
-                return (
-                  <li key={id}>
-                    {name} ({role.join(", ")})
-                  </li>
-                );
+              .map(({ id, name }) => {
+                return <li key={id}>{name}</li>;
               })}
           </ul>
           <h4>Invitaciones</h4>
@@ -84,12 +79,8 @@ export const Group: React.FC<Props> = ({ groupId }) => {
               .filter(({ role }) => {
                 return role === "invited";
               })
-              .map(({ member: { id, name, role } }) => {
-                return (
-                  <li key={id}>
-                    {name} ({role.join(", ")})
-                  </li>
-                );
+              .map(({ id, name }) => {
+                return <li key={id}>{name}</li>;
               })}
           </ul>
           {isAdmin && <InviteMember />}
@@ -142,7 +133,7 @@ export const Group: React.FC<Props> = ({ groupId }) => {
           }}
           group={{
             name: group.name,
-            id: group.id,
+            id: groupId,
           }}
         />
       )}

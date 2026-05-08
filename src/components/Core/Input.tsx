@@ -10,6 +10,7 @@ type Props = {
   max?: number;
   value: string;
   onChange: (name: string, value: string) => void;
+  pattern?: string;
 };
 
 export const Input: React.FC<Props> = ({
@@ -21,6 +22,7 @@ export const Input: React.FC<Props> = ({
   min = 1,
   max = 32,
   value,
+  pattern = "",
   onChange,
 }) => {
   return (
@@ -35,6 +37,7 @@ export const Input: React.FC<Props> = ({
         minLength={min}
         maxLength={max}
         value={value}
+        pattern={pattern}
         onChange={(e) => {
           onChange(name, e.currentTarget.value);
         }}

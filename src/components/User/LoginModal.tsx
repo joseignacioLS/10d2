@@ -41,10 +41,9 @@ export const LoginModal: React.FC<Props> = ({}) => {
             id="name"
             name="name"
             placeholder="Usuario"
-            min={4}
-            max={32}
             value={input.name}
             onChange={handleInput}
+            pattern={"[A-Za-z]{6,16}"}
           />
           <label htmlFor="password">Contraseña</label>
           <Input
@@ -52,8 +51,7 @@ export const LoginModal: React.FC<Props> = ({}) => {
             name="password"
             placeholder="Contraseña"
             type="password"
-            min={8}
-            max={32}
+            pattern={"[A-Za-z]{6-32}"}
             value={input.password}
             onChange={handleInput}
           />

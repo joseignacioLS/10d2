@@ -10,12 +10,13 @@ import { ServiceResponse } from "@/src/types/api";
 import { Event } from "@/src/types/events";
 import {
   Campaign,
+  CampaignDetail,
   Character,
-  FilledCampaign,
   FilledCharacter,
-  FilledGroup,
   FilledSession,
   Group,
+  GroupDetail,
+  Member
 } from "@/src/types/ttrpg";
 import { Temporal } from "temporal-polyfill";
 
@@ -88,39 +89,6 @@ export const getLastSessions = (
   });
 };
 
-export const getGroup = (
-  groupId: string,
-): Promise<ServiceResponse<FilledGroup>> => {
-  return new Promise((res) => {
-    const group = Groups.find(({ id }) => id === groupId);
-    if (group) {
-      const campaigns = group.campaigns
-        .map((i) => {
-          return Campaigns.find(({ id }) => id === i);
-        })
-        .filter((v) => v !== undefined);
-      const members = group.members
-        .map((m) => {
-          return { ...m, member: Members.find(({ id }) => id === m.id) };
-        })
-        .filter(({ member }) => member !== undefined) as FilledGroup["members"];
-
-      res({
-        data: {
-          ...group,
-          campaigns,
-          members,
-        },
-        error: null,
-      });
-
-    }
-    res({
-      data: null,
-      error: "No se ha encontrado el grupo",
-    });
-  });
-};
 
 export const postGroup = (
   name: string,
@@ -178,37 +146,6 @@ export const deleteGroup = (groupId: Group["id"]): Promise<ServiceResponse<boole
   })
 }
 
-export const getCampaign = (
-  campaignId: string,
-): Promise<ServiceResponse<FilledCampaign>> => {
-  return new Promise((res) => {
-    const campaign = Campaigns.find(({ id }) => id === campaignId);
-    const group = Groups.find(({ id }) => id === campaign?.group);
-    const GM = Members.find(({ id }) => id === campaign?.GM);
-
-    if (!campaign || !group || !GM) {
-      res({
-        data: null,
-        error: "No se ha encontrado la campaña",
-      });
-      return;
-    }
-    const sessions = campaign.sessions
-      .map((i) => {
-        return Sessions.find(({ id }) => id === i);
-      })
-      .filter((v) => v !== undefined);
-    const characters = campaign.characters
-      .map((i) => {
-        return Characters.find(({ id }) => id === i);
-      })
-      .filter((v) => v !== undefined);
-    res({
-      data: { ...campaign, group, sessions, GM, characters },
-      error: null,
-    });
-  });
-};
 
 export const postCampaign = (
   userId: string,
@@ -360,7 +297,7 @@ export const postCharacter = (
 ): Promise<ServiceResponse<string>> => {
   return new Promise(async (res) => {
     const id = String(Characters.length)
-    const { data: campaign } = await getCampaign(campaignId)
+    const campaign = Campaigns.find(({ id }) => id === campaignId)
 
     if (!campaign) {
       res({ data: null, error: "No se ha encontrado la campaña" })
@@ -448,6 +385,139 @@ export const unfollowCampaign = async (userId: string, campaignId: string): Prom
     member.subscriptions = member.subscriptions.filter(id => id !== campaignId)
     res({
       data: true,
+      error: null
+    })
+  })
+}
+
+
+// NEW
+
+export const getGroupDetail = (groupId: Group["id"]): Promise<ServiceResponse<GroupDetail>> => {
+  return new Promise((res) => {
+
+    const group = Groups.find(({ id }) => id === groupId)
+    if (!group) {
+      return res({
+        data: null,
+        error: "Grupo no encontrado"
+      })
+    }
+
+    const members = group.members.map(({ id: memberId, role }) => {
+      const member = Members.find(({ id }) => id === memberId)
+      if (!member) return null
+      return {
+        id: member.id,
+        name: member.name,
+        role,
+      }
+    })
+      .filter(v => v !== null)
+    const campaigns = group.campaigns.map(campaignId => {
+      const campaign = Campaigns.find(({ id }) => id === campaignId)
+      if (!campaign) return null
+      return {
+        id: campaignId,
+        name: campaign.name
+      }
+    }).filter(v => v !== null)
+
+    res({
+      data: {
+        name: group.name,
+        state: group.state,
+        members,
+        campaigns
+      },
+      error: null
+    })
+  })
+}
+
+
+export const getCampaignDetail = (campaignId: Campaign["id"]): Promise<ServiceResponse<CampaignDetail>> => {
+  return new Promise(res => {
+    const campaign = Campaigns.find(({ id }) => id === campaignId)
+    if (!campaign) {
+      return res({
+        data: null,
+        error: "Campaña no encontrada"
+      })
+    }
+    const group = Groups.find(({ id }) => id === campaign.group)
+    if (!group) {
+      return res({
+        data: null,
+        error: "Grupo no encontrado"
+      })
+    }
+
+    const characters = campaign.characters
+      .map((characterId) => {
+        const character = Characters.find(({ id }) => characterId === id)
+        if (!character) return null;
+        const member = Members.find(({ id }) => character.member === id)
+        if (!member) return null
+        return {
+          id: character.id,
+          name: character.name,
+          member: {
+            id: character.member,
+            name: member.name
+          }
+        }
+      })
+      .filter((v) => v !== null)
+
+    const sessions = campaign.sessions.map((sessionId) => {
+      const session = Sessions.find(({ id }) => sessionId === id)
+      if (!session) return null
+      return {
+        id: session.id,
+        number: session.number,
+        title: session.title
+      }
+    }).filter(v => v !== null)
+
+    res({
+      data: {
+        name: campaign.name,
+        group: {
+          id: group?.id,
+          name: group.name
+        },
+        summary: campaign.summary,
+        characters,
+        sessions
+      },
+      error: null
+    })
+  })
+}
+
+export const getUserCharacterInCampaign = (userId: Member["id"], campaignId: Campaign["id"]): Promise<ServiceResponse<{
+  id: Character["id"],
+}>> => {
+  return new Promise(res => {
+    const campaign = Campaigns.find(({ id }) => id === campaignId)
+    if (!campaign) {
+      return res({
+        data: null,
+        error: "Campaña no encontrada"
+      })
+    }
+    const character = Characters.find(({ member, campaign }) => {
+      return member === userId && campaign === campaignId
+    })
+    if (!character) {
+      return res({
+        data: null,
+        error: "Personaje no encontrado"
+      })
+    }
+    res({
+      data: { id: character.id },
       error: null
     })
   })
