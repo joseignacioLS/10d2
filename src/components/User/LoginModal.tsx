@@ -51,7 +51,7 @@ export const LoginModal: React.FC<Props> = ({}) => {
             name="password"
             placeholder="Contraseña"
             type="password"
-            pattern={"[A-Za-z]{6-32}"}
+            pattern={"[A-Za-z]{6,32}"}
             value={input.password}
             onChange={handleInput}
           />
