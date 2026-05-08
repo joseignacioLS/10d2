@@ -72,7 +72,7 @@ export default function Home() {
       </Card>
       <Card>
         <>
-          <h3>Tus subscripciones</h3>
+          <h3>Novedades de tus subscripciones</h3>
           <ul>
             {Events.filter(({ origin }) => {
               return subscriptions.includes(origin);

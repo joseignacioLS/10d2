@@ -48,12 +48,18 @@ body {
 header.mainHeader {
   width: 100%;
   margin: auto;
+  padding: 8px 0;
   height: fit-content;
   position: relative;
 
   h1 {
     width: 100%;
     text-align: center;
+    line-height: 90%;
+    a {
+      text-decoration: none;
+      color: var(--main-fg-color);
+    }
   }
 
   .loginButtonWrapper {

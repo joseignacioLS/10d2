@@ -29,7 +29,9 @@ export default function RootLayout({
           <body className={opensans.className}>
             <header className={"mainHeader"}>
               <h1>
-                <Link href="/">10d2</Link>
+                <Link href="/">
+                  10<br></br>d2
+                </Link>
               </h1>
               <div className="loginButtonWrapper">
                 <UserButton />
