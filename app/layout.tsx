@@ -1,3 +1,5 @@
+import { Toast } from "@/src/components/Core/Toast";
+import { SearchModal } from "@/src/components/TTRPG/SearchModal";
 import { LoginModal } from "@/src/components/User/LoginModal";
 import { UserButton } from "@/src/components/User/UserButton";
 import { ToastProvider } from "@/src/store/toast";
@@ -6,7 +8,6 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
-import { Toast } from "@/src/components/Core/Toast";
 
 const opensans = Open_Sans({
   subsets: ["latin"],
@@ -28,14 +29,13 @@ export default function RootLayout({
         <UserProvider>
           <body className={opensans.className}>
             <header className={"mainHeader"}>
+              <SearchModal />
               <h1>
                 <Link href="/">
                   10<br></br>d2
                 </Link>
               </h1>
-              <div className="loginButtonWrapper">
-                <UserButton />
-              </div>
+              <UserButton />
             </header>
             {children}
             <LoginModal />

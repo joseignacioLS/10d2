@@ -8,7 +8,6 @@ import {
 } from "@/src/api/ttrpg";
 import { Card } from "@/src/components/Core/Card";
 import { Carousel } from "@/src/components/Core/Carousel";
-import { HomeSearchBar } from "@/src/components/TTRPG/HomeSearchBar";
 import { Event } from "@/src/types/events";
 import { Campaign, FilledSession, Group } from "@/src/types/ttrpg";
 import Link from "next/link";
@@ -54,7 +53,6 @@ export const Dashboard = () => {
           <Carousel srcs={["/chicken.svg", "/cat.svg"]}></Carousel>
         </>
       </Card>
-      <HomeSearchBar />
       <Card>
         <>
           <h2>Últimas Sesiones</h2>

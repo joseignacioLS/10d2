@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo, useState } from "react";
 
 export const useHandleInput = <T extends readonly string[]>(keys: T) => {

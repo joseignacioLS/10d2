@@ -59,14 +59,11 @@ header.mainHeader {
     a {
       text-decoration: none;
       color: var(--main-fg-color);
+      img {
+        width: auto;
+        height: 96px;
+      }
     }
-  }
-
-  .loginButtonWrapper {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
   }
 }
 

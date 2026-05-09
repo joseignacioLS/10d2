@@ -1,0 +1,12 @@
+.button {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  height: 32px;
+  width: 32px;
+}
+
+.modal {
+  max-width: min(90vw, 800px);
+  width: 100%;
+}

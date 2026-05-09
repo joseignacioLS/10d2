@@ -7,9 +7,11 @@ import { Campaign, Group } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type Props = {};
+type Props = {
+  onSearchClick: () => void;
+};
 
-export const HomeSearchBar: React.FC<Props> = ({}) => {
+export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
   const { input, handleInput } = useHandleInput(["search"]);
 
   const [searchResult, setSearchResults] = useState<{
@@ -19,8 +21,6 @@ export const HomeSearchBar: React.FC<Props> = ({}) => {
     groups: [],
     campaigns: [],
   });
-
-  const [noResults, setNoResults] = useState(false);
 
   const searchFetch = useDebounce<{
     groups: Group[];
@@ -35,7 +35,6 @@ export const HomeSearchBar: React.FC<Props> = ({}) => {
   }, 800);
 
   const handleSearch = async (search: string) => {
-    setNoResults(false);
     const { data } = await searchFetch(search);
     if (!data) {
       setSearchResults({
@@ -44,7 +43,6 @@ export const HomeSearchBar: React.FC<Props> = ({}) => {
       });
       return;
     }
-    setNoResults(data.groups.length === 0 && data.campaigns.length === 0);
     setSearchResults(data);
   };
 
@@ -62,26 +60,28 @@ export const HomeSearchBar: React.FC<Props> = ({}) => {
         onChange={handleInput}
         value={input.search}
       ></Input>
-      {noResults && (
-        <Card>
-          <p>No hay resultados para la búsqueda</p>
-        </Card>
-      )}
       {(searchResult.groups.length > 0 ||
         searchResult.campaigns.length > 0) && (
         <Card>
           <>
-            <h2>Resultados de la búsqueda</h2>
             {searchResult.groups.map((group) => {
               return (
-                <Link key={group.id} href={`/groups/${group.id}`}>
+                <Link
+                  key={group.id}
+                  href={`/groups/${group.id}`}
+                  onClick={onSearchClick}
+                >
                   {group.name}
                 </Link>
               );
             })}
             {searchResult.campaigns.map((campaign) => {
               return (
-                <Link key={campaign.id} href={`/campaigns/${campaign.id}`}>
+                <Link
+                  key={campaign.id}
+                  href={`/campaigns/${campaign.id}`}
+                  onClick={onSearchClick}
+                >
                   {campaign.name}
                 </Link>
               );
