@@ -32,7 +32,7 @@ export default function RootLayout({
               <SearchModal />
               <h1>
                 <Link href="/">
-                  10<br></br>d2
+                  <img src="/10d2.svg" alt="logo de 10d2" />
                 </Link>
               </h1>
               <UserButton />

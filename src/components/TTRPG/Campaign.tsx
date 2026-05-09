@@ -108,7 +108,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
       <Card>
         <>
           <h3 className="title_with_btn">
-            Sesiones{" "}
+            Últimas Sesiones{" "}
             {author && (
               <Button
                 onClick={() => {
@@ -120,7 +120,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
             )}
           </h3>
           <ul>
-            {campaign.sessions.map(({ id, number, title }) => {
+            {campaign.sessions.slice(0, 10).map(({ id, number, title }) => {
               return (
                 <li key={id}>
                   <Link href={`/sessions/${id}`}>
@@ -130,6 +130,11 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
               );
             })}
           </ul>
+        </>
+      </Card>
+      <Card>
+        <>
+          <h3>Calendario</h3>
         </>
       </Card>
       {showCreateSessionModal && author && (

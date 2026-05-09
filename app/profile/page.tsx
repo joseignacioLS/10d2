@@ -39,6 +39,10 @@ export default function Home() {
     });
   };
 
+  const events = Events.filter(({ origin }) => {
+    return subscriptions.includes(origin);
+  });
+
   useEffect(() => {
     getUserData();
   }, [user]);
@@ -49,16 +53,10 @@ export default function Home() {
 
   return (
     <main>
-      <h2 className="title_with_btn">
-        Perfil de {userData?.name}
-        <Button onClick={logout}>Logout</Button>
-      </h2>
+      <h2>Perfil de {userData?.name}</h2>
       <Card>
         <>
-          <h3 className="title_with_btn">
-            Tus grupos{" "}
-            <Button onClick={() => setShowCreateGroupModal(true)}>+</Button>
-          </h3>
+          <h3>Tus grupos </h3>
           <ul>
             {userData?.groups.map((group) => {
               return (
@@ -68,19 +66,29 @@ export default function Home() {
               );
             })}
           </ul>
+          <Button onClick={() => setShowCreateGroupModal(true)}>
+            Crear nuevo grupo
+          </Button>
         </>
       </Card>
       <Card>
         <>
           <h3>Novedades de tus subscripciones</h3>
-          <ul>
-            {Events.filter(({ origin }) => {
-              return subscriptions.includes(origin);
-            }).map((event) => {
-              return <li key={event.id}>{event.message}</li>;
-            })}
-          </ul>
+          {events.length > 0 ? (
+            <ul>
+              {events.map((event) => {
+                return <li key={event.id}>{event.message}</li>;
+              })}
+            </ul>
+          ) : (
+            <p>No hay novedades en tus subscripciones</p>
+          )}
         </>
+      </Card>
+      <Card>
+        <Button onClick={logout} className={"danger"}>
+          Logout
+        </Button>
       </Card>
       {showCreateGroupModal && (
         <CreateGroupModal
