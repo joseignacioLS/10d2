@@ -124,3 +124,8 @@ span {
     }
   }
 }
+
+button.danger {
+  background-color: var(--orange);
+  color: var(--night-sky);
+}

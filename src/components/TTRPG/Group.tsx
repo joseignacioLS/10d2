@@ -122,6 +122,7 @@ export const Group: React.FC<Props> = ({ groupId }) => {
           onClick={() => {
             setShowDeleteGroupModal(true);
           }}
+          className="danger"
         >
           Eliminar Grupo
         </Button>

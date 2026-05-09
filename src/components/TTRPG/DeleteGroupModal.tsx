@@ -48,6 +48,7 @@ export const DeleteGroupModal: React.FC<Props> = ({ onClose, group }) => {
         <Button
           onClick={handleDeleteGroup}
           disabled={group.name !== input.group}
+          className="danger"
         >
           Eliminar
         </Button>
