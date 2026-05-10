@@ -101,7 +101,7 @@ type Props = {
 export const TTRPGSessionProvider = ({ children }: Props) => {
   const [state, dispatch] = useReducer(ttrpgSessionReducer, initialState);
 
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   const openCreateAnnotationModal = () => {
     dispatch({
@@ -132,7 +132,7 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
   };
 
   const getUserCharacter = (campaignId: string) => {
-    getUserCharacterInCampaign(user?.id ?? "", campaignId).then(
+    getUserCharacterInCampaign(userData?.id ?? "", campaignId).then(
       ({ data, error }) => {
         if (error) return;
         dispatch({

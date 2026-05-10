@@ -22,14 +22,14 @@ export const CreateSessionModal: React.FC<Props> = ({
   author,
   campaignId,
 }) => {
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const { input, handleInput } = useHandleInput(["name", "summary"]);
 
   const router = useRouter();
   const handleCreateCampaign = useWrapFnWithToast(async () => {
-    if (!user || !campaignId) throw "User error";
+    if (!userData || !campaignId) throw "User error";
     const { data: sessionId } = await postSession(
-      user.id,
+      userData.id,
       campaignId,
       input.name,
       input.summary,

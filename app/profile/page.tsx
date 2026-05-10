@@ -1,59 +1,40 @@
 "use client";
 
-import { getMember } from "@/src/api/user";
 import { Events } from "@/src/assets/bbdd";
 import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CreateGroupModal } from "@/src/components/TTRPG/CreateGroupModal";
 import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
-import { FilledMember } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const {
-    user,
-    userData: { subscriptions },
-    logout,
-  } = useContext(UserContext);
+  const { token, userData, logout } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
-  const [userData, setUserData] = useState<FilledMember | null>(null);
 
   const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
 
   useEffect(() => {
-    if (!user) {
+    if (!token) {
       createToast("Debes estar logeado para acceder al perfil", "warning");
       router.push("/");
     }
-  }, [!user]);
-
-  const getUserData = async () => {
-    if (!user) return;
-    getMember(user.id).then(({ data }) => {
-      if (!data) return;
-      setUserData(data);
-    });
-  };
+  }, [token]);
 
   const events = Events.filter(({ origin }) => {
-    return subscriptions.includes(origin);
+    return userData?.subscriptions.includes(origin);
   });
 
-  useEffect(() => {
-    getUserData();
-  }, [user]);
-
-  if (!user) {
+  if (!token) {
     return;
   }
 
   return (
     <main>
-      <h2>Perfil de {userData?.name}</h2>
+      <h2>Perfil de {userData?.username}</h2>
       <Card>
         <>
           <h3>Tus grupos </h3>

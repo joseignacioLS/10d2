@@ -17,7 +17,7 @@ import { InviteMember } from "./InviteMember";
 type Props = { groupId: string };
 
 export const Group: React.FC<Props> = ({ groupId }) => {
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
   const {
     data: group,
@@ -30,7 +30,7 @@ export const Group: React.FC<Props> = ({ groupId }) => {
   const router = useRouter();
 
   const isAdmin =
-    group?.members.find(({ id }) => id === user?.id)?.role === "admin";
+    group?.members.find(({ id }) => id === userData?.id)?.role === "admin";
 
   if (loading) {
     return "Cargando...";

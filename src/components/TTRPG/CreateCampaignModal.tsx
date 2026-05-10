@@ -15,14 +15,14 @@ type Props = {
 };
 
 export const CreateCampaignModal: React.FC<Props> = ({ onClose, groupId }) => {
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const { input, handleInput } = useHandleInput(["name", "short", "summary"]);
 
   const router = useRouter();
   const handleCreateCampaign = useWrapFnWithToast(async () => {
-    if (!user || !groupId) throw "User error";
+    if (!userData || !groupId) throw "User error";
     const { data: campaignId } = await postCampaign(
-      user.id,
+      userData.id,
       groupId,
       input.name,
       input.short,

@@ -3,25 +3,25 @@
 import { Form } from "@/src/components/Core/Form";
 import { Input } from "@/src/components/Core/Input";
 import { Modal } from "@/src/components/Core/Modal";
+import { useHandleInput } from "@/src/hooks/useHandleInput";
 import { UserContext } from "@/src/store/user";
 import { useContext, useEffect, useState } from "react";
 
 import styles from "./LoginModal.module.css";
-import { useHandleInput } from "@/src/hooks/useHandleInput";
 
 type Props = {};
 
 export const LoginModal: React.FC<Props> = ({}) => {
-  const { user, loginModalOpen, closeLoginModal, login } =
+  const { token, loginModalOpen, closeLoginModal, login } =
     useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const { input, handleInput } = useHandleInput(["name", "password"]);
 
   useEffect(() => {
-    if (user) {
+    if (token) {
       closeLoginModal();
     }
-  }, [user]);
+  }, [token]);
 
   if (!loginModalOpen) return null;
 

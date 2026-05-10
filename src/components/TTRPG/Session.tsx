@@ -31,7 +31,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     error,
   } = useFetchData(getSession, [sessionId]);
 
-  const { user } = useContext(UserContext);
+  const { token } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
 
   const router = useRouter();
@@ -68,7 +68,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
   useEffect(() => {
     if (!session?.campaign) return;
     getUserCharacter(session.campaign.id);
-  }, [session?.campaign.id, user]);
+  }, [session?.campaign.id, token]);
 
   if (loading) {
     return "Cargando...";

@@ -1,17 +1,20 @@
 "use client";
 
-import { getMember, loginRequest } from "@/src/api/user";
+import { followCampaign, getUserInfo, unfollowCampaign } from "@/src/api/ttrpg";
+import { loginRequest } from "@/src/api/user";
 import { useReducerWithMiddleware } from "@/src/hooks/useReducerWithMiddleware";
+import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { ToastContext } from "@/src/store/toast";
+import { Campaign, Group } from "@/src/types/ttrpg";
 import { useRouter } from "next/navigation";
-import React, { createContext, useContext } from "react";
-import { followCampaign, unfollowCampaign } from "../api/ttrpg";
-import { useWrapFnWithToast } from "../hooks/useWrapFnWithToast";
-import { Campaign } from "../types/ttrpg";
+import React, { createContext, useContext, useEffect } from "react";
 
 type UserState = {
-  user: { id: string; username: string } | undefined;
-  userData: {
+  token?: string;
+  userData?: {
+    id: string;
+    username: string;
+    groups: Group[];
     subscriptions: Campaign["id"][];
   };
   loginModalOpen: boolean;
@@ -19,7 +22,7 @@ type UserState = {
 
 type UserAction =
   | { type: "error"; payload: string }
-  | { type: "login"; payload: { id: string; username: string } }
+  | { type: "login"; payload: string }
   | {
       type: "logout" | "open_login_modal" | "close_login_modal";
     }
@@ -31,14 +34,22 @@ type UserAction =
     };
 
 const initialState: UserState = {
-  user: undefined,
-  userData: { subscriptions: [] },
+  token: undefined,
+  userData: undefined,
   loginModalOpen: false,
 };
 
 export const UserContext = createContext<{
-  user: { id: string; username: string } | undefined;
-  userData: { subscriptions: Campaign["id"][] };
+  token: string | undefined;
+  userData:
+    | {
+        id: string;
+        username: string;
+        subscriptions: Campaign["id"][];
+        groups: Group[];
+      }
+    | undefined;
+  refreshUserData: () => Promise<void>;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   loginModalOpen: boolean;
@@ -47,8 +58,9 @@ export const UserContext = createContext<{
   addCampaignToSubscriptions: () => Promise<void>;
   removeCampaignFromSubscriptions: () => Promise<void>;
 }>({
-  user: undefined,
-  userData: { subscriptions: [] },
+  token: undefined,
+  userData: undefined,
+  refreshUserData: () => new Promise(() => {}),
   login: () => new Promise(() => {}),
   logout: () => new Promise(() => {}),
   loginModalOpen: false,
@@ -64,15 +76,13 @@ const userReducer = (state: UserState, action: UserAction) => {
     case "login":
       return {
         ...state,
-        user: action.payload,
+        token: action.payload,
       };
     case "logout": {
       return {
         ...state,
-        user: undefined,
-        userData: {
-          subscriptions: [],
-        },
+        token: undefined,
+        userData: undefined,
       };
     }
     case "set_user_data": {
@@ -111,17 +121,15 @@ export const UserProvider = ({ children }: Props) => {
 
   const login = async (username: string, password: string) => {
     try {
-      const { data: id, error } = await loginRequest(username, password);
+      const { data: token, error } = await loginRequest(username, password);
       if (error !== null) {
         throw error;
       }
       dispatch({
         type: "login",
-        payload: { id, username, info: `Hola ${username}` },
+        payload: token,
       });
-      await refreshUserData(id);
     } catch (err) {
-      console.log(err);
       dispatch({
         type: "error",
         payload: err,
@@ -169,10 +177,9 @@ export const UserProvider = ({ children }: Props) => {
     },
   );
 
-  const refreshUserData = useWrapFnWithToast(async (userId?: string) => {
-    if (!state.user && userId === undefined)
-      throw "Error actualizando tu información";
-    const { data: member } = await getMember(state.user?.id ?? userId);
+  const refreshUserData = useWrapFnWithToast(async () => {
+    if (!state.token) throw "Error actualizando tu información";
+    const { data: member } = await getUserInfo(state.token);
     if (!member) throw "Error actualizando tu información";
     dispatch({
       type: "set_user_data",
@@ -181,11 +188,17 @@ export const UserProvider = ({ children }: Props) => {
     return "";
   });
 
+  useEffect(() => {
+    if (!state.token) return;
+    refreshUserData();
+  }, [state.token]);
+
   return (
     <UserContext.Provider
       value={{
-        user: state.user,
+        token: state.token,
         userData: state.userData,
+        refreshUserData,
         login,
         logout,
         loginModalOpen: state.loginModalOpen,

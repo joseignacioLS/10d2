@@ -522,3 +522,33 @@ export const getUserCharacterInCampaign = (userId: Member["id"], campaignId: Cam
     })
   })
 }
+
+export const getUserInfo = (token: string): Promise<ServiceResponse<{
+  id: string;
+  username: string;
+  groups: Group[];
+  subscriptions: Campaign["id"][];
+}>> => {
+  return new Promise(res => {
+    const { id, username } = JSON.parse(atob(token.split(".")[1]))
+    const member = Members.find(({ id: memberId }) => id === memberId)
+    if (!member) return res({
+      data: null,
+      error: "No se encuentra el usuario"
+    })
+
+    const groups = member.groups.map((groupId) => {
+      return Groups.find(({ id }) => id === groupId)
+    })
+      .filter(v => v !== undefined)
+    res({
+      data: {
+        id,
+        username,
+        groups,
+        subscriptions: member.subscriptions
+      },
+      error: null
+    })
+  })
+}

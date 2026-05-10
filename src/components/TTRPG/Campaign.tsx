@@ -18,8 +18,8 @@ type Props = {
 
 export const Campaign: React.FC<Props> = ({ campaignId }) => {
   const {
-    user,
-    userData: { subscriptions },
+    token,
+    userData,
     addCampaignToSubscriptions,
     removeCampaignFromSubscriptions,
   } = useContext(UserContext);
@@ -31,21 +31,22 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
   } = useFetchData(getCampaignDetail, [campaignId]);
   const [showCreateSessionModal, setShowCreateSessionModal] = useState(false);
   const author = campaign?.characters.find(
-    ({ member: { id } }) => id === user?.id,
+    ({ member: { id } }) => id === userData?.id,
   );
   const router = useRouter();
 
   const canSubscribe = useMemo(
-    () => !campaign?.characters.find(({ member: { id } }) => id === user?.id),
-    [campaign, user],
+    () =>
+      !campaign?.characters.find(({ member: { id } }) => id === userData?.id),
+    [campaign, userData],
   );
   const userSubscribed = useMemo(
-    () => subscriptions?.includes(campaignId),
-    [subscriptions, campaignId],
+    () => userData?.subscriptions?.includes(campaignId),
+    [userData?.subscriptions, campaignId],
   );
 
   const handleFollow = useWrapFnWithToast(async () => {
-    if (!user) throw "No estás logueado";
+    if (!token) throw "No estás logueado";
     if (!campaign) throw "Campaña no encontrada";
     if (!userSubscribed) {
       await addCampaignToSubscriptions();
@@ -72,7 +73,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
         title={
           <span className="title_with_button">
             {campaign.name ?? ""}{" "}
-            {canSubscribe && user && (
+            {canSubscribe && token && (
               <Button onClick={handleFollow}>
                 {userSubscribed ? "Unfollow" : "Follow"}
               </Button>

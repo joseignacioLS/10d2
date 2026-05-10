@@ -13,14 +13,14 @@ type Props = {
 };
 
 export const CreateGroupModal: React.FC<Props> = ({ onClose }) => {
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const router = useRouter();
   const { input, handleInput } = useHandleInput(["name"]);
 
   const handleCreateGroup = useWrapFnWithToast(async () => {
-    if (!user) throw "No existe el usuario";
+    if (!userData) throw "No existe el usuario";
 
-    const { data: groupId } = await postGroup(input.name, user.id); // TODO: add user as member
+    const { data: groupId } = await postGroup(input.name, userData.id); // TODO: add user as member
 
     if (!groupId) throw "No se ha podido crear el grupo";
 

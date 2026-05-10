@@ -18,7 +18,7 @@ export const loginRequest = async (
         return;
       }
       resolve({
-        data: member.id,
+        data: "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6ImQ2YTczOGEzOWUwZmNiMGFhZjU0NDlmYTUwNGQxMzJmIn0.eyJpZCI6Im0wIiwidXNlcm5hbWUiOiJXaXROaW1yb3MifQ.Qo - BgbcWoxdpoHP2RKa28OqQuadTbqievPyEgWs0Nml0l9XWqNw2Ba_glNxwIxWvVAPf9A_y25joUTuHCyGhLg",
         error: null,
       });
     }, 1000);

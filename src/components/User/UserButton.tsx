@@ -8,11 +8,11 @@ import { useContext } from "react";
 import styles from "./UserButton.module.css";
 
 export const UserButton: React.FC<{}> = ({}) => {
-  const { user, openLoginModal } = useContext(UserContext);
+  const { token, userData, openLoginModal } = useContext(UserContext);
   const router = useRouter();
 
   const handleClick = async () => {
-    if (user === undefined) {
+    if (!token) {
       openLoginModal();
       return;
     }
@@ -21,8 +21,8 @@ export const UserButton: React.FC<{}> = ({}) => {
 
   return (
     <Button className={styles.userButton} onClick={handleClick}>
-      {user ? (
-        <span>{user.username.substring(0, 1).toUpperCase()}</span>
+      {userData ? (
+        <span>{userData.username.substring(0, 1).toUpperCase()}</span>
       ) : (
         <img src="/chicken.svg" />
       )}
