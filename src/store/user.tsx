@@ -183,7 +183,10 @@ export const UserProvider = ({ children }: Props) => {
     if (!member) throw "Error actualizando tu información";
     dispatch({
       type: "set_user_data",
-      payload: { subscriptions: member?.subscriptions },
+      payload: {
+        subscriptions: member?.subscriptions,
+        username: member.username,
+      },
     });
     return "";
   });
