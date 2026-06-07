@@ -43,8 +43,15 @@ export const CreateSessionModal: React.FC<Props> = ({
   });
 
   return (
-    <Modal onClose={onClose} className={styles.createSessionModal}>
-      <Form onSubmit={handleCreateCampaign}>
+    <Modal
+      title={`Crear nueva entrada`}
+      onClose={onClose}
+      className={styles.createSessionModal}
+    >
+      <Form
+        onSubmit={handleCreateCampaign}
+        disabled={input.name.length < 12 || input.summary.length < 64}
+      >
         <>
           <Input
             id="name"
@@ -52,14 +59,16 @@ export const CreateSessionModal: React.FC<Props> = ({
             placeholder="Nombre"
             onChange={handleInput}
             value={input.name}
-            label="Nombre de la sesión"
+            label="Nombre"
+            min={12}
+            max={128}
           />
           <Tiptap
             name="summary"
             value={input.summary}
             onChange={handleInput}
             placeholder={"Introducción a la campaña"}
-            label="Resumen de la sesión"
+            label="Resumen"
           />
         </>
       </Form>

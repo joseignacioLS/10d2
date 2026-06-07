@@ -39,7 +39,7 @@ export default function Home() {
         <>
           <h3>Tus grupos </h3>
           <ul>
-            {userData?.groups.map((group) => {
+            {userData?.groups?.map((group) => {
               return (
                 <li key={group.id}>
                   <Link href={`/groups/${group.id}`}>{group.name}</Link>

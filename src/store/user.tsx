@@ -184,8 +184,10 @@ export const UserProvider = ({ children }: Props) => {
     dispatch({
       type: "set_user_data",
       payload: {
-        subscriptions: member?.subscriptions,
+        id: member.id,
         username: member.username,
+        groups: [],
+        subscriptions: member.subscriptions,
       },
     });
     return "";

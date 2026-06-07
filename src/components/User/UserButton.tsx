@@ -19,8 +19,6 @@ export const UserButton: React.FC<{}> = ({}) => {
     router.push("/profile");
   };
 
-  console.log({ userData });
-
   return (
     <Button className={styles.userButton} onClick={handleClick}>
       {userData ? (

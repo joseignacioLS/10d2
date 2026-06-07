@@ -75,6 +75,7 @@ main {
 
 .scrolleableBlock {
   overflow: auto;
+  height: 100%;
   scrollbar-width: 0;
 }
 
