@@ -1,4 +1,3 @@
-import { Members } from "@/src/assets/bbdd";
 import { UserTextBubble } from "@/src/components/Core/UserTextBubble";
 import type { Comment } from "@/src/types/ttrpg";
 
@@ -14,12 +13,11 @@ export const CommentSection: React.FC<Props> = ({ comments }) => {
       <h2>Comentarios</h2>
       <div className={styles.commentWrapper}>
         {comments.map(({ text, member: memberId, date }, index) => {
-          const member = Members.find(({ id }) => id === memberId);
           return (
             <UserTextBubble key={index} width="full">
               <p>{text}</p>
               <span>
-                <i>{member?.name}</i> - {date.toLocaleString()}
+                <i>-</i> - {date.toLocaleString()}
               </span>
             </UserTextBubble>
           );

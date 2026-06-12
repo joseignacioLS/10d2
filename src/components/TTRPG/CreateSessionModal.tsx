@@ -1,4 +1,3 @@
-import { postSession } from "@/src/api/ttrpg";
 import { Form } from "@/src/components/Core/Form";
 import { Input } from "@/src/components/Core/Input";
 import { Modal } from "@/src/components/Core/Modal";
@@ -28,16 +27,16 @@ export const CreateSessionModal: React.FC<Props> = ({
   const router = useRouter();
   const handleCreateCampaign = useWrapFnWithToast(async () => {
     if (!userData || !campaignId) throw "User error";
-    const { data: sessionId } = await postSession(
-      userData.id,
-      campaignId,
-      input.name,
-      input.summary,
-      author,
-    );
-    if (!sessionId) throw "Error creando la sesión";
+    // const { data: sessionId } = await postSession(
+    //   userData.id,
+    //   campaignId,
+    //   input.name,
+    //   input.summary,
+    //   author,
+    // );
+    // if (!sessionId) throw "Error creando la sesión";
 
-    router.push(`/sessions/${sessionId}`);
+    // router.push(`/sessions/${sessionId}`);
     onClose();
     return "Sesión creada con éxito";
   });

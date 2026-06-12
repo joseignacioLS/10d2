@@ -1,4 +1,4 @@
-import { Sessions } from "@/src/assets/bbdd/sessions";
+
 import { ServiceResponse } from "@/src/types/api";
 import {
   Campaign,
@@ -69,21 +69,21 @@ export const getCharacter = async (
 
 export const annotateSentence = (sessionId: string, position: number[], text: string, character: string): Promise<ServiceResponse<boolean>> => {
   return new Promise(res => {
-    const session = Sessions.find(({ id }) => sessionId === id)
+    // const session = Sessions.find(({ id }) => sessionId === id)
 
-    if (!session) {
-      res({
-        data: null,
-        error: "No session"
-      })
-      return
-    }
-    // session.summary.annotations.push({
-    //   id: String(session.summary.annotations.length),
-    //   position,
-    //   text,
-    //   character
-    // })
+    // if (!session) {
+    //   res({
+    //     data: null,
+    //     error: "No session"
+    //   })
+    //   return
+    // }
+    // // session.summary.annotations.push({
+    // //   id: String(session.summary.annotations.length),
+    // //   position,
+    // //   text,
+    // //   character
+    // // })
     res({
       data: true,
       error: null
