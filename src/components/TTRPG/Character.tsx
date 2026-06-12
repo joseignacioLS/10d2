@@ -28,7 +28,7 @@ export const Character: React.FC<Props> = ({ characterId }) => {
         crumbs={[
           {
             href: `/campaigns/${character.campaign?.id}`,
-            name: character.campaign.name ?? "",
+            name: character.campaign.short ?? "",
           },
         ]}
       />

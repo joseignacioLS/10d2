@@ -76,50 +76,13 @@ export const Campaigns: Campaign[] = [
     GM: "m0",
     characters: ["ch1", "ch0"],
     sessions: ["s1", "s0"],
-    summary: "Las historias del grupo de héroes: Los Cazadores de Aurovita",
+    summary: "Un grupo de aventureros recorren las tierras del reino de Dolfaren buscando gloria, oro, y quién sabe qué más cosas. Acompañados por Paca, su fiel gallina, no hay desafio que rechazen.",
     state: "on-going",
     lastActivity: Temporal.PlainDate.from("2026-05-01"),
   },
 ];
 
 export const Sessions: Session[] = [
-  {
-    id: "s0",
-    campaign: "c0",
-    number: 1,
-    title: "El Crisol del Grupo",
-    author: "ch0",
-    date: Temporal.PlainDate.from("2024-11-02"),
-    summary: {
-      text: `<p>Para aquellos que no hayan estado en Tantir, es un lugar tranquilo en los lindes del bosque al norte de Merth. El aire allí huele a resina fresca y, al entrar en contacto con la piel, te hace sentir ese frío de motnaña que a los amantes de la naturaleza nos reconforta tanto. Sus gentes viven de la caza y el forrajeo, pero sobre todo del comercio. No dudéis en visitar sus tiendas y su taberna, Tantir está lleno de lugares encantadores y gentes amables.</p>
-<p>Por desgracia para los Cazadores, de todos estos sitios de Tantir, el inicio de su historia se remonta a los oscuros calabozos. Sin conocerse aún, Itri, Jurenay y Volk se encontraban arrestados en sus subterráneas, húmedas, y no tan cómodas como la taberna, celdas. En su defensa diré que su estancia allí era más una peripecia del destino que un resultado de sus malas acciones.</p>
-<p>Sea como fuere, Tantir se encontraba bajo el asalto de unas criaturas cristalinas, unos animales conformados por algún tipo de cristal azulado y con instintos violentos. Los primeeros avistamientos en los bosques había evolucionado en asaltos frecuentes al pueblo, hasta el punto de sobrepasar las capacidades de la guardia. Desgracia de Tantir, oportunidad para los allí presos. El alcalde, ajeno a la cadena de acontecimientos que estaba a punto de iniciar, les ofreció un trato.</p>
-<p>Cómo yo lo veo, podéis quedaros a esperar a que vengan a juzgaros, o quizás hacer algo de provecho. Acabad con las criaturas y su origen y desestimamos todos los cargos.</p>
-<p>¿Tuvieron acaso alguna alternativa más que aceptar la oferta del alcade? Armados y equipados, su primera hazaña fuer la defensa del mercado de Tantir esa misma noche. Allí disuadieron a un enjambre de escarabajos cristalinos. Nada mal para tres aventureros principiantes empezando a forjar su leyenda.</p>`,
-      annotations: [
-        {
-          id: "0",
-          position: [1, 2],
-          text: "A excepción de Jurenay, a quién habían atrapado en mitad de un robo.",
-          character: "ch0",
-        },
-        {
-          id: "1",
-          position: [4, 3],
-          text: "Bueno, tendríamos que hablar de la pelea en la que Volk me dejó sin aire...",
-          character: "ch1",
-        },
-      ],
-      comments: [
-        {
-          id: "0",
-          text: "¡Qué gran sesión!",
-          member: "m0",
-          date: Temporal.PlainDateTime.from("2026-04-29T15:37"),
-        },
-      ],
-    },
-  },
   {
     id: "s1",
     campaign: "c0",
@@ -170,6 +133,44 @@ export const Sessions: Session[] = [
       ],
     },
   },
+  {
+    id: "s0",
+    campaign: "c0",
+    number: 1,
+    title: "El Crisol del Grupo",
+    author: "ch0",
+    date: Temporal.PlainDate.from("2024-11-02"),
+    summary: {
+      text: `<p>Para aquellos que no hayan estado en Tantir, es un lugar tranquilo en los lindes del bosque al norte de Merth. El aire allí huele a resina fresca y, al entrar en contacto con la piel, te hace sentir ese frío de motnaña que a los amantes de la naturaleza nos reconforta tanto. Sus gentes viven de la caza y el forrajeo, pero sobre todo del comercio. No dudéis en visitar sus tiendas y su taberna, Tantir está lleno de lugares encantadores y gentes amables.</p>
+<p>Por desgracia para los Cazadores, de todos estos sitios de Tantir, el inicio de su historia se remonta a los oscuros calabozos. Sin conocerse aún, Itri, Jurenay y Volk se encontraban arrestados en sus subterráneas, húmedas, y no tan cómodas como la taberna, celdas. En su defensa diré que su estancia allí era más una peripecia del destino que un resultado de sus malas acciones.</p>
+<p>Sea como fuere, Tantir se encontraba bajo el asalto de unas criaturas cristalinas, unos animales conformados por algún tipo de cristal azulado y con instintos violentos. Los primeeros avistamientos en los bosques había evolucionado en asaltos frecuentes al pueblo, hasta el punto de sobrepasar las capacidades de la guardia. Desgracia de Tantir, oportunidad para los allí presos. El alcalde, ajeno a la cadena de acontecimientos que estaba a punto de iniciar, les ofreció un trato.</p>
+<p>Cómo yo lo veo, podéis quedaros a esperar a que vengan a juzgaros, o quizás hacer algo de provecho. Acabad con las criaturas y su origen y desestimamos todos los cargos.</p>
+<p>¿Tuvieron acaso alguna alternativa más que aceptar la oferta del alcade? Armados y equipados, su primera hazaña fuer la defensa del mercado de Tantir esa misma noche. Allí disuadieron a un enjambre de escarabajos cristalinos. Nada mal para tres aventureros principiantes empezando a forjar su leyenda.</p>`,
+      annotations: [
+        {
+          id: "0",
+          position: [1, 2],
+          text: "A excepción de Jurenay, a quién habían atrapado en mitad de un robo.",
+          character: "ch0",
+        },
+        {
+          id: "1",
+          position: [4, 3],
+          text: "Bueno, tendríamos que hablar de la pelea en la que Volk me dejó sin aire...",
+          character: "ch1",
+        },
+      ],
+      comments: [
+        {
+          id: "0",
+          text: "¡Qué gran sesión!",
+          member: "m0",
+          date: Temporal.PlainDateTime.from("2026-04-29T15:37"),
+        },
+      ],
+    },
+  },
+
 ];
 
 export const Events: Event[] = [];

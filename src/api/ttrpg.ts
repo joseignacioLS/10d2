@@ -16,7 +16,8 @@ import {
   FilledSession,
   Group,
   GroupDetail,
-  Member
+  Member,
+  Session
 } from "@/src/types/ttrpg";
 import { Temporal } from "temporal-polyfill";
 
@@ -26,6 +27,7 @@ export const getSearch = (
   ServiceResponse<{
     groups: Group[];
     campaigns: Campaign[];
+    sessions: Session[]
   }>
 > => {
   return new Promise((res) => {
@@ -36,6 +38,9 @@ export const getSearch = (
       campaigns: Campaigns.filter(({ name }) =>
         new RegExp(search.toLowerCase()).test(name.toLowerCase()),
       ).sort((a, b) => a.lastActivity.since(b.lastActivity).days),
+      sessions: Sessions.filter(({ title }) =>
+        new RegExp(search.toLowerCase()).test(title.toLowerCase()),
+      ).sort((a, b) => a.date.since(b.date).days),
     };
     res({ data: result, error: null });
   });
@@ -206,6 +211,7 @@ export const getSession = (
 
     const campaign = Campaigns.find(({ id }) => id === session?.campaign);
     const author = Characters.find(({ id }) => id === session?.author);
+
     if (!session || !campaign || !author) {
       res({
         data: null,
@@ -224,13 +230,13 @@ export const postSession = (
   userId: string,
   campaignId: string,
   title: string,
-  summary: string,
-  author: string
+  summary: string
 ): Promise<ServiceResponse<string>> => {
   return new Promise((res) => {
     const member = Members.find(({ id }) => id === userId);
     const campaign = Campaigns.find(({ id }) => id === campaignId)
-    if (!member || !campaign) {
+    const author = Characters.filter(chr => chr.campaign === campaignId).find(chr => chr.member === userId)
+    if (!member || !campaign || !author) {
       res({
         data: null,
         error: "No member found"
@@ -242,8 +248,8 @@ export const postSession = (
       id,
       title,
       campaign: campaignId,
-      number: campaign.sessions.length + 1,
-      author,
+      number: (Sessions.find(({ id }) => id === campaign.sessions[0])?.number ?? 0) + 1,
+      author: author.id,
       summary: {
         text: summary,
         annotations: [],
@@ -253,11 +259,9 @@ export const postSession = (
     });
     campaign.sessions.unshift(id);
 
-    console.log({ Sessions })
-
     Events.unshift({
       id: String(Events.length + 1),
-      message: `${author} (${campaign.short}) ha escrito una nueva sesión "${title}"`,
+      message: `${author.name} (${campaign.short}) ha escrito una nueva sesión "${title}"`,
       date: Temporal.Now.plainDateISO(),
       origin: campaignId
     })
@@ -529,6 +533,7 @@ export const getUserInfo = (token: string): Promise<ServiceResponse<{
   id: string;
   username: string;
   groups: Group[];
+  campaigns: Campaign[];
   subscriptions: Campaign["id"][];
 }>> => {
   return new Promise(res => {
@@ -541,13 +546,18 @@ export const getUserInfo = (token: string): Promise<ServiceResponse<{
 
     const groups = member.groups.map((groupId) => {
       return Groups.find(({ id }) => id === groupId)
-    })
-      .filter(v => v !== undefined)
+    }).filter(v => v !== undefined)
+
+    const campaigns = member.campaigns.map((campaignId) => {
+      return Campaigns.find(({ id }) => id === campaignId)
+    }).filter(v => v !== undefined)
+
     res({
       data: {
         id,
         username,
         groups,
+        campaigns,
         subscriptions: member.subscriptions
       },
       error: null

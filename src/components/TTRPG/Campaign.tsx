@@ -16,12 +16,7 @@ type Props = {
 };
 
 export const Campaign: React.FC<Props> = ({ campaignId }) => {
-  const {
-    token,
-    userData,
-    addCampaignToSubscriptions,
-    removeCampaignFromSubscriptions,
-  } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
   const {
     data: campaign,
@@ -32,28 +27,6 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     ({ member: { id } }) => id === userData?.id,
   );
   const router = useRouter();
-
-  const canSubscribe = useMemo(
-    () =>
-      !campaign?.characters.find(({ member: { id } }) => id === userData?.id),
-    [campaign, userData],
-  );
-  const userSubscribed = useMemo(
-    () => userData?.subscriptions?.includes(campaignId),
-    [userData?.subscriptions, campaignId],
-  );
-
-  const handleFollow = useWrapFnWithToast(async () => {
-    if (!token) throw "No estás logueado";
-    if (!campaign) throw "Campaña no encontrada";
-    if (!userSubscribed) {
-      await addCampaignToSubscriptions();
-      return "";
-    } else {
-      await removeCampaignFromSubscriptions();
-      return "";
-    }
-  });
 
   if (loading) {
     return "Cargando...";
@@ -67,24 +40,22 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
 
   return (
     <section>
-      <CrumbsHeader
-        title={
-          <span className="title_with_button">
-            {campaign.name ?? ""}{" "}
-            {canSubscribe && token && (
-              <Button onClick={handleFollow}>
-                {userSubscribed ? "Unfollow" : "Follow"}
-              </Button>
-            )}
-          </span>
-        }
-        crumbs={[
-          {
-            name: campaign.group?.name || "",
-            href: `/groups/${campaign.group?.id}`,
-          },
-        ]}
-      />
+      <CrumbsHeader title={<span>{campaign.name} </span>} />
+
+      <Card>
+        <>
+          {author && (
+            <Button
+              onClick={() => {
+                router.push(`/sessions/new/${campaignId}`);
+              }}
+            >
+              Nueva Sesión
+            </Button>
+          )}
+        </>
+      </Card>
+
       <Card>
         <p dangerouslySetInnerHTML={{ __html: campaign.summary }}></p>
       </Card>
@@ -106,18 +77,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
       </Card>
       <Card>
         <>
-          <h3 className="title_with_btn">
-            Últimas Sesiones{" "}
-            {author && (
-              <Button
-                onClick={() => {
-                  router.push(`/sessions/new/${campaignId}`);
-                }}
-              >
-                +
-              </Button>
-            )}
-          </h3>
+          <h3>Sesiones</h3>
           <ul>
             {campaign.sessions.slice(0, 10).map(({ id, number, title }) => {
               return (

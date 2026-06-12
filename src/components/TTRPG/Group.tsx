@@ -1,33 +1,25 @@
 "use client";
 
 import { getGroupDetail } from "@/src/api/ttrpg";
-import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
-import { CreateCampaignModal } from "@/src/components/TTRPG/CreateCampaignModal";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { ToastContext } from "@/src/store/toast";
-import { UserContext } from "@/src/store/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 type Props = { groupId: string };
 
 export const Group: React.FC<Props> = ({ groupId }) => {
-  const { userData } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
   const {
     data: group,
     loading,
     error,
   } = useFetchData(getGroupDetail, [groupId]);
-  const [showCreateCampaignModal, setShowCreateCampaignModal] = useState(false);
 
   const router = useRouter();
-
-  const isAdmin =
-    group?.members.find(({ id }) => id === userData?.id)?.role === "admin";
 
   if (loading) {
     return "Cargando...";
@@ -76,15 +68,15 @@ export const Group: React.FC<Props> = ({ groupId }) => {
         <>
           <h3 className="title_with_btn">
             Campañas{" "}
-            {isAdmin && (
+            {/* {isAdmin && (
               <Button
                 onClick={() => {
-                  setShowCreateCampaignModal(true);
+                  router.push(`/campaigns/new/${groupId}`);
                 }}
               >
                 +
               </Button>
-            )}
+            )} */}
           </h3>
           <ul>
             {group.campaigns.map(({ id, name }) => {
@@ -97,12 +89,6 @@ export const Group: React.FC<Props> = ({ groupId }) => {
           </ul>
         </>
       </Card>
-      {showCreateCampaignModal && (
-        <CreateCampaignModal
-          groupId={groupId}
-          onClose={() => setShowCreateCampaignModal(false)}
-        ></CreateCampaignModal>
-      )}
     </section>
   );
 };

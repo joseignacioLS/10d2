@@ -90,6 +90,11 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
           },
         ]}
       />
+      <p>
+        {session.date.toLocaleString("es", {
+          dateStyle: "full",
+        })}
+      </p>
       <div className="scrolleableBlock">
         {session && (
           <TextEntrySection

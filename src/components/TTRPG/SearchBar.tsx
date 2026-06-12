@@ -3,7 +3,7 @@ import { Card } from "@/src/components/Core/Card";
 import { Input } from "@/src/components/Core/Input";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
-import { Campaign, Group } from "@/src/types/ttrpg";
+import { Campaign, Group, Session } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -17,14 +17,17 @@ export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
   const [searchResult, setSearchResults] = useState<{
     groups: Group[];
     campaigns: Campaign[];
+    sessions: Session[];
   }>({
     groups: [],
     campaigns: [],
+    sessions: [],
   });
 
   const searchFetch = useDebounce<{
     groups: Group[];
     campaigns: Campaign[];
+    sessions: Session[];
   }>(async (search: string) => {
     if (search.length < 3) {
       return new Promise((res) => {
@@ -40,6 +43,7 @@ export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
       setSearchResults({
         groups: [],
         campaigns: [],
+        sessions: [],
       });
       return;
     }
@@ -61,32 +65,44 @@ export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
         value={input.search}
       ></Input>
       {(searchResult.groups.length > 0 ||
-        searchResult.campaigns.length > 0) && (
+        searchResult.campaigns.length > 0 ||
+        searchResult.sessions.length > 0) && (
         <Card>
-          <>
+          <ul>
             {searchResult.groups.map((group) => {
               return (
-                <Link
-                  key={group.id}
-                  href={`/groups/${group.id}`}
-                  onClick={onSearchClick}
-                >
-                  {group.name}
-                </Link>
+                <li key={group.id}>
+                  <Link href={`/groups/${group.id}`} onClick={onSearchClick}>
+                    {group.name}
+                  </Link>
+                </li>
               );
             })}
             {searchResult.campaigns.map((campaign) => {
               return (
-                <Link
-                  key={campaign.id}
-                  href={`/campaigns/${campaign.id}`}
-                  onClick={onSearchClick}
-                >
-                  {campaign.name}
-                </Link>
+                <li key={campaign.id}>
+                  <Link
+                    href={`/campaigns/${campaign.id}`}
+                    onClick={onSearchClick}
+                  >
+                    {campaign.name}
+                  </Link>
+                </li>
               );
             })}
-          </>
+            {searchResult.sessions.map((session) => {
+              return (
+                <li key={session.id}>
+                  <Link
+                    href={`/sessions/${session.id}`}
+                    onClick={onSearchClick}
+                  >
+                    {session.title}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </Card>
       )}
     </section>

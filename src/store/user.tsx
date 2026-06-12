@@ -47,6 +47,7 @@ export const UserContext = createContext<{
         username: string;
         subscriptions: Campaign["id"][];
         groups: Group[];
+        campaigns: Campaign[];
       }
     | undefined;
   refreshUserData: () => Promise<void>;
@@ -186,7 +187,8 @@ export const UserProvider = ({ children }: Props) => {
       payload: {
         id: member.id,
         username: member.username,
-        groups: [],
+        groups: member.groups,
+        campaigns: member.campaigns,
         subscriptions: member.subscriptions,
       },
     });
