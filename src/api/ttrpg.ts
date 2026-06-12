@@ -137,3 +137,12 @@ export const getUserCharacterInCampaign = async (userId: Member["id"], campaignI
 
 }
 
+export const getAnnouncements = async (
+): Promise<ServiceResponse<{
+  text: string,
+  img: string
+}[]>> => {
+  const path = "/announcement"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path)
+};
+

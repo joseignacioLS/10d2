@@ -1,13 +1,27 @@
-import { ReactElement, ReactNode } from "react";
 import styles from "./Carousel.module.css";
 
-type Props = { srcs: string[] };
+type Props = {
+  cards: {
+    text: string;
+    img: string;
+  }[];
+};
 
-export const Carousel: React.FC<Props> = ({ srcs }) => {
+export const Carousel: React.FC<Props> = ({ cards }) => {
+  console.log(cards);
   return (
     <div className={styles.carouselWrapper}>
-      {srcs.map((src, i) => {
-        return <img key={i} src={src} />;
+      {cards.map(({ text, img }) => {
+        return (
+          <div
+            key={img}
+            style={{
+              backgroundImage: `url("${img}")`,
+            }}
+          >
+            <p>{text}</p>
+          </div>
+        );
       })}
     </div>
   );

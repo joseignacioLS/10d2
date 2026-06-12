@@ -1,6 +1,10 @@
 "use client";
 
-import { getLastCampaigns, getLastSessions } from "@/src/api/ttrpg";
+import {
+  getAnnouncements,
+  getLastCampaigns,
+  getLastSessions,
+} from "@/src/api/ttrpg";
 import { Card } from "@/src/components/Core/Card";
 import { Carousel } from "@/src/components/Core/Carousel";
 import { useFetchData } from "@/src/hooks/useFetchData";
@@ -10,16 +14,16 @@ import styles from "./Dashboard.module.css";
 
 export const Dashboard = () => {
   const { data: lastSessions } = useFetchData(getLastSessions, [5]);
+  const { data: announcements } = useFetchData(getAnnouncements, []);
   const { data: lastCampaigns } = useFetchData(getLastCampaigns, [5]);
+
+  console.log(announcements);
 
   return (
     <main className={styles.dashboard}>
-      <Card>
-        <>
-          <h2>Anuncios</h2>
-          <Carousel srcs={["/chicken.svg", "/cat.svg"]}></Carousel>
-        </>
-      </Card>
+      {announcements && announcements?.length > 0 && (
+        <Carousel cards={announcements ?? []}></Carousel>
+      )}
       <Card>
         <>
           <h2>Campañas Activas</h2>
