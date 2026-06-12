@@ -1,5 +1,4 @@
-.dashboardSection {
-  h2 {
-    text-align: center;
-  }
+.dashboard {
+  height: 100%;
+  overflow: auto;
 }

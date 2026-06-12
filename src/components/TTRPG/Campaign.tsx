@@ -12,6 +12,8 @@ import { useContext } from "react";
 import { Temporal } from "temporal-polyfill";
 import { Calendar } from "../Core/Calendar";
 
+import styles from "./Campaign.module.css";
+
 type Props = {
   campaignId: TCampaign["id"];
 };
@@ -40,7 +42,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
   }
 
   return (
-    <section>
+    <section className={styles.campaign}>
       <CrumbsHeader title={<span>{campaign.name} </span>} />
 
       {author && (

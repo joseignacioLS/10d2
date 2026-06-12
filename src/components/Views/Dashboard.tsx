@@ -6,12 +6,14 @@ import { Carousel } from "@/src/components/Core/Carousel";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import Link from "next/link";
 
+import styles from "./Dashboard.module.css";
+
 export const Dashboard = () => {
   const { data: lastSessions } = useFetchData(getLastSessions, [5]);
   const { data: lastCampaigns } = useFetchData(getLastCampaigns, [5]);
 
   return (
-    <main>
+    <main className={styles.dashboard}>
       <Card>
         <>
           <h2>Anuncios</h2>
