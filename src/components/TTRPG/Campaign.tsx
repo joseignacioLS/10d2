@@ -13,6 +13,7 @@ import { Temporal } from "temporal-polyfill";
 import { Calendar } from "../Core/Calendar";
 
 import styles from "./Campaign.module.css";
+import { Spinner } from "../Core/Spinner";
 
 type Props = {
   campaignId: TCampaign["id"];
@@ -32,7 +33,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
   const router = useRouter();
 
   if (loading) {
-    return "Cargando...";
+    return <Spinner />;
   }
 
   if (error !== null) {

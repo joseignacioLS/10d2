@@ -1,0 +1,21 @@
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    height: 64px;
+    animation: jump 2s infinite;
+  }
+}
+
+@keyframes jump {
+  from {
+    rotate: 0deg;
+  }
+  50% {
+    rotate: 60deg;
+  }
+  to {
+    rotate: 120deg;
+  }
+}

@@ -11,13 +11,18 @@ import { useFetchData } from "@/src/hooks/useFetchData";
 import Link from "next/link";
 
 import styles from "./Dashboard.module.css";
+import { Spinner } from "../Core/Spinner";
 
 export const Dashboard = () => {
-  const { data: lastSessions } = useFetchData(getLastSessions, [5]);
+  const { data: lastSessions, loading: loadingSessions } = useFetchData(
+    getLastSessions,
+    [5],
+  );
   const { data: announcements } = useFetchData(getAnnouncements, []);
-  const { data: lastCampaigns } = useFetchData(getLastCampaigns, [5]);
-
-  console.log(announcements);
+  const { data: lastCampaigns, loading: loadingCampaigns } = useFetchData(
+    getLastCampaigns,
+    [5],
+  );
 
   return (
     <main className={styles.dashboard}>
@@ -27,6 +32,7 @@ export const Dashboard = () => {
       <Card>
         <>
           <h2>Campañas Activas</h2>
+          {loadingCampaigns && <Spinner />}
           <ul>
             {lastCampaigns?.map((campaign) => {
               return (
@@ -43,6 +49,7 @@ export const Dashboard = () => {
       <Card>
         <>
           <h2>Últimas Sesiones</h2>
+          {loadingSessions && <Spinner />}
           <ul>
             {lastSessions?.map((session) => {
               return (

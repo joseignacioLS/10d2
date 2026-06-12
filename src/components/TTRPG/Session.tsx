@@ -19,6 +19,7 @@ import { ToastContext } from "@/src/store/toast";
 import { useRouter } from "next/navigation";
 import { Temporal } from "temporal-polyfill";
 import styles from "./Session.module.css";
+import { Spinner } from "../Core/Spinner";
 
 type Props = {
   sessionId: TSession["id"];
@@ -77,7 +78,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
   }, [userData?.id, session?.campaign.id, token]);
 
   if (loading) {
-    return "Cargando...";
+    return <Spinner />;
   }
 
   if (error !== null) {

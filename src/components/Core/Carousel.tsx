@@ -8,7 +8,6 @@ type Props = {
 };
 
 export const Carousel: React.FC<Props> = ({ cards }) => {
-  console.log(cards);
   return (
     <div className={styles.carouselWrapper}>
       {cards.map(({ text, img }) => {
