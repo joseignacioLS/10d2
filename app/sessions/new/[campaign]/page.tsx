@@ -1,6 +1,6 @@
 "use client";
 
-import { getCampaignDetail, postSession } from "@/src/api/ttrpg";
+import { getCampaign } from "@/src/api/ttrpg";
 import { Form } from "@/src/components/Core/Form";
 import { Input } from "@/src/components/Core/Input";
 import Tiptap from "@/src/components/Core/TipTap";
@@ -16,21 +16,21 @@ export default function Home() {
   const { campaign: campaignId } = useParams();
   const { input, handleInput } = useHandleInput(["name", "summary"]);
   const { userData } = useContext(UserContext);
-  const { data: campaign } = useFetchData(getCampaignDetail, [campaignId]);
+  const { data: campaign } = useFetchData(getCampaign, [campaignId]);
   const { createToast } = useContext(ToastContext);
   const router = useRouter();
 
   const handleCreateSession = useWrapFnWithToast(async () => {
     if (!userData || !campaignId) throw "User error";
-    const { data: sessionId } = await postSession(
-      userData.id,
-      campaignId as string,
-      input.name,
-      input.summary,
-    );
-    if (!sessionId) throw "Error creando la sesión";
+    // const { data: sessionId } = await postSession(
+    //   userData.id,
+    //   campaignId as string,
+    //   input.name,
+    //   input.summary,
+    // );
+    // if (!sessionId) throw "Error creando la sesión";
 
-    router.push(`/sessions/${sessionId}`);
+    // router.push(`/sessions/${sessionId}`);
     return "Sesión creada con éxito";
   });
 

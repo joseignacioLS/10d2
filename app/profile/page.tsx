@@ -1,13 +1,12 @@
 "use client";
 
-import { Events } from "@/src/assets/bbdd";
 import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -24,8 +23,6 @@ export default function Home() {
   if (!token) {
     return;
   }
-
-  console.log({ userData });
 
   return (
     <main>

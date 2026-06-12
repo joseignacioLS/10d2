@@ -1,11 +1,10 @@
 "use client";
 
-import { followCampaign, getUserInfo, unfollowCampaign } from "@/src/api/ttrpg";
-import { loginRequest } from "@/src/api/user";
+import { getUserInfo, loginRequest } from "@/src/api/user";
 import { useReducerWithMiddleware } from "@/src/hooks/useReducerWithMiddleware";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { ToastContext } from "@/src/store/toast";
-import { Campaign, Group } from "@/src/types/ttrpg";
+import { Campaign } from "@/src/types/ttrpg";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect } from "react";
 
@@ -14,7 +13,6 @@ type UserState = {
   userData?: {
     id: string;
     username: string;
-    groups: Group[];
     subscriptions: Campaign["id"][];
   };
   loginModalOpen: boolean;
@@ -46,7 +44,6 @@ export const UserContext = createContext<{
         id: string;
         username: string;
         subscriptions: Campaign["id"][];
-        groups: Group[];
         campaigns: Campaign[];
       }
     | undefined;
@@ -56,8 +53,6 @@ export const UserContext = createContext<{
   loginModalOpen: boolean;
   openLoginModal: () => void;
   closeLoginModal: () => void;
-  addCampaignToSubscriptions: () => Promise<void>;
-  removeCampaignFromSubscriptions: () => Promise<void>;
 }>({
   token: undefined,
   userData: undefined,
@@ -67,9 +62,6 @@ export const UserContext = createContext<{
   loginModalOpen: false,
   openLoginModal: () => {},
   closeLoginModal: () => {},
-
-  addCampaignToSubscriptions: () => new Promise(() => {}),
-  removeCampaignFromSubscriptions: () => new Promise(() => {}),
 });
 
 const userReducer = (state: UserState, action: UserAction) => {
@@ -160,24 +152,6 @@ export const UserProvider = ({ children }: Props) => {
     });
   };
 
-  const addCampaignToSubscriptions = useWrapFnWithToast(
-    async (campaignId: Campaign["id"]) => {
-      const { error } = await followCampaign(state.user?.id, campaignId);
-      if (error) throw error;
-      await refreshUserData();
-      return `Te has subscrito a esta campaña`;
-    },
-  );
-
-  const removeCampaignFromSubscriptions = useWrapFnWithToast(
-    async (campaignId: Campaign["id"]) => {
-      const { error } = await unfollowCampaign(state.user?.id, campaignId);
-      if (error) throw error;
-      await refreshUserData();
-      return `Te has desubscrito a esta campaña`;
-    },
-  );
-
   const refreshUserData = useWrapFnWithToast(async () => {
     if (!state.token) throw "Error actualizando tu información";
     const { data: member } = await getUserInfo(state.token);
@@ -187,7 +161,6 @@ export const UserProvider = ({ children }: Props) => {
       payload: {
         id: member.id,
         username: member.username,
-        groups: member.groups,
         campaigns: member.campaigns,
         subscriptions: member.subscriptions,
       },
@@ -211,8 +184,6 @@ export const UserProvider = ({ children }: Props) => {
         loginModalOpen: state.loginModalOpen,
         openLoginModal,
         closeLoginModal,
-        addCampaignToSubscriptions,
-        removeCampaignFromSubscriptions,
       }}
     >
       {children}

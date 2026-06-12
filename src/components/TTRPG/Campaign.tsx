@@ -1,4 +1,4 @@
-import { getCampaignDetail } from "@/src/api/ttrpg";
+import { getCampaign } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
@@ -9,6 +9,7 @@ import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
+import { Temporal } from "temporal-polyfill";
 import { Calendar } from "../Core/Calendar";
 
 type Props = {
@@ -22,7 +23,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     data: campaign,
     loading,
     error,
-  } = useFetchData(getCampaignDetail, [campaignId]);
+  } = useFetchData(getCampaign, [campaignId]);
   const author = campaign?.characters.find(
     ({ member: { id } }) => id === userData?.id,
   );
@@ -57,50 +58,70 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
       <Card>
         <p dangerouslySetInnerHTML={{ __html: campaign.summary }}></p>
       </Card>
-      <Card>
-        <>
-          <h3>Personajes</h3>
-          <ul>
-            {campaign.characters.map(({ id, name, member }) => {
-              return (
-                <li key={name}>
-                  <Link href={`/characters/${id}`}>
-                    {name} ({member.name})
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </>
-      </Card>
-      <Card>
-        <>
-          <h3>Sesiones</h3>
-          <ul>
-            {campaign.sessions.slice(0, 10).map(({ id, number, title }) => {
-              return (
-                <li key={id}>
-                  <Link href={`/sessions/${id}`}>
-                    #{number ?? 1} {title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </>
-      </Card>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "2fr 3fr",
+          gap: "8px",
+        }}
+      >
+        <Card>
+          <>
+            <h3>Personajes</h3>
+            <ul>
+              {campaign.characters.map(({ id, name, member }) => {
+                return (
+                  <li key={name}>
+                    <Link href={`/characters/${id}`}>
+                      {name} ({member.name})
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        </Card>
+        <Card>
+          <>
+            <h3>Sesiones</h3>
+            <ul>
+              {campaign.sessions.slice(0, 5).map(({ id, number, title }) => {
+                return (
+                  <li key={id}>
+                    <Link href={`/sessions/${id}`}>
+                      #{number ?? 1} {title}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        </Card>
+      </div>
+
       <Card>
         <>
           <h3>Calendario</h3>
           <Calendar
-            events={campaign.sessions.map(({ date, id }) => {
-              return {
-                date,
-                onClick: () => {
-                  router.push(`/sessions/${id}`);
-                },
-              };
-            })}
+            events={[
+              ...campaign.sessions.map(({ date, id }) => {
+                return {
+                  date,
+                  onClick: () => {
+                    router.push(`/sessions/${id}`);
+                  },
+                };
+              }),
+              {
+                date: campaign.nextSession,
+                onClick: () => {},
+              },
+            ].filter(
+              (
+                event,
+              ): event is { date: Temporal.PlainDate; onClick: () => void } =>
+                event.date !== undefined,
+            )}
           />
         </>
       </Card>

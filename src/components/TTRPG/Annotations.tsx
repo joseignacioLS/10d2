@@ -1,4 +1,3 @@
-import { Characters } from "@/src/assets/bbdd";
 import { Annotation } from "@/src/components/TTRPG/Annotation";
 import type { Annotation as TAnnotation } from "@/src/types/ttrpg";
 
@@ -15,8 +14,7 @@ export const Annotations: React.FC<Props> = ({
       className={`${styles.annotationsWrapper} ${showAnnotations ? styles.show : ""}`}
     >
       {annotations.map(({ text, character }, index) => {
-        const char = Characters.find((c) => c.id === character);
-        return <Annotation key={index} text={text} character={char} />;
+        return <Annotation key={index} text={text} character={character} />;
       })}
     </span>
   );

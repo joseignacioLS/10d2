@@ -3,7 +3,7 @@ import { Card } from "@/src/components/Core/Card";
 import { Input } from "@/src/components/Core/Input";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
-import { Campaign, Group, Session } from "@/src/types/ttrpg";
+import { SearchResult } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -14,21 +14,12 @@ type Props = {
 export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
   const { input, handleInput } = useHandleInput(["search"]);
 
-  const [searchResult, setSearchResults] = useState<{
-    groups: Group[];
-    campaigns: Campaign[];
-    sessions: Session[];
-  }>({
-    groups: [],
+  const [searchResult, setSearchResults] = useState<SearchResult>({
     campaigns: [],
     sessions: [],
   });
 
-  const searchFetch = useDebounce<{
-    groups: Group[];
-    campaigns: Campaign[];
-    sessions: Session[];
-  }>(async (search: string) => {
+  const searchFetch = useDebounce(async (search: string) => {
     if (search.length < 3) {
       return new Promise((res) => {
         res({ data: null, error: "Too short query" });
@@ -41,7 +32,6 @@ export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
     const { data } = await searchFetch(search);
     if (!data) {
       setSearchResults({
-        groups: [],
         campaigns: [],
         sessions: [],
       });
@@ -64,20 +54,10 @@ export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
         onChange={handleInput}
         value={input.search}
       ></Input>
-      {(searchResult.groups.length > 0 ||
-        searchResult.campaigns.length > 0 ||
+      {(searchResult.campaigns.length > 0 ||
         searchResult.sessions.length > 0) && (
         <Card>
           <ul>
-            {searchResult.groups.map((group) => {
-              return (
-                <li key={group.id}>
-                  <Link href={`/groups/${group.id}`} onClick={onSearchClick}>
-                    {group.name}
-                  </Link>
-                </li>
-              );
-            })}
             {searchResult.campaigns.map((campaign) => {
               return (
                 <li key={campaign.id}>

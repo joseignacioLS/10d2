@@ -42,9 +42,11 @@ export const Calendar: React.FC<Props> = ({ events }) => {
               </div>
               {[0, 1, 2, 3, 4, 5, 6].map((deltaDay) => {
                 const day = monday.add({ days: deltaDay });
-                const isToday = Temporal.PlainDate.compare(today, day) === 0;
+                const compareWithToday = Temporal.PlainDate.compare(day, today);
+                const isToday = compareWithToday === 0;
+                const isFuture = compareWithToday > 0;
                 const event = events.find(
-                  ({ date }) => Temporal.PlainDate.compare(date, day) === 0,
+                  ({ date }) => Temporal.PlainDate.compare(day, date) === 0,
                 );
                 const splitMonth = day.day === 1 && deltaDay !== 0;
                 const firstWeek = day.day <= day.dayOfWeek;
@@ -53,7 +55,7 @@ export const Calendar: React.FC<Props> = ({ events }) => {
                     key={deltaDay}
                     className={`${event ? styles.event : ""} ${isToday ? styles.today : ""} ${
                       splitMonth ? styles.split : ""
-                    } ${firstWeek ? styles.firstWeek : ""}`}
+                    } ${firstWeek ? styles.firstWeek : ""} ${isFuture ? styles.future : ""}`}
                     onClick={event?.onClick}
                   >
                     {day.day}

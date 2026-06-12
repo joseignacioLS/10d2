@@ -1,10 +1,11 @@
 import { ServiceResponse } from "@/src/types/api";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const useFetchData = <T,>(
   service: (...args: any) => Promise<ServiceResponse<T>>,
   args: any[],
   onError?: (error: string) => void,
+  processData?: (data: T) => any,
 ): { refetch: () => Promise<void> } & (
   | {
       data: T;
@@ -30,10 +31,10 @@ export const useFetchData = <T,>(
     setData(null);
     service(...args)
       .then(({ data, error }) => {
-        if (error) {
+        if (error !== null) {
           throw error;
         }
-        setData(data);
+        setData(processData ? processData(data) : data);
       })
       .catch((error) => {
         setError(error);

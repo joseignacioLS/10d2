@@ -1,32 +1,14 @@
 "use client";
 
-import { getLastEvents, getLastSessions } from "@/src/api/ttrpg";
+import { getLastCampaigns, getLastSessions } from "@/src/api/ttrpg";
 import { Card } from "@/src/components/Core/Card";
 import { Carousel } from "@/src/components/Core/Carousel";
-import { Event } from "@/src/types/events";
-import { FilledSession } from "@/src/types/ttrpg";
+import { useFetchData } from "@/src/hooks/useFetchData";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export const Dashboard = () => {
-  const [lastSessions, setLastSessions] = useState<FilledSession[]>([]);
-  const [lastEvents, setLastEvents] = useState<Event[]>([]);
-
-  useEffect(() => {
-    getLastSessions(10).then((data) => {
-      if (data.data) {
-        setLastSessions(data.data);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    getLastEvents(10).then((data) => {
-      if (data.data) {
-        setLastEvents(data.data);
-      }
-    });
-  }, []);
+  const { data: lastSessions } = useFetchData(getLastSessions, [5]);
+  const { data: lastCampaigns } = useFetchData(getLastCampaigns, [5]);
 
   return (
     <main>
@@ -38,13 +20,29 @@ export const Dashboard = () => {
       </Card>
       <Card>
         <>
+          <h2>Campañas Activas</h2>
+          <ul>
+            {lastCampaigns?.map((campaign) => {
+              return (
+                <li key={campaign.id}>
+                  <Link href={`/campaigns/${campaign.id}`}>
+                    {campaign.name} ({campaign.short})
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      </Card>
+      <Card>
+        <>
           <h2>Últimas Sesiones</h2>
           <ul>
-            {lastSessions.map((session) => {
+            {lastSessions?.map((session) => {
               return (
                 <li key={session.id}>
                   <Link href={`/sessions/${session.id}`}>
-                    {session.title} ({session.campaign.short}#{session.number})
+                    {session.title} ({session.campaign}#{session.number})
                   </Link>
                 </li>
               );

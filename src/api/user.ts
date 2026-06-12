@@ -1,54 +1,31 @@
-import { Campaigns, Groups, Members } from "@/src/assets/bbdd";
 import type { ServiceResponse } from "@/src/types/api";
-import { FilledMember } from "@/src/types/ttrpg";
+import { Campaign } from "../types/ttrpg";
+import { secureFetch } from "./fn";
 
 export const loginRequest = async (
   username: string,
   password: string,
 ): Promise<ServiceResponse<string>> => {
-  return new Promise((resolve) => {
-    const member = Members.find(({ name }) => name === username);
+  const path = "/user/login"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      user: username,
+      password
+    })
+  })
 
-    setTimeout(() => {
-      if (!member) {
-        resolve({
-          data: null,
-          error: "Error en el login",
-        });
-        return;
-      }
-      resolve({
-        data: "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6ImQ2YTczOGEzOWUwZmNiMGFhZjU0NDlmYTUwNGQxMzJmIn0.eyJpZCI6Im0wIiwidXNlcm5hbWUiOiJXaXROaW1yb3MifQ.Qo - BgbcWoxdpoHP2RKa28OqQuadTbqievPyEgWs0Nml0l9XWqNw2Ba_glNxwIxWvVAPf9A_y25joUTuHCyGhLg",
-        error: null,
-      });
-    }, 1000);
-  });
 };
 
-export const getMember = (
-  memberId: string,
-): Promise<ServiceResponse<FilledMember>> => {
-  return new Promise((res) => {
-    const member = Members.find(({ id }) => id === memberId);
-    if (member) {
-      res({
-        data: {
-          ...member,
-          groups: member.groups
-            .map((groupId) => Groups.find(({ id }) => id === groupId))
-            .filter((v) => v !== undefined)
-            .filter((v) => v.state !== "deleted"),
-          campaigns: member.campaigns
-            .map((campaignId) => Campaigns.find(({ id }) => id === campaignId))
-            .filter((v) => v !== undefined),
-        },
-        error: null,
-      });
-      return;
-    }
-    res({
-      data: null,
-      error: "No member found",
-    });
-  });
-};
+export const getUserInfo = async (userId: string): Promise<ServiceResponse<{
+  id: string;
+  username: string;
+  campaigns: Campaign[];
+  subscriptions: Campaign["id"][];
+}>> => {
+  const path = "/user/"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path + `${userId}`)
+}

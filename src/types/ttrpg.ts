@@ -1,42 +1,27 @@
 import { Temporal } from "temporal-polyfill";
 
 
-export type GroupStates = "open" | "closed" | "inactive" | "deleted";
-
-export type GroupRoles = "admin" | "member" | "invited"
-
-export type Group = {
-  id: string;
-  name: string;
-  members: {
-    id: Member["id"],
-    role: GroupRoles
+export type SearchResult = {
+  campaigns: {
+    id: Campaign["id"],
+    name: Campaign["name"]
   }[];
-  campaigns: Campaign["id"][];
-  state: GroupStates;
-  creationDate: Temporal.PlainDate;
-  lastActivity: Temporal.PlainDate;
-};
+  sessions: {
+    id: Session["id"],
+    title: Session["title"]
+  }[]
+}
 
-export type FilledGroup = Omit<Group, "members" | "campaigns"> & {
-  members: {
-    id: Member["id"],
-    role: GroupRoles,
-    member: Member
-  }[];
-  campaigns: Campaign[];
-};
+
 
 export type Member = {
   id: string;
   name: string;
-  groups: Group["id"][];
   campaigns: Campaign["id"][];
-  subscriptions: (Campaign["id"] | Group["id"])[]
+  subscriptions: (Campaign["id"])[]
 };
 
 export type FilledMember = Omit<Member, "groups" | "campaigns"> & {
-  groups: Group[];
   campaigns: Campaign[];
 };
 
@@ -44,20 +29,19 @@ export type Campaign = {
   id: string;
   name: string;
   short: string;
-  group: Group["id"];
   GM: Member["id"];
   characters: Character["id"][];
   sessions: Session["id"][];
   summary: string;
   state: "on-going" | "finished" | "not-started" | "on-a-break";
   lastActivity: Temporal.PlainDate;
+  nextSession: Temporal.PlainDate | undefined;
 };
 
 export type FilledCampaign = Omit<
   Campaign,
-  "group" | "GM" | "characters" | "sessions"
+  | "GM" | "characters" | "sessions"
 > & {
-  group: Group;
   GM: Member;
   characters: FilledCharacter[];
   sessions: Session[];
@@ -87,7 +71,7 @@ export type SessionSummary = {
 export type Annotation = {
   id: string;
   position: number[];
-  character: Character["id"];
+  character: Character;
   text: string;
 };
 
@@ -113,10 +97,6 @@ export type FilledCharacter = Omit<Character, "campaign" | "member"> & {
 
 export type CampaignDetail = {
   name: string;
-  group: {
-    id: string;
-    name: string;
-  },
   summary: string;
   characters: {
     id: string,
@@ -131,19 +111,6 @@ export type CampaignDetail = {
     number: number;
     title: string;
     date: Temporal.PlainDate
-  }[]
-}
-
-export type GroupDetail = {
-  name: string,
-  state: Group["state"],
-  members: {
-    id: Member["id"],
-    name: Member["name"]
-    role: GroupRoles,
   }[],
-  campaigns: {
-    id: Campaign["id"],
-    name: Campaign["name"]
-  }[]
+  nextSession: Temporal.PlainDate | undefined
 }

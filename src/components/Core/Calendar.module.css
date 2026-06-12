@@ -12,7 +12,12 @@
   }
 }
 .event {
-  background-color: red;
+  background-color: var(--interactive-color);
+  cursor: pointer;
+
+  &.future {
+    background-color: var(--accent-color);
+  }
 }
 
 .today {

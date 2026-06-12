@@ -3,6 +3,8 @@ import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
 import type { Annotation } from "@/src/types/ttrpg";
 import { useContext } from "react";
 
+import styles from "./Paragraph.module.css";
+
 type Props = {
   lineIndex: number;
   plainText: string;
@@ -17,7 +19,7 @@ export const Paragraph: React.FC<Props> = ({
   const { selectedSentence } = useContext(TTRPGSessionContext);
   const sentences = plainText.replaceAll(/([\.\?\!] )/g, "$1\n").split("\n");
   return (
-    <div key={lineIndex}>
+    <div key={lineIndex} className={styles.paragraph}>
       {" "}
       {sentences.map((sentence, sentenceIndex) => {
         return (
