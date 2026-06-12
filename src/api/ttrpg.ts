@@ -237,7 +237,7 @@ export const postSession = (
       })
       return
     }
-    const id = String(Sessions.length + 1)
+    const id = "s" + String(Sessions.length + 1)
     Sessions.push({
       id,
       title,
@@ -252,6 +252,8 @@ export const postSession = (
       date: Temporal.Now.plainDateISO()
     });
     campaign.sessions.unshift(id);
+
+    console.log({ Sessions })
 
     Events.unshift({
       id: String(Events.length + 1),

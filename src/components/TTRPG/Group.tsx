@@ -11,8 +11,6 @@ import { UserContext } from "@/src/store/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
-import { DeleteGroupModal } from "./DeleteGroupModal";
-import { InviteMember } from "./InviteMember";
 
 type Props = { groupId: string };
 
@@ -25,7 +23,6 @@ export const Group: React.FC<Props> = ({ groupId }) => {
     error,
   } = useFetchData(getGroupDetail, [groupId]);
   const [showCreateCampaignModal, setShowCreateCampaignModal] = useState(false);
-  const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
 
   const router = useRouter();
 
@@ -73,23 +70,12 @@ export const Group: React.FC<Props> = ({ groupId }) => {
                 return <li key={id}>{name}</li>;
               })}
           </ul>
-          <h4>Invitaciones</h4>
-          <ul>
-            {group.members
-              .filter(({ role }) => {
-                return role === "invited";
-              })
-              .map(({ id, name }) => {
-                return <li key={id}>{name}</li>;
-              })}
-          </ul>
-          {isAdmin && <InviteMember />}
         </>
       </Card>
       <Card>
         <>
           <h3 className="title_with_btn">
-            Campañas
+            Campañas{" "}
             {isAdmin && (
               <Button
                 onClick={() => {
@@ -116,27 +102,6 @@ export const Group: React.FC<Props> = ({ groupId }) => {
           groupId={groupId}
           onClose={() => setShowCreateCampaignModal(false)}
         ></CreateCampaignModal>
-      )}
-      {isAdmin && (
-        <Button
-          onClick={() => {
-            setShowDeleteGroupModal(true);
-          }}
-          className="danger"
-        >
-          Eliminar Grupo
-        </Button>
-      )}
-      {showDeleteGroupModal && (
-        <DeleteGroupModal
-          onClose={() => {
-            setShowDeleteGroupModal(false);
-          }}
-          group={{
-            name: group.name,
-            id: groupId,
-          }}
-        />
       )}
     </section>
   );

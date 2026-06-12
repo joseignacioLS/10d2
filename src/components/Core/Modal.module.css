@@ -18,9 +18,7 @@
     max-width: min(80vw, 800px);
     max-height: 100%;
     background-color: var(--main-bg-color);
-    box-shadow:
-      2px 2px 2px var(--main-fg-color),
-      -2px -2px 2px black;
+    border-radius: 4px;
     display: grid;
     grid-template-rows: auto 1fr;
     .modalTitle {

@@ -2,7 +2,6 @@ import { getCampaignDetail } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
-import { CreateSessionModal } from "@/src/components/TTRPG/CreateSessionModal";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { ToastContext } from "@/src/store/toast";
@@ -10,7 +9,7 @@ import { UserContext } from "@/src/store/user";
 import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 
 type Props = {
   campaignId: TCampaign["id"];
@@ -29,7 +28,6 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     loading,
     error,
   } = useFetchData(getCampaignDetail, [campaignId]);
-  const [showCreateSessionModal, setShowCreateSessionModal] = useState(false);
   const author = campaign?.characters.find(
     ({ member: { id } }) => id === userData?.id,
   );
@@ -113,7 +111,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
             {author && (
               <Button
                 onClick={() => {
-                  setShowCreateSessionModal(true);
+                  router.push(`/sessions/new/${campaignId}`);
                 }}
               >
                 +
@@ -138,15 +136,6 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           <h3>Calendario</h3>
         </>
       </Card>
-      {showCreateSessionModal && author && (
-        <CreateSessionModal
-          onClose={() => {
-            setShowCreateSessionModal(false);
-          }}
-          campaignId={campaignId}
-          author={author.id}
-        />
-      )}
     </section>
   );
 };
