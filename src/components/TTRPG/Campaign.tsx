@@ -3,13 +3,13 @@ import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { useFetchData } from "@/src/hooks/useFetchData";
-import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
 import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
+import { Calendar } from "../Core/Calendar";
 
 type Props = {
   campaignId: TCampaign["id"];
@@ -42,19 +42,17 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     <section>
       <CrumbsHeader title={<span>{campaign.name} </span>} />
 
-      <Card>
-        <>
-          {author && (
-            <Button
-              onClick={() => {
-                router.push(`/sessions/new/${campaignId}`);
-              }}
-            >
-              Nueva Sesión
-            </Button>
-          )}
-        </>
-      </Card>
+      {author && (
+        <Card>
+          <Button
+            onClick={() => {
+              router.push(`/sessions/new/${campaignId}`);
+            }}
+          >
+            Nueva Sesión
+          </Button>
+        </Card>
+      )}
 
       <Card>
         <p dangerouslySetInnerHTML={{ __html: campaign.summary }}></p>
@@ -94,6 +92,16 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
       <Card>
         <>
           <h3>Calendario</h3>
+          <Calendar
+            events={campaign.sessions.map(({ date, id }) => {
+              return {
+                date,
+                onClick: () => {
+                  router.push(`/sessions/${id}`);
+                },
+              };
+            })}
+          />
         </>
       </Card>
     </section>

@@ -7,4 +7,11 @@
 
   border-radius: 8px;
   background-color: var(--secondary-color);
+
+  &.soft {
+    background-color: var(--secondary-bg-color);
+  }
+  &.hard {
+    background-color: var(--violet);
+  }
 }

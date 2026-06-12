@@ -1,5 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 
+
 export type GroupStates = "open" | "closed" | "inactive" | "deleted";
 
 export type GroupRoles = "admin" | "member" | "invited"
@@ -129,6 +130,7 @@ export type CampaignDetail = {
     id: string;
     number: number;
     title: string;
+    date: Temporal.PlainDate
   }[]
 }
 

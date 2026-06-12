@@ -482,7 +482,8 @@ export const getCampaignDetail = (campaignId: Campaign["id"]): Promise<ServiceRe
       return {
         id: session.id,
         number: session.number,
-        title: session.title
+        title: session.title,
+        date: session.date
       }
     }).filter(v => v !== null)
 

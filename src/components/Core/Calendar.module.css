@@ -1,0 +1,39 @@
+.week {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  & > div {
+    position: relative;
+    text-align: center;
+    border-radius: 1000px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.event {
+  background-color: red;
+}
+
+.today {
+  outline: 1px solid white;
+}
+.split::before {
+  position: absolute;
+  left: 0px;
+  content: "";
+  height: 100%;
+  top: 0px;
+  outline: 0.5px solid white;
+  width: 0px;
+}
+
+.firstWeek::after {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  content: "";
+  height: 0px;
+  outline: 0.5px solid white;
+  width: 100%;
+}
