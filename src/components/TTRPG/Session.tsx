@@ -5,7 +5,6 @@ import { Button } from "@/src/components/Core/Button";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { Input } from "@/src/components/Core/Input";
 import { Modal } from "@/src/components/Core/Modal";
-import { CommentSection } from "@/src/components/TTRPG/CommentSection";
 import { TextEntrySection } from "@/src/components/TTRPG/TextEntrySection";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
@@ -97,9 +96,6 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
             text={session.summary.text}
             annotations={session.summary.annotations}
           />
-        )}
-        {session && (
-          <CommentSection comments={session.summary.comments || []} />
         )}
       </div>
       {showCreateAnnotationModal && (
