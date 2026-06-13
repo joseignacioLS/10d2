@@ -1,12 +1,13 @@
 "use client";
 
-import { getUserInfo, loginRequest } from "@/src/api/user";
+import { getUserInfo } from "@/src/api/user";
 import { useReducerWithMiddleware } from "@/src/hooks/useReducerWithMiddleware";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { ToastContext } from "@/src/store/toast";
 import { Campaign } from "@/src/types/ttrpg";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect } from "react";
+import { loginOnTokeRequest, loginRequest, logoutRequest } from "../api/auth";
 
 type UserState = {
   token?: string;
@@ -131,12 +132,14 @@ export const UserProvider = ({ children }: Props) => {
   };
 
   const logout = async () => {
-    router.push("/");
-    dispatch({
-      type: "logout",
-      payload: {
-        info: "¡Hasta la próxima!",
-      },
+    logoutRequest().then(() => {
+      router.push("/");
+      dispatch({
+        type: "logout",
+        payload: {
+          info: "¡Hasta la próxima!",
+        },
+      });
     });
   };
 
@@ -154,7 +157,7 @@ export const UserProvider = ({ children }: Props) => {
 
   const refreshUserData = useWrapFnWithToast(async () => {
     if (!state.token) throw "Error actualizando tu información";
-    const { data: member } = await getUserInfo(state.token);
+    const { data: member } = await getUserInfo();
     if (!member) throw "Error actualizando tu información";
     dispatch({
       type: "set_user_data",
@@ -172,6 +175,21 @@ export const UserProvider = ({ children }: Props) => {
     if (!state.token) return;
     refreshUserData();
   }, [state.token]);
+
+  useEffect(() => {
+    loginOnTokeRequest()
+      .then(({ data, error }) => {
+        if (error !== null) {
+          throw error;
+        }
+        console.log({ data });
+        dispatch({
+          type: "login",
+          payload: data,
+        });
+      })
+      .catch((err) => {});
+  }, []);
 
   return (
     <UserContext.Provider

@@ -2,8 +2,10 @@ import { ServiceResponse } from "../types/api"
 
 export const secureFetch = async <T>(input: string | URL | Request, init?: RequestInit | undefined): Promise<ServiceResponse<T>> => {
   try {
-
-    const res = await fetch(input, init)
+    const res = await fetch(input, {
+      credentials: "include",
+      ...init
+    })
     if (!res.ok) return {
       data: null,
       error: "Ha habido un error con la request"
