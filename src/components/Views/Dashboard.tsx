@@ -10,8 +10,8 @@ import { Carousel } from "@/src/components/Core/Carousel";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import Link from "next/link";
 
-import styles from "./Dashboard.module.css";
 import { Spinner } from "../Core/Spinner";
+import styles from "./Dashboard.module.css";
 
 export const Dashboard = () => {
   const { data: lastSessions, loading: loadingSessions } = useFetchData(

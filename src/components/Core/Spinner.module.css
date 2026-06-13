@@ -4,7 +4,7 @@
   align-items: center;
   img {
     height: 64px;
-    animation: jump 2s infinite;
+    animation: jump 9s infinite;
   }
 }
 
@@ -12,10 +12,40 @@
   from {
     rotate: 0deg;
   }
-  50% {
+  8% {
+    rotate: 30deg;
+  }
+  17% {
     rotate: 60deg;
   }
-  to {
+  25% {
+    rotate: 90deg;
+  }
+  33% {
     rotate: 120deg;
+  }
+  42% {
+    rotate: 150deg;
+  }
+  50% {
+    rotate: 180deg;
+  }
+  58% {
+    rotate: 210deg;
+  }
+  67% {
+    rotate: 240deg;
+  }
+  75% {
+    rotate: 270deg;
+  }
+  83% {
+    rotate: 300deg;
+  }
+  92% {
+    rotate: 330deg;
+  }
+  to {
+    rotate: 360deg;
   }
 }
