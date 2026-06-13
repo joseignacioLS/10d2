@@ -5,7 +5,7 @@ type Props = {
   id: string;
   name: string;
   placeholder: string;
-  type?: "text" | "password";
+  type?: "text" | "password" | "number" | "date";
   min?: number;
   max?: number;
   value: string;
@@ -39,7 +39,7 @@ export const Input: React.FC<Props> = ({
         value={value}
         pattern={pattern}
         onChange={(e) => {
-          onChange(name, e.currentTarget.value);
+          onChange(name, String(e.currentTarget.value));
         }}
       />
     </div>

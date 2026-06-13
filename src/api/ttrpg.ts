@@ -36,6 +36,29 @@ export const getSession = async (
 
 };
 
+export const postSession = async (
+  campaign: string,
+  title: string,
+  number: number,
+  date: string,
+  summary: string,
+): Promise<ServiceResponse<string>> => {
+  const path = "/session"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      campaign,
+      title,
+      number,
+      date,
+      summary
+    })
+  })
+
+};
 
 export const getLastSessions = async (
   count: number,
@@ -129,13 +152,6 @@ export const getLastCampaigns = async (
 };
 
 
-export const getUserCharacterInCampaign = async (userId: Member["id"], campaignId: Campaign["id"]): Promise<ServiceResponse<{
-  id: Character["id"],
-}>> => {
-  const path = "/userCharacter/"
-  return secureFetch(process.env.NEXT_PUBLIC_API + path + `?userId=${userId}&campaignId=${campaignId}`)
-
-}
 
 export const getAnnouncements = async (
 ): Promise<ServiceResponse<{

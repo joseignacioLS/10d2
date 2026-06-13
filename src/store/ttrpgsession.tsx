@@ -1,9 +1,7 @@
 "use client";
 
-import { getUserCharacterInCampaign } from "@/src/api/ttrpg";
-import { UserContext } from "@/src/store/user";
 import { Character } from "@/src/types/ttrpg";
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useReducer } from "react";
 
 type TTRPGSessionState = {
   userCharacter?: { id: Character["id"] };
@@ -43,7 +41,6 @@ export const TTRPGSessionContext = createContext<{
     position: [number, number];
   }) => void;
   unselectSentence: () => void;
-  getUserCharacter: (userId: string, campaignId: string) => void;
 }>({
   selectedSentence: undefined,
   showCreateAnnotationModal: false,
@@ -52,7 +49,6 @@ export const TTRPGSessionContext = createContext<{
   closeCreateAnnotationModal: () => {},
   selectSentence: () => {},
   unselectSentence: () => {},
-  getUserCharacter: (userId: string, campaignId: string) => {},
 });
 
 const ttrpgSessionReducer = (
@@ -101,8 +97,6 @@ type Props = {
 export const TTRPGSessionProvider = ({ children }: Props) => {
   const [state, dispatch] = useReducer(ttrpgSessionReducer, initialState);
 
-  const { userData } = useContext(UserContext);
-
   const openCreateAnnotationModal = () => {
     dispatch({
       type: "open-modal",
@@ -131,16 +125,6 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
     });
   };
 
-  const getUserCharacter = (userId: string, campaignId: string) => {
-    getUserCharacterInCampaign(userId, campaignId).then(({ data, error }) => {
-      if (error) return;
-      dispatch({
-        type: "set-user-character",
-        payload: data,
-      });
-    });
-  };
-
   return (
     <TTRPGSessionContext.Provider
       value={{
@@ -151,7 +135,6 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
         closeCreateAnnotationModal,
         selectSentence,
         unselectSentence,
-        getUserCharacter,
       }}
     >
       {children}

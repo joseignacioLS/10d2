@@ -9,17 +9,16 @@ import { TextEntrySection } from "@/src/components/TTRPG/TextEntrySection";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
-import { UserContext } from "@/src/store/user";
 import { type Session as TSession } from "@/src/types/ttrpg";
 import type React from "react";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import { useHandleInput } from "@/src/hooks/useHandleInput";
 import { ToastContext } from "@/src/store/toast";
 import { useRouter } from "next/navigation";
 import { Temporal } from "temporal-polyfill";
-import styles from "./Session.module.css";
 import { Spinner } from "../Core/Spinner";
+import styles from "./Session.module.css";
 
 type Props = {
   sessionId: TSession["id"];
@@ -37,9 +36,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     };
   });
 
-  const { token } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
-  const { userData } = useContext(UserContext);
 
   const router = useRouter();
 
@@ -49,7 +46,6 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     selectedSentence,
     showCreateAnnotationModal,
     closeCreateAnnotationModal,
-    getUserCharacter,
     userCharacter,
   } = useContext(TTRPGSessionContext);
 
@@ -71,11 +67,6 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
       return "Texto anotado";
     },
   );
-
-  useEffect(() => {
-    if (!userData?.id || !session?.campaign) return;
-    getUserCharacter(userData.id, session.campaign.id);
-  }, [userData?.id, session?.campaign.id, token]);
 
   if (loading) {
     return <Spinner />;

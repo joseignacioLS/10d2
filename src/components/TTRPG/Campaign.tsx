@@ -8,12 +8,13 @@ import { UserContext } from "@/src/store/user";
 import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Temporal } from "temporal-polyfill";
 import { Calendar } from "../Core/Calendar";
 
 import styles from "./Campaign.module.css";
 import { Spinner } from "../Core/Spinner";
+import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
 
 type Props = {
   campaignId: TCampaign["id"];

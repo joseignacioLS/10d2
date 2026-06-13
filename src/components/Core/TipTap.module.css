@@ -3,7 +3,7 @@
   > div {
     padding: 4px 8px;
     overflow: auto;
-    background-color: var(--secondary-bg-color);
+    background-color: var(--interactive-color);
     min-height: 4lh;
     max-height: 12lh;
   }

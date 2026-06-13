@@ -1,6 +1,6 @@
 "use client";
 
-import { getCampaign } from "@/src/api/ttrpg";
+import { getCampaign, postSession } from "@/src/api/ttrpg";
 import { Form } from "@/src/components/Core/Form";
 import { Input } from "@/src/components/Core/Input";
 import Tiptap from "@/src/components/Core/TipTap";
@@ -14,38 +14,58 @@ import { useContext, useEffect } from "react";
 
 export default function Home() {
   const { campaign: campaignId } = useParams();
-  const { input, handleInput } = useHandleInput(["name", "summary"]);
+  const { input, handleInput } = useHandleInput([
+    "name",
+    "number",
+    "date",
+    "summary",
+  ]);
   const { userData } = useContext(UserContext);
   const { data: campaign } = useFetchData(getCampaign, [campaignId]);
   const { createToast } = useContext(ToastContext);
   const router = useRouter();
 
+  console.log({ input });
+
   const handleCreateSession = useWrapFnWithToast(async () => {
     if (!userData || !campaignId) throw "User error";
-    // const { data: sessionId } = await postSession(
-    //   userData.id,
-    //   campaignId as string,
-    //   input.name,
-    //   input.summary,
-    // );
-    // if (!sessionId) throw "Error creando la sesión";
 
-    // router.push(`/sessions/${sessionId}`);
+    const { data: sessionId, error } = await postSession(
+      campaignId as string,
+      input.name as string,
+      Number(input.number),
+      input.date,
+      input.summary as string,
+    );
+    if (error !== null) {
+      throw "Ha habido un error creando la sesión";
+    }
+    router.push(`/sessions/${sessionId}`);
+
     return "Sesión creada con éxito";
   });
 
   useEffect(() => {
     if (!userData) {
-      createToast("Debes estar logeado para acceder al perfil", "warning");
+      createToast(
+        "Debes estar logeado para acceder para crear una sesión",
+        "warning",
+      );
       router.push(`/campaigns/${campaignId}`);
     }
   }, [userData]);
+
   return (
     <main>
       <h2>Nueva sesión de {campaign?.name}</h2>
       <Form
         onSubmit={handleCreateSession}
-        disabled={input.name.length < 12 || input.summary.length < 64}
+        disabled={
+          input.name.length < 12 ||
+          input.summary.length < 64 ||
+          input.number === "" ||
+          input.date === ""
+        }
       >
         <>
           <Input
@@ -57,6 +77,26 @@ export default function Home() {
             label="Nombre de la sesión"
             min={12}
             max={128}
+          />
+          <Input
+            id="number"
+            name="number"
+            placeholder="Número"
+            onChange={handleInput}
+            value={input.number}
+            label="Número de la sesión"
+            type="number"
+            min={0}
+            max={Infinity}
+          />
+          <Input
+            id="date"
+            name="date"
+            placeholder="Fecha"
+            onChange={handleInput}
+            value={input.date}
+            label="Fecha de la sesión"
+            type="date"
           />
           <Tiptap
             name="summary"
