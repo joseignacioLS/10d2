@@ -19,8 +19,8 @@ export const Input: React.FC<Props> = ({
   name,
   placeholder,
   type = "text",
-  min = 1,
-  max = 32,
+  min,
+  max,
   value,
   pattern = "*",
   onChange,
@@ -34,6 +34,7 @@ export const Input: React.FC<Props> = ({
         type={type}
         placeholder={placeholder}
         min={min}
+        max={max}
         minLength={min}
         maxLength={max}
         value={value}

@@ -1,10 +1,10 @@
 "use client";
 
-import { Character } from "@/src/types/ttrpg";
 import React, { createContext, useReducer } from "react";
+import { canAnnotate } from "../api/ttrpg";
 
 type TTRPGSessionState = {
-  userCharacter?: { id: Character["id"] };
+  canAnnotate: boolean;
   showCreateAnnotationModal: boolean;
   selectedSentence:
     | {
@@ -22,7 +22,7 @@ type TTRPGSessionAction = {
 const initialState: TTRPGSessionState = {
   showCreateAnnotationModal: false,
   selectedSentence: undefined,
-  userCharacter: undefined,
+  canAnnotate: false,
 };
 
 export const TTRPGSessionContext = createContext<{
@@ -32,7 +32,7 @@ export const TTRPGSessionContext = createContext<{
         position: [number, number];
       }
     | undefined;
-  userCharacter?: { id: Character["id"] };
+  canAnnotate: boolean;
   showCreateAnnotationModal: boolean;
   openCreateAnnotationModal: () => void;
   closeCreateAnnotationModal: () => void;
@@ -41,14 +41,16 @@ export const TTRPGSessionContext = createContext<{
     position: [number, number];
   }) => void;
   unselectSentence: () => void;
+  checkAnnotationPermission: (campaignId: string) => void;
 }>({
   selectedSentence: undefined,
   showCreateAnnotationModal: false,
-  userCharacter: undefined,
+  canAnnotate: false,
   openCreateAnnotationModal: () => {},
   closeCreateAnnotationModal: () => {},
   selectSentence: () => {},
   unselectSentence: () => {},
+  checkAnnotationPermission: () => {},
 });
 
 const ttrpgSessionReducer = (
@@ -79,10 +81,10 @@ const ttrpgSessionReducer = (
         selectedSentence: undefined,
       };
     }
-    case "set-user-character": {
+    case "can-annotate": {
       return {
         ...state,
-        userCharacter: action.payload,
+        canAnnotate: action.payload,
       };
     }
     default:
@@ -125,16 +127,25 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
     });
   };
 
+  const checkAnnotationPermission = async (campaignId: string) => {
+    const { data } = await canAnnotate(campaignId);
+    dispatch({
+      type: "can-annotate",
+      payload: data,
+    });
+  };
+
   return (
     <TTRPGSessionContext.Provider
       value={{
         selectedSentence: state.selectedSentence,
-        userCharacter: state.userCharacter,
+        canAnnotate: state.canAnnotate,
         showCreateAnnotationModal: state.showCreateAnnotationModal,
         openCreateAnnotationModal,
         closeCreateAnnotationModal,
         selectSentence,
         unselectSentence,
+        checkAnnotationPermission,
       }}
     >
       {children}

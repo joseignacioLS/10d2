@@ -28,7 +28,8 @@ export const getSession = async (
   }
   title: Session["title"],
   date: Session["date"],
-  summary: Session["summary"]
+  summary: Session["summary"],
+  author: Session["author"]
 
 }>> => {
   const path = "/session/"
@@ -79,6 +80,7 @@ export const getCharacter = async (
   characterId: string,
 ): Promise<ServiceResponse<{
   name: Character["name"],
+  member: string;
   campaign: {
     id: Campaign["id"],
     short: Campaign["short"]
@@ -90,30 +92,20 @@ export const getCharacter = async (
 
 
 
-export const annotateSentence = (sessionId: string, position: number[], text: string, character: string): Promise<ServiceResponse<boolean>> => {
-  return new Promise(res => {
-    // const session = Sessions.find(({ id }) => sessionId === id)
-
-    // if (!session) {
-    //   res({
-    //     data: null,
-    //     error: "No session"
-    //   })
-    //   return
-    // }
-    // // session.summary.annotations.push({
-    // //   id: String(session.summary.annotations.length),
-    // //   position,
-    // //   text,
-    // //   character
-    // // })
-    res({
-      data: true,
-      error: null
+export const annotateSentence = (sessionId: string, position: number[], text: string): Promise<ServiceResponse<boolean>> => {
+  const path = "/session/annotate"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      sessionId,
+      position,
+      text
     })
   })
 }
-
 
 
 export const getCampaign = async (campaignId: Campaign["id"]): Promise<ServiceResponse<{
@@ -124,7 +116,8 @@ export const getCampaign = async (campaignId: Campaign["id"]): Promise<ServiceRe
       id: Member["id"]
       name: Member["name"]
     };
-  }[]
+  }[];
+  GM: Campaign["GM"];
   name: Campaign["name"];
   summary: Campaign["summary"]
   sessions: {
@@ -162,3 +155,8 @@ export const getAnnouncements = async (
   return secureFetch(process.env.NEXT_PUBLIC_API + path)
 };
 
+
+export const canAnnotate = async (campaignId: string): Promise<ServiceResponse<boolean>> => {
+  const path = "/campaign/permission/"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path + campaignId)
+}

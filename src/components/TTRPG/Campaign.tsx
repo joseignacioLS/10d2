@@ -8,13 +8,12 @@ import { UserContext } from "@/src/store/user";
 import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Temporal } from "temporal-polyfill";
 import { Calendar } from "../Core/Calendar";
 
-import styles from "./Campaign.module.css";
 import { Spinner } from "../Core/Spinner";
-import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
+import styles from "./Campaign.module.css";
 
 type Props = {
   campaignId: TCampaign["id"];
@@ -42,20 +41,33 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     router.push("/");
     return null;
   }
+  const canEdit = userData?.id === campaign?.GM;
+  console.log({ canEdit, u: userData?.id, c: campaign?.GM });
 
   return (
     <section className={styles.campaign}>
       <CrumbsHeader title={<span>{campaign.name} </span>} />
 
-      {author && (
+      {(author || canEdit) && (
         <Card>
-          <Button
-            onClick={() => {
-              router.push(`/sessions/new/${campaignId}`);
-            }}
-          >
-            Nueva Sesión
-          </Button>
+          <>
+            <Button
+              onClick={() => {
+                router.push(`/sessions/new/${campaignId}`);
+              }}
+            >
+              Nueva Sesión
+            </Button>
+            {canEdit && (
+              <Button
+                onClick={() => {
+                  router.push(`/campaigns/edit/${campaignId}`);
+                }}
+              >
+                Editar
+              </Button>
+            )}
+          </>
         </Card>
       )}
 

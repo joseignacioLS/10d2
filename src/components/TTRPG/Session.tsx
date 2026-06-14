@@ -11,7 +11,7 @@ import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
 import { type Session as TSession } from "@/src/types/ttrpg";
 import type React from "react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { useHandleInput } from "@/src/hooks/useHandleInput";
 import { ToastContext } from "@/src/store/toast";
@@ -29,6 +29,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     data: session,
     loading,
     error,
+    refetch,
   } = useFetchData(getSession, [sessionId], undefined, (data) => {
     return {
       ...data,
@@ -46,27 +47,28 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     selectedSentence,
     showCreateAnnotationModal,
     closeCreateAnnotationModal,
-    userCharacter,
+    canAnnotate,
+    checkAnnotationPermission,
   } = useContext(TTRPGSessionContext);
 
   const handleAnnotate = useWrapFnWithToast(
     async (text: string, position: number[]) => {
-      if (!userCharacter)
-        throw "No tienes un personaje asignado en esta campaña";
-      const { error } = await annotateSentence(
-        sessionId,
-        position,
-        text,
-        userCharacter?.id,
-      );
+      if (!canAnnotate) throw "No tienes un personaje asignado en esta campaña";
+      const { error } = await annotateSentence(sessionId, position, text);
       if (error) {
         throw "Ha habido un error anotando la frase";
       }
       resetInput();
       closeCreateAnnotationModal();
+      refetch();
       return "Texto anotado";
     },
   );
+
+  useEffect(() => {
+    if (!session?.campaign.id) return;
+    checkAnnotationPermission(session?.campaign.id);
+  }, [session?.campaign?.id]);
 
   if (loading) {
     return <Spinner />;
@@ -90,6 +92,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
         ]}
       />
       <p>
+        {session.author} //{" "}
         {session.date.toLocaleString("es", {
           dateStyle: "full",
         })}

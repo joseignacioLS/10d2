@@ -81,7 +81,7 @@ export default function Home() {
           <Input
             id="number"
             name="number"
-            placeholder="Número"
+            placeholder="37"
             onChange={handleInput}
             value={input.number}
             label="Número de la sesión"
@@ -92,7 +92,7 @@ export default function Home() {
           <Input
             id="date"
             name="date"
-            placeholder="Fecha"
+            placeholder="2026-06-13"
             onChange={handleInput}
             value={input.date}
             label="Fecha de la sesión"

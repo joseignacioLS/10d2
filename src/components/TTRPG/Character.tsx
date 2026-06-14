@@ -1,6 +1,9 @@
 import { getCharacter } from "@/src/api/ttrpg";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { useFetchData } from "@/src/hooks/useFetchData";
+import { UserContext } from "@/src/store/user";
+import { useContext } from "react";
+import { Spinner } from "../Core/Spinner";
 
 type Props = {
   characterId: string;
@@ -13,8 +16,9 @@ export const Character: React.FC<Props> = ({ characterId }) => {
     error,
   } = useFetchData(getCharacter, [characterId]);
 
+  const { userData } = useContext(UserContext);
   if (loading) {
-    return "Cargando...";
+    return <Spinner />;
   }
 
   if (error !== null) {
@@ -32,6 +36,7 @@ export const Character: React.FC<Props> = ({ characterId }) => {
           },
         ]}
       />
+      {userData?.id === character.member && "Hola!"}
     </section>
   );
 };

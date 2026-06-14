@@ -21,7 +21,7 @@ export const Sentence: React.FC<Props> = ({
   isSelected,
 }) => {
   const {
-    userCharacter,
+    canAnnotate,
     selectSentence,
     unselectSentence,
     openCreateAnnotationModal,
@@ -30,7 +30,7 @@ export const Sentence: React.FC<Props> = ({
   return (
     <>
       <span
-        className={`${styles.sessionSummarySentence} ${userCharacter ? styles.canAnnotate : ""} ${isSelected ? styles.selected : ""} ${annotations.length > 0 ? styles.annotated : ""}`}
+        className={`${styles.sessionSummarySentence} ${canAnnotate ? styles.canAnnotate : ""} ${isSelected ? styles.selected : ""} ${annotations.length > 0 ? styles.annotated : ""}`}
       >
         <span
           onClick={() => {
@@ -41,7 +41,7 @@ export const Sentence: React.FC<Props> = ({
                 setShowAnnotation((v) => !v);
               }
             }
-            if (annotations.length < 1 && !userCharacter) return;
+            if (annotations.length < 1 && !canAnnotate) return;
             if (isSelected) {
               unselectSentence();
               return;
@@ -56,11 +56,11 @@ export const Sentence: React.FC<Props> = ({
           }}
         ></span>
         <span className={styles.annotateBtnWrapper}>
-          {isSelected && userCharacter && (
+          {isSelected && canAnnotate && (
             <Button
               className={styles.annotateBtn}
               onClick={(e) => {
-                if (!userCharacter) return;
+                if (!canAnnotate) return;
                 e.stopPropagation();
                 e.preventDefault();
                 openCreateAnnotationModal();

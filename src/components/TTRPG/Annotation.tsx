@@ -1,20 +1,16 @@
 import { UserTextBubble } from "@/src/components/Core/UserTextBubble";
-import type { Character } from "@/src/types/ttrpg";
 
 type Props = {
   text: string;
-  character?: Character;
+  author: string;
 };
 
-export const Annotation: React.FC<Props> = ({
-  text,
-  character = { color: "#ddd", name: "Unknown" },
-}) => {
+export const Annotation: React.FC<Props> = ({ text, author = "Unknown" }) => {
   return (
-    <UserTextBubble color={character?.color}>
+    <UserTextBubble color={"#5941b1"}>
       <span>{text}</span>
       <span>
-        <i> - {character?.name}</i>
+        <i> - {author}</i>
       </span>
     </UserTextBubble>
   );
