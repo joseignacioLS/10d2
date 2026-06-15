@@ -7,7 +7,7 @@ export default function Home() {
   const { id } = useParams();
   return (
     <main>
-      <Campaign campaignId={(id as string) ?? ""} />
+      <p>Editar</p>
     </main>
   );
 }

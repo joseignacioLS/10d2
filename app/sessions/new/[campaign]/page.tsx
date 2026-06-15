@@ -25,8 +25,6 @@ export default function Home() {
   const { createToast } = useContext(ToastContext);
   const router = useRouter();
 
-  console.log({ input });
-
   const handleCreateSession = useWrapFnWithToast(async () => {
     if (!userData || !campaignId) throw "User error";
 

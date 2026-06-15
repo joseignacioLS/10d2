@@ -27,9 +27,6 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     loading,
     error,
   } = useFetchData(getCampaign, [campaignId]);
-  const author = campaign?.characters.find(
-    ({ member: { id } }) => id === userData?.id,
-  );
   const router = useRouter();
 
   if (loading) {
@@ -41,8 +38,13 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     router.push("/");
     return null;
   }
-  const canEdit = userData?.id === campaign?.GM;
-  console.log({ canEdit, u: userData?.id, c: campaign?.GM });
+
+  const author = campaign?.members.find(
+    ({ id }) => id === userData?.id,
+  )?.character;
+  const canEdit =
+    campaign?.members?.find(({ id }) => id === userData?.id)?.character.role ===
+    "GM";
 
   return (
     <section className={styles.campaign}>
@@ -85,15 +87,17 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           <>
             <h3>Personajes</h3>
             <ul>
-              {campaign.characters.map(({ id, name, member }) => {
-                return (
-                  <li key={name}>
-                    <Link href={`/characters/${id}`}>
-                      {name} ({member.name})
-                    </Link>
-                  </li>
-                );
-              })}
+              {campaign.members.map(
+                ({ character: { id, name }, name: memberName }) => {
+                  return (
+                    <li key={id}>
+                      <Link href={`/characters/${id}`}>
+                        {name} ({memberName})
+                      </Link>
+                    </li>
+                  );
+                },
+              )}
             </ul>
           </>
         </Card>

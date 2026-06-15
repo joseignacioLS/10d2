@@ -22,7 +22,7 @@ export const Input: React.FC<Props> = ({
   min,
   max,
   value,
-  pattern = "*",
+  pattern = ".*",
   onChange,
 }) => {
   return (

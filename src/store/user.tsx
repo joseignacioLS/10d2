@@ -48,7 +48,6 @@ export const UserContext = createContext<{
         campaigns: Campaign[];
       }
     | undefined;
-  refreshUserData: () => Promise<void>;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   loginModalOpen: boolean;
@@ -57,7 +56,6 @@ export const UserContext = createContext<{
 }>({
   token: undefined,
   userData: undefined,
-  refreshUserData: () => new Promise(() => {}),
   login: () => new Promise(() => {}),
   logout: () => new Promise(() => {}),
   loginModalOpen: false,
@@ -182,13 +180,16 @@ export const UserProvider = ({ children }: Props) => {
         if (error !== null) {
           throw error;
         }
-        console.log({ data });
         dispatch({
           type: "login",
           payload: data,
         });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        // No se envía error para evitar
+        // toast cuando no hay token almacenado
+        // o ha caducado
+      });
   }, []);
 
   return (
@@ -196,7 +197,6 @@ export const UserProvider = ({ children }: Props) => {
       value={{
         token: state.token,
         userData: state.userData,
-        refreshUserData,
         login,
         logout,
         loginModalOpen: state.loginModalOpen,

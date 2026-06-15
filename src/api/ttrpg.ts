@@ -109,15 +109,15 @@ export const annotateSentence = (sessionId: string, position: number[], text: st
 
 
 export const getCampaign = async (campaignId: Campaign["id"]): Promise<ServiceResponse<{
-  characters: {
-    id: Character["id"],
-    name: Character["name"]
-    member: {
-      id: Member["id"]
-      name: Member["name"]
-    };
+  members: {
+    id: Member["id"],
+    name: Member["name"]
+    character: {
+      id: Character["id"]
+      role: "GM" | "player",
+      name: Character["name"]
+    }
   }[];
-  GM: Campaign["GM"];
   name: Campaign["name"];
   summary: Campaign["summary"]
   sessions: {
