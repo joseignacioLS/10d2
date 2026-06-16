@@ -1,24 +1,28 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-export const useHandleInput = <T extends readonly string[]>(keys: T) => {
-  const initialValue = useMemo(
-    () =>
-      Object.fromEntries(keys.map((k) => [k, ""])) as Record<T[number], string>,
-    [keys],
-  );
-  const [input, setInput] = useState<Record<T[number], string>>(initialValue);
+export const useHandleInput = (initialState: Record<string, string>) => {
+  const [input, setInput] = useState(initialState);
+  const [hasChanged, setHasChanged] = useState(false);
 
-  const handleInput = (key: T[number], value: string) => {
+  const handleInput = (key: string, value: string) => {
     setInput((prev) => {
       return { ...prev, [key]: value };
     });
   };
 
   const resetInput = () => {
-    setInput(initialValue);
+    setInput(initialState);
   };
 
-  return { input, handleInput, resetInput };
+  useEffect(() => {
+    setHasChanged(() => {
+      return Object.keys(input).some((k) => {
+        return input[k] !== initialState[k];
+      });
+    });
+  }, [input, initialState]);
+
+  return { input, handleInput, resetInput, hasChanged };
 };

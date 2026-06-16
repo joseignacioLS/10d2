@@ -41,7 +41,7 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
 
   const router = useRouter();
 
-  const { input, handleInput, resetInput } = useHandleInput(["annotation"]);
+  const { input, handleInput, resetInput } = useHandleInput({ annotation: "" });
 
   const {
     selectedSentence,

@@ -4,14 +4,17 @@ import { Form } from "@/src/components/Core/Form";
 import { Input } from "@/src/components/Core/Input";
 import Tiptap from "@/src/components/Core/TipTap";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
-import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 
 export default function Home() {
-  const { input, handleInput } = useHandleInput(["name", "short", "summary"]);
+  const { input, handleInput } = useHandleInput({
+    name: "",
+    short: "",
+    summary: "",
+  });
   const { userData } = useContext(UserContext);
   const { createToast } = useContext(ToastContext);
   const router = useRouter();

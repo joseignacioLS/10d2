@@ -8,6 +8,7 @@ import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 
 import styles from "./TipTap.module.css";
+import { useEffect } from "react";
 
 type Props = {
   name: string;

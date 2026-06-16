@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
-  const { input, handleInput } = useHandleInput(["search"]);
+  const { input, handleInput } = useHandleInput({ search: "" });
 
   const [searchResult, setSearchResults] = useState<SearchResult>({
     campaigns: [],

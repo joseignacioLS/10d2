@@ -14,12 +14,12 @@ import { useContext, useEffect } from "react";
 
 export default function Home() {
   const { campaign: campaignId } = useParams();
-  const { input, handleInput } = useHandleInput([
-    "name",
-    "number",
-    "date",
-    "summary",
-  ]);
+  const { input, handleInput } = useHandleInput({
+    name: "",
+    number: "",
+    date: "",
+    summary: "",
+  });
   const { userData } = useContext(UserContext);
   const { data: campaign } = useFetchData(getCampaign, [campaignId]);
   const { createToast } = useContext(ToastContext);

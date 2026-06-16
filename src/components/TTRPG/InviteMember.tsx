@@ -5,7 +5,7 @@ import { Input } from "../Core/Input";
 type Props = {};
 
 export const InviteMember: React.FC<Props> = () => {
-  const { input, handleInput } = useHandleInput(["username"]);
+  const { input, handleInput } = useHandleInput({ username: "" });
 
   const handleInvite = () => {
     alert("invite send");

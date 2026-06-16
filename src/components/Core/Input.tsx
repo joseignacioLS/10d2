@@ -4,7 +4,7 @@ type Props = {
   label?: string;
   id: string;
   name: string;
-  placeholder: string;
+  placeholder?: string;
   type?: "text" | "password" | "number" | "date";
   min?: number;
   max?: number;

@@ -15,7 +15,7 @@ export const LoginModal: React.FC<Props> = ({}) => {
   const { token, loginModalOpen, closeLoginModal, login } =
     useContext(UserContext);
   const [loading, setLoading] = useState(false);
-  const { input, handleInput } = useHandleInput(["name", "password"]);
+  const { input, handleInput } = useHandleInput({ name: "", password: "" });
 
   useEffect(() => {
     if (token) {

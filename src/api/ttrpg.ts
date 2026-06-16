@@ -119,6 +119,7 @@ export const getCampaign = async (campaignId: Campaign["id"]): Promise<ServiceRe
     }
   }[];
   name: Campaign["name"];
+  short: Campaign["short"];
   summary: Campaign["summary"]
   sessions: {
     id: Session["id"]
@@ -132,6 +133,30 @@ export const getCampaign = async (campaignId: Campaign["id"]): Promise<ServiceRe
   return secureFetch(process.env.NEXT_PUBLIC_API + path + campaignId)
 
 }
+
+export const putCampaign = async (campaignId: Campaign["id"],
+  name: string,
+  short: string,
+  summary: string,
+  nextSession: string
+): Promise<ServiceResponse<{}>> => {
+  const path = "/campaign/"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      campaignId,
+      name,
+      short,
+      summary,
+      nextSession
+    })
+  })
+
+}
+
 
 export const getLastCampaigns = async (
   count: number,
