@@ -4,7 +4,7 @@ import { getUserInfo } from "@/src/api/user";
 import { useReducerWithMiddleware } from "@/src/hooks/useReducerWithMiddleware";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { ToastContext } from "@/src/store/toast";
-import { Campaign } from "@/src/types/ttrpg";
+import { Campaign, Member } from "@/src/types/ttrpg";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect } from "react";
 import { loginOnTokeRequest, loginRequest, logoutRequest } from "../api/auth";
@@ -14,14 +14,18 @@ type UserState = {
   userData?: {
     id: string;
     username: string;
+    state: "logout" | "login" | "loading";
     subscriptions: Campaign["id"][];
+    campaigns: { id: Campaign["id"]; role: "GM" | "player" }[];
   };
   loginModalOpen: boolean;
 };
 
 type UserAction =
   | { type: "error"; payload: string }
+  | { type: "start-login" }
   | { type: "login"; payload: string }
+  | { type: "login-error" }
   | {
       type: "logout" | "open_login_modal" | "close_login_modal";
     }
@@ -34,20 +38,25 @@ type UserAction =
 
 const initialState: UserState = {
   token: undefined,
-  userData: undefined,
+  userData: {
+    id: "",
+    state: "loading",
+    username: "",
+    subscriptions: [],
+    campaigns: [],
+  },
   loginModalOpen: false,
 };
 
 export const UserContext = createContext<{
   token: string | undefined;
-  userData:
-    | {
-        id: string;
-        username: string;
-        subscriptions: Campaign["id"][];
-        campaigns: Campaign[];
-      }
-    | undefined;
+  userData: {
+    id: string;
+    username: string;
+    state: "logout" | "login" | "loading";
+    subscriptions: Campaign["id"][];
+    campaigns: { id: Campaign["id"]; role: "GM" | "player" }[];
+  };
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   loginModalOpen: boolean;
@@ -55,7 +64,13 @@ export const UserContext = createContext<{
   closeLoginModal: () => void;
 }>({
   token: undefined,
-  userData: undefined,
+  userData: {
+    id: "",
+    state: "loading",
+    username: "",
+    subscriptions: [],
+    campaigns: [],
+  },
   login: () => new Promise(() => {}),
   logout: () => new Promise(() => {}),
   loginModalOpen: false,
@@ -65,16 +80,42 @@ export const UserContext = createContext<{
 
 const userReducer = (state: UserState, action: UserAction) => {
   switch (action.type) {
+    case "start-login":
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          state: "loading",
+        },
+      };
     case "login":
       return {
         ...state,
         token: action.payload,
       };
+    case "login-error":
+      return {
+        ...state,
+        token: undefined,
+        userData: {
+          id: "",
+          state: "logout",
+          username: "",
+          subscriptions: [],
+          campaigns: [],
+        },
+      };
     case "logout": {
       return {
         ...state,
         token: undefined,
-        userData: undefined,
+        userData: {
+          id: "",
+          state: "logout",
+          username: "",
+          subscriptions: [],
+          campaigns: [],
+        },
       };
     }
     case "set_user_data": {
@@ -113,17 +154,20 @@ export const UserProvider = ({ children }: Props) => {
 
   const login = async (username: string, password: string) => {
     try {
+      dispatch({
+        type: "start-login",
+      });
       const { data: token, error } = await loginRequest(username, password);
       if (error !== null) {
         throw error;
       }
       dispatch({
         type: "login",
-        payload: token,
+        payload: { token, info: "¡Hola de nuevo!" },
       });
     } catch (err) {
       dispatch({
-        type: "error",
+        type: "login-error",
         payload: err,
       });
     }
@@ -163,6 +207,7 @@ export const UserProvider = ({ children }: Props) => {
       type: "set_user_data",
       payload: {
         id: member.id,
+        state: "login",
         username: member.username,
         campaigns: member.campaigns,
         subscriptions: member.subscriptions,
@@ -188,6 +233,9 @@ export const UserProvider = ({ children }: Props) => {
         });
       })
       .catch((err) => {
+        dispatch({
+          type: "login-error",
+        });
         // No se envía error para evitar
         // toast cuando no hay token almacenado
         // o ha caducado

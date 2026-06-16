@@ -16,15 +16,14 @@ export const SearchModal: React.FC<Props> = ({}) => {
       <Button onClick={() => setShowModal(true)} className={styles.button}>
         <img src="/magnifying-glass.svg" />
       </Button>
-      {showModal && (
-        <Modal
-          title="Buscador"
-          onClose={() => setShowModal(false)}
-          className={styles.modal}
-        >
-          <SearchBar onSearchClick={() => setShowModal(false)} />
-        </Modal>
-      )}
+      <Modal
+        isOpen={showModal}
+        title="Buscador"
+        onClose={() => setShowModal(false)}
+        className={styles.modal}
+      >
+        <SearchBar onSearchClick={() => setShowModal(false)} />
+      </Modal>
     </>
   );
 };

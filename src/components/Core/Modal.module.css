@@ -1,44 +1,39 @@
-.modalWrapper {
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
+.modalWindow {
+  z-index: 10;
+  padding: 16px;
+  max-width: min(80vw, 800px);
+  max-height: 100%;
+  background-color: var(--main-bg-color);
+  border-radius: 4px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border: 0;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  .modalTitle {
+    min-height: 3ch;
+  }
 
-  z-index: 11;
+  .closeBtn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
 
-  .modalWindow {
-    position: relative;
-    z-index: 10;
-    padding: 16px;
-    max-width: min(80vw, 800px);
+    background-color: transparent;
+    color: var(--main-fg-color);
+  }
+
+  .modalBody {
+    height: 100%;
     max-height: 100%;
-    background-color: var(--main-bg-color);
-    border-radius: 4px;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    .modalTitle {
-      min-height: 3ch;
-    }
+    width: 100%;
+    overflow: hidden;
+  }
 
-    .closeBtn {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-
-      background-color: transparent;
-      color: var(--main-fg-color);
-    }
-
-    .modalBody {
-      height: 100%;
-      max-height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
+  &::backdrop {
+    backdrop-filter: blur(3px);
+    background-color: rgba(100, 100, 100, 0.1);
   }
 }

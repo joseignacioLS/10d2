@@ -21,11 +21,11 @@ export const UserButton: React.FC<{}> = ({}) => {
 
   return (
     <Button className={styles.userButton} onClick={handleClick}>
-      {userData ? (
+      {userData.state === "login" && (
         <span>{userData?.username?.substring(0, 1).toUpperCase()}</span>
-      ) : (
-        <img src="/chicken.svg" />
       )}
+      {userData.state === "logout" && <img src="/chicken.svg" />}
+      {userData.state === "loading" && <img src="/dice.svg" />}
     </Button>
   );
 };

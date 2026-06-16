@@ -11,12 +11,8 @@ export const secureFetch = async <T>(input: string | URL | Request, init?: Reque
       error: "Ha habido un error con la request"
     }
     const { status, message, data } = await res.json()
-
     if (status !== 200) {
-      return {
-        data: null,
-        error: message
-      }
+      throw message
     }
     return {
       data,

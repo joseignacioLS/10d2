@@ -105,37 +105,36 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
           />
         )}
       </div>
-      {showCreateAnnotationModal && (
-        <Modal
-          onClose={() => {
-            closeCreateAnnotationModal();
-          }}
-        >
-          <>
-            {selectedSentence && <p>{selectedSentence.text}</p>}
-            <Input
-              id="annotation"
-              name="annotation"
-              value={input.annotation}
-              placeholder="Escribe aquí"
-              max={256}
-              onChange={handleInput}
-            />
-            <div className={styles.controls}>
-              <Button
-                onClick={() => {
-                  if (!selectedSentence) {
-                    return;
-                  }
-                  handleAnnotate(input.annotation, selectedSentence.position);
-                }}
-              >
-                Guardar
-              </Button>
-            </div>
-          </>
-        </Modal>
-      )}
+      <Modal
+        isOpen={showCreateAnnotationModal}
+        onClose={() => {
+          closeCreateAnnotationModal();
+        }}
+      >
+        <>
+          {selectedSentence && <p>{selectedSentence.text}</p>}
+          <Input
+            id="annotation"
+            name="annotation"
+            value={input.annotation}
+            placeholder="Escribe aquí"
+            max={256}
+            onChange={handleInput}
+          />
+          <div className={styles.controls}>
+            <Button
+              onClick={() => {
+                if (!selectedSentence) {
+                  return;
+                }
+                handleAnnotate(input.annotation, selectedSentence.position);
+              }}
+            >
+              Guardar
+            </Button>
+          </div>
+        </>
+      </Modal>
     </div>
   );
 };

@@ -13,7 +13,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 
 export default function Home() {
-  const { campaign: campaignId } = useParams();
+  const { campaignId } = useParams();
   const { input, handleInput } = useHandleInput({
     name: "",
     number: "",

@@ -23,10 +23,8 @@ export const LoginModal: React.FC<Props> = ({}) => {
     }
   }, [token]);
 
-  if (!loginModalOpen) return null;
-
   return (
-    <Modal onClose={closeLoginModal} title="">
+    <Modal onClose={closeLoginModal} isOpen={loginModalOpen} title="">
       <Form
         onSubmit={async () => {
           setLoading(true);

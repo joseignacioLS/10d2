@@ -12,6 +12,7 @@ import { useContext } from "react";
 import { Temporal } from "temporal-polyfill";
 import { Calendar } from "../Core/Calendar";
 
+import { checkCampaignPermissions } from "@/src/utils/campaign";
 import { Spinner } from "../Core/Spinner";
 import styles from "./Campaign.module.css";
 
@@ -29,7 +30,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
   } = useFetchData(getCampaign, [campaignId]);
   const router = useRouter();
 
-  if (loading) {
+  if (loading || userData.state === "loading") {
     return <Spinner />;
   }
 
@@ -39,12 +40,10 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
     return null;
   }
 
-  const author = campaign?.members.find(
-    ({ id }) => id === userData?.id,
-  )?.character;
-  const canEdit =
-    campaign?.members?.find(({ id }) => id === userData?.id)?.character.role ===
-    "GM";
+  const { author, canEdit } = checkCampaignPermissions(
+    userData.campaigns,
+    campaignId,
+  );
 
   return (
     <section className={styles.campaign}>

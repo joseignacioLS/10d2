@@ -10,13 +10,19 @@ import { Spinner } from "@/src/components/Core/Spinner";
 import Tiptap from "@/src/components/Core/TipTap";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
+import { useRouteGuard } from "@/src/hooks/useRouteGuard";
 import { ToastContext } from "@/src/store/toast";
+import { UserContext } from "@/src/store/user";
 import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 
 export default function Home() {
-  const { id: campaignId } = useParams();
-  const { data: campaign, loading } = useFetchData(getCampaign, [campaignId]);
+  const { campaignId } = useParams();
+  const {
+    data: campaign,
+    loading: loadingCampaign,
+    error,
+  } = useFetchData(getCampaign, [campaignId]);
   const { input, handleInput, resetInput } = useHandleInput({
     name: campaign?.name ?? "",
     short: campaign?.short ?? "",
@@ -24,6 +30,8 @@ export default function Home() {
     nextSession: campaign?.nextSession?.toString() ?? "",
     invite: "",
   });
+
+  const { userData } = useContext(UserContext);
 
   const { createToast } = useContext(ToastContext);
 
@@ -56,9 +64,18 @@ export default function Home() {
     resetInput();
   }, [campaign]);
 
+  const { loading } = useRouteGuard(
+    loadingCampaign,
+    error,
+    true,
+    "campaign",
+    `/campaigns/${campaignId}`,
+  );
+
   if (loading) {
     return <Spinner />;
   }
+
   return (
     <main>
       <CrumbsHeader

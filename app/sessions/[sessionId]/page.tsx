@@ -5,11 +5,11 @@ import { TTRPGSessionProvider } from "@/src/store/ttrpgsession";
 import { useParams } from "next/navigation";
 
 export default function Home() {
-  const { id } = useParams();
+  const { sessionId } = useParams();
   return (
     <main>
       <TTRPGSessionProvider>
-        <Session sessionId={(id as string) ?? ""} />
+        <Session sessionId={(sessionId as string) ?? ""} />
       </TTRPGSessionProvider>
     </main>
   );
