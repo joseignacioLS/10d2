@@ -154,9 +154,11 @@ export const UserProvider = ({ children }: Props) => {
   };
 
   const refreshUserData = useWrapFnWithToast(async () => {
-    if (!state.token) throw "Error actualizando tu información";
+    if (!state.token)
+      throw "Error actualizando tu información. No existe el token";
     const { data: member } = await getUserInfo();
-    if (!member) throw "Error actualizando tu información";
+    if (!member)
+      throw "Error actualizando tu información. No existe el usuario";
     dispatch({
       type: "set_user_data",
       payload: {
