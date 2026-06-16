@@ -21,15 +21,6 @@ export const useRouteGuard = (
   const { createToast } = useContext(ToastContext);
 
   useEffect(() => {
-    console.log(
-      dataLoading,
-      dataError,
-      userData.state,
-      userData.campaigns,
-      loginProtected,
-      editProtected,
-      redirectRoute,
-    );
     if (dataLoading) {
       setLoading(true);
       return;

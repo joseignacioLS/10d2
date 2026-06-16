@@ -2,26 +2,19 @@
 
 import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
-import { ToastContext } from "@/src/store/toast";
+import { Spinner } from "@/src/components/Core/Spinner";
+import { useRouteGuard } from "@/src/hooks/useRouteGuard";
 import { UserContext } from "@/src/store/user";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 export default function Home() {
-  const router = useRouter();
-  const { token, userData, logout } = useContext(UserContext);
-  const { createToast } = useContext(ToastContext);
+  const { userData, logout } = useContext(UserContext);
 
-  useEffect(() => {
-    if (!token) {
-      createToast("Debes estar logeado para acceder al perfil", "warning");
-      router.push("/");
-    }
-  }, [token]);
+  const { loading } = useRouteGuard(false, null, true, undefined, "/");
 
-  if (!token) {
-    return;
+  if (loading) {
+    return <Spinner />;
   }
 
   return (

@@ -16,7 +16,11 @@ type UserState = {
     username: string;
     state: "logout" | "login" | "loading";
     subscriptions: Campaign["id"][];
-    campaigns: { id: Campaign["id"]; role: "GM" | "player" }[];
+    campaigns: {
+      id: Campaign["id"];
+      name: Campaign["name"];
+      role: "GM" | "player";
+    }[];
   };
   loginModalOpen: boolean;
 };
@@ -55,7 +59,11 @@ export const UserContext = createContext<{
     username: string;
     state: "logout" | "login" | "loading";
     subscriptions: Campaign["id"][];
-    campaigns: { id: Campaign["id"]; role: "GM" | "player" }[];
+    campaigns: {
+      id: Campaign["id"];
+      name: Campaign["name"];
+      role: "GM" | "player";
+    }[];
   };
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;

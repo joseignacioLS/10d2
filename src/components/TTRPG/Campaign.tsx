@@ -15,6 +15,7 @@ import { Calendar } from "../Core/Calendar";
 import { checkCampaignPermissions } from "@/src/utils/campaign";
 import { Spinner } from "../Core/Spinner";
 import styles from "./Campaign.module.css";
+import { useRouteGuard } from "@/src/hooks/useRouteGuard";
 
 type Props = {
   campaignId: TCampaign["id"];
@@ -25,19 +26,21 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
   const { createToast } = useContext(ToastContext);
   const {
     data: campaign,
-    loading,
+    loading: loadingCampaign,
     error,
   } = useFetchData(getCampaign, [campaignId]);
   const router = useRouter();
 
-  if (loading || userData.state === "loading") {
-    return <Spinner />;
-  }
+  const { loading } = useRouteGuard(
+    loadingCampaign,
+    error,
+    false,
+    undefined,
+    "/",
+  );
 
-  if (error !== null) {
-    createToast(error, "error");
-    router.push("/");
-    return null;
+  if (loading) {
+    return <Spinner />;
   }
 
   const { author, canEdit } = checkCampaignPermissions(
@@ -47,7 +50,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
 
   return (
     <section className={styles.campaign}>
-      <CrumbsHeader title={<span>{campaign.name} </span>} />
+      <CrumbsHeader title={<span>{campaign?.name} </span>} />
 
       {(author || canEdit) && (
         <Card>
@@ -73,7 +76,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
       )}
 
       <Card>
-        <p dangerouslySetInnerHTML={{ __html: campaign.summary }}></p>
+        <p dangerouslySetInnerHTML={{ __html: campaign?.summary ?? "" }}></p>
       </Card>
       <div
         style={{
@@ -86,7 +89,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           <>
             <h2>Personajes</h2>
             <ul>
-              {campaign.members.map(
+              {campaign?.members.map(
                 ({ character: { id, name }, name: memberName }) => {
                   return (
                     <li key={id}>
@@ -104,7 +107,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           <>
             <h2>Sesiones</h2>
             <ul>
-              {campaign.sessions.slice(0, 5).map(({ id, number, title }) => {
+              {campaign?.sessions.slice(0, 5).map(({ id, number, title }) => {
                 return (
                   <li key={id}>
                     <Link href={`/sessions/${id}`}>
@@ -123,7 +126,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           <h2>Calendario</h2>
           <Calendar
             events={[
-              ...campaign.sessions.map(({ date, id }) => {
+              ...(campaign?.sessions ?? []).map(({ date, id }) => {
                 return {
                   date,
                   onClick: () => {
@@ -132,7 +135,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
                 };
               }),
               {
-                date: campaign.nextSession,
+                date: campaign?.nextSession,
                 onClick: () => {},
               },
             ].filter(
