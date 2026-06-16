@@ -1,6 +1,8 @@
 "use client";
 
 import { getCampaign, putCampaign } from "@/src/api/ttrpg";
+import { Button } from "@/src/components/Core/Button";
+import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { Form } from "@/src/components/Core/Form";
 import { Input } from "@/src/components/Core/Input";
@@ -20,6 +22,7 @@ export default function Home() {
     short: campaign?.short ?? "",
     summary: campaign?.summary ?? "",
     nextSession: campaign?.nextSession?.toString() ?? "",
+    invite: "",
   });
 
   const { createToast } = useContext(ToastContext);
@@ -43,6 +46,12 @@ export default function Home() {
       });
   };
 
+  const handleSubmitInvitation = () => {};
+
+  const handleDeletePlayerFromCampaign = () => {};
+
+  const handleRevokeInvitation = () => {};
+
   useEffect(() => {
     resetInput();
   }, [campaign]);
@@ -61,43 +70,91 @@ export default function Home() {
           },
         ]}
       />
-      <Form onSubmit={handleSubmit}>
+      <Card>
         <>
-          <Input
-            id="short"
-            name="name"
-            label="Nombre"
-            placeholder={campaign?.name ?? ""}
-            value={input.name}
-            onChange={handleInput}
-          />
-          <Input
-            id="short"
-            name="short"
-            label="Acrónimo"
-            placeholder={campaign?.short ?? ""}
-            value={input.short}
-            onChange={handleInput}
-          />
-          {input.summary && (
-            <Tiptap
-              name="summary"
-              label="Resumen"
-              placeholder={campaign?.summary ?? ""}
-              value={input.summary}
-              onChange={handleInput}
-            />
-          )}
-          <Input
-            id="nextSession"
-            name="nextSession"
-            label="Siguiente sesión"
-            type="date"
-            value={input.nextSession}
-            onChange={handleInput}
-          />
+          <h2>Información de la campaña</h2>
+          <Form onSubmit={handleSubmit}>
+            <>
+              <Input
+                id="short"
+                name="name"
+                label="Nombre"
+                placeholder={campaign?.name ?? ""}
+                value={input.name}
+                onChange={handleInput}
+              />
+              <Input
+                id="short"
+                name="short"
+                label="Acrónimo"
+                placeholder={campaign?.short ?? ""}
+                value={input.short}
+                onChange={handleInput}
+              />
+              {input.summary && (
+                <Tiptap
+                  name="summary"
+                  label="Resumen"
+                  placeholder={campaign?.summary ?? ""}
+                  value={input.summary}
+                  onChange={handleInput}
+                />
+              )}
+              <Input
+                id="nextSession"
+                name="nextSession"
+                label="Siguiente sesión"
+                type="date"
+                value={input.nextSession}
+                onChange={handleInput}
+              />
+            </>
+          </Form>
         </>
-      </Form>
+      </Card>
+      <Card>
+        <>
+          <h2>Jugadores</h2>
+          <ul>
+            {campaign?.members
+              .filter(({ character: { role } }) => {
+                return role !== "GM";
+              })
+              .map(({ id, name, character }) => {
+                return (
+                  <li key={id}>
+                    <Button onClick={handleDeletePlayerFromCampaign}>X</Button>
+                    {name} - {character.name}
+                  </li>
+                );
+              })}
+          </ul>
+        </>
+      </Card>
+      <Card>
+        <>
+          <h2>Invitaciones</h2>
+          <ul>
+            {campaign?.invitations?.map(({ id, name }) => {
+              return (
+                <li key={id}>
+                  <Button onClick={handleRevokeInvitation}>X</Button>
+                  {name}
+                </li>
+              );
+            })}
+          </ul>
+          <Form onSubmit={handleSubmitInvitation}>
+            <Input
+              id="invite"
+              name="invite"
+              value={input.invite}
+              onChange={handleInput}
+              placeholder="Wit Nimros"
+            />
+          </Form>
+        </>
+      </Card>
     </main>
   );
 }

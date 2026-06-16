@@ -85,7 +85,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
       >
         <Card>
           <>
-            <h3>Personajes</h3>
+            <h2>Personajes</h2>
             <ul>
               {campaign.members.map(
                 ({ character: { id, name }, name: memberName }) => {
@@ -103,7 +103,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
         </Card>
         <Card>
           <>
-            <h3>Sesiones</h3>
+            <h2>Sesiones</h2>
             <ul>
               {campaign.sessions.slice(0, 5).map(({ id, number, title }) => {
                 return (
@@ -121,7 +121,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
 
       <Card>
         <>
-          <h3>Calendario</h3>
+          <h2>Calendario</h2>
           <Calendar
             events={[
               ...campaign.sessions.map(({ date, id }) => {

@@ -128,6 +128,10 @@ export const getCampaign = async (campaignId: Campaign["id"]): Promise<ServiceRe
     date: Session["date"]
   }[]
   nextSession: Campaign["nextSession"]
+  invitations: {
+    id: Member["id"]
+    name: Member["name"]
+  }[]
 }>> => {
   const path = "/campaign/"
   return secureFetch(process.env.NEXT_PUBLIC_API + path + campaignId)

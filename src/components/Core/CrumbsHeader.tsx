@@ -13,7 +13,7 @@ type Props = {
 export const CrumbsHeader: React.FC<Props> = ({ title, crumbs = [] }) => {
   return (
     <header className={styles.crumbsHeader}>
-      <h2>
+      <div>
         {crumbs.map(({ name, href }) => {
           return (
             <React.Fragment key={href}>
@@ -23,7 +23,7 @@ export const CrumbsHeader: React.FC<Props> = ({ title, crumbs = [] }) => {
           );
         })}
         <span>{title}</span>
-      </h2>
+      </div>
     </header>
   );
 };
