@@ -15,8 +15,8 @@ export const Calendar: React.FC<Props> = ({ events }) => {
   const [selectedWeek, setSelectedWeek] = useState(0);
 
   return (
-    <div>
-      <div>
+    <div className={styles.wrapper}>
+      <div className={styles.calendar}>
         <div className={styles.week}>
           <div>
             {today.add({ days: selectedWeek * 7 + 1 - today.dayOfWeek }).year}
@@ -66,15 +66,25 @@ export const Calendar: React.FC<Props> = ({ events }) => {
           );
         })}
       </div>
-      <Button
-        onClick={() => {
-          setSelectedWeek((v) => v - 1);
-        }}
-      >
-        Atras
-      </Button>
-      <Button onClick={() => setSelectedWeek(0)}>Reset</Button>
-      <Button onClick={() => setSelectedWeek((v) => v + 1)}>Adelante</Button>
+      <div className={styles.controls}>
+        <Button
+          className={styles.roundBtn}
+          onClick={() => {
+            setSelectedWeek((v) => v - 1);
+          }}
+        >
+          <img src="/chev-up.svg" />
+        </Button>
+        <Button className={styles.roundBtn} onClick={() => setSelectedWeek(0)}>
+          <img src="/reset.svg" />
+        </Button>
+        <Button
+          className={styles.roundBtn}
+          onClick={() => setSelectedWeek((v) => v + 1)}
+        >
+          <img src="/chev-down.svg" />
+        </Button>
+      </div>
     </div>
   );
 };

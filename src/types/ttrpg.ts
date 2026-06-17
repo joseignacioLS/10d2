@@ -1,6 +1,47 @@
 import { Temporal } from "temporal-polyfill";
 
 
+export type CampaignDetail = {
+  id: Campaign["id"];
+  members: {
+    id: Member["id"],
+    name: Member["name"]
+    character: {
+      id: Character["id"]
+      role: "GM" | "player",
+      name: Character["name"]
+    }
+  }[];
+  name: Campaign["name"];
+  short: Campaign["short"];
+  summary: Campaign["summary"]
+  sessions: {
+    id: Session["id"]
+    number: Session["number"]
+    title: Session["title"]
+    date: Session["date"]
+  }[]
+  nextSession: Campaign["nextSession"]
+  invitations: {
+    id: Member["id"]
+    name: Member["name"]
+  }[]
+}
+
+export type SessionDetail = {
+  id: Session["id"]
+  campaign: {
+    id: Campaign["id"],
+    short: Campaign["short"]
+  }
+  title: Session["title"],
+  date: Session["date"],
+  summary: Session["summary"],
+  author: Session["author"]
+
+}
+
+
 export type SearchResult = {
   campaigns: {
     id: Campaign["id"],
@@ -95,22 +136,3 @@ export type FilledCharacter = Omit<Character, "campaign" | "member"> & {
   member: Member;
 };
 
-export type CampaignDetail = {
-  name: string;
-  summary: string;
-  characters: {
-    id: string,
-    name: string,
-    member: {
-      id: string;
-      name: string;
-    }
-  }[],
-  sessions: {
-    id: string;
-    number: number;
-    title: string;
-    date: Temporal.PlainDate
-  }[],
-  nextSession: Temporal.PlainDate | undefined
-}

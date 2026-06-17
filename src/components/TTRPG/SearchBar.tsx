@@ -5,14 +5,22 @@ import { useDebounce } from "@/src/hooks/useDebounce";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
 import { SearchResult } from "@/src/types/ttrpg";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Spinner } from "../Core/Spinner";
+import { ToastContext } from "@/src/store/toast";
 
 type Props = {
   onSearchClick: () => void;
+  minLength?: number;
 };
 
-export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
+export const SearchBar: React.FC<Props> = ({
+  onSearchClick,
+  minLength = 3,
+}) => {
   const { input, handleInput } = useHandleInput({ search: "" });
+  const [loading, setLoading] = useState(false);
+  const { createToast } = useContext(ToastContext);
 
   const [searchResult, setSearchResults] = useState<SearchResult>({
     campaigns: [],
@@ -20,24 +28,40 @@ export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
   });
 
   const searchFetch = useDebounce(async (search: string) => {
-    if (search.length < 3) {
-      return new Promise((res) => {
-        res({ data: null, error: "Too short query" });
-      });
-    }
     return getSearch(search);
   }, 800);
 
+  const resetSearch = () => {
+    setSearchResults({
+      campaigns: [],
+      sessions: [],
+    });
+  };
+
   const handleSearch = async (search: string) => {
-    const { data } = await searchFetch(search);
-    if (!data) {
-      setSearchResults({
-        campaigns: [],
-        sessions: [],
-      });
+    if (search.length < minLength) {
+      setLoading(false);
+      resetSearch();
       return;
     }
-    setSearchResults(data);
+    setLoading(true);
+    await searchFetch(search)
+      .then(({ data, error }) => {
+        if (error !== null) {
+          throw error;
+        }
+        if (!data) {
+          resetSearch();
+          return;
+        }
+        setSearchResults(data);
+      })
+      .catch((err) => {
+        createToast(err, "error");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -50,40 +74,46 @@ export const SearchBar: React.FC<Props> = ({ onSearchClick }) => {
         id="searchbar"
         name="search"
         placeholder="Busca campañas o grupos"
-        min={3}
+        min={minLength}
         onChange={handleInput}
         value={input.search}
       ></Input>
-      {(searchResult.campaigns.length > 0 ||
-        searchResult.sessions.length > 0) && (
-        <Card>
-          <ul>
-            {searchResult.campaigns.map((campaign) => {
-              return (
-                <li key={campaign.id}>
-                  <Link
-                    href={`/campaigns/${campaign.id}`}
-                    onClick={onSearchClick}
-                  >
-                    {campaign.name}
-                  </Link>
-                </li>
-              );
-            })}
-            {searchResult.sessions.map((session) => {
-              return (
-                <li key={session.id}>
-                  <Link
-                    href={`/sessions/${session.id}`}
-                    onClick={onSearchClick}
-                  >
-                    {session.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </Card>
+      {loading ? (
+        <Spinner />
+      ) : (
+        (searchResult.campaigns.length > 0 ||
+          searchResult.sessions.length > 0) && (
+          <Card>
+            <ul>
+              <p>Campañas</p>
+              {searchResult.campaigns.map((campaign) => {
+                return (
+                  <li key={campaign.id}>
+                    <Link
+                      href={`/campaigns/${campaign.id}`}
+                      onClick={onSearchClick}
+                    >
+                      {campaign.name}
+                    </Link>
+                  </li>
+                );
+              })}
+              <p>Sesiones</p>
+              {searchResult.sessions.map((session) => {
+                return (
+                  <li key={session.id}>
+                    <Link
+                      href={`/sessions/${session.id}`}
+                      onClick={onSearchClick}
+                    >
+                      {session.title}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </Card>
+        )
       )}
     </section>
   );

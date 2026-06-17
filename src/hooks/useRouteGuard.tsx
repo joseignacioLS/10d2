@@ -1,14 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../store/user";
 import { useParams, useRouter } from "next/navigation";
-import { checkCampaignPermissions } from "../utils/campaign";
+import { useContext, useEffect, useState } from "react";
 import { ToastContext } from "../store/toast";
+import { UserContext } from "../store/user";
 
 export const useRouteGuard = (
   dataLoading: boolean,
   dataError: string | null,
   loginProtected: boolean,
-  editProtected: "campaign" | undefined,
+  roleProtected: "GM" | "player" | undefined,
   redirectRoute: string,
 ) => {
   const [loading, setLoading] = useState(true);
@@ -25,6 +24,11 @@ export const useRouteGuard = (
       setLoading(true);
       return;
     }
+    if (dataError) {
+      setLoading(false);
+      createToast(dataError, "error");
+      router.push(redirectRoute);
+    }
     if (userData.state === "loading") {
       setLoading(true);
       return;
@@ -35,11 +39,11 @@ export const useRouteGuard = (
       router.push(redirectRoute);
       return;
     }
-    const { canEdit } = checkCampaignPermissions(
-      userData.campaigns,
-      campaignId as string,
-    );
-    if (editProtected === "campaign" && !canEdit) {
+
+    if (
+      roleProtected &&
+      roleProtected !== userData.permissions[campaignId as string]
+    ) {
       createToast("No tienes permisos para acceder a esta página", "error");
       setLoading(false);
       router.push(redirectRoute);
@@ -51,7 +55,7 @@ export const useRouteGuard = (
     userData.state,
     userData.campaigns,
     loginProtected,
-    editProtected,
+    roleProtected,
     redirectRoute,
   ]);
 

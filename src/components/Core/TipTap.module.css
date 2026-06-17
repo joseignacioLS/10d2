@@ -1,10 +1,16 @@
 .tiptap {
   width: 100%;
-  > div {
+  height: 100%;
+  div[role="textbox"] {
     padding: 4px 8px;
     overflow: auto;
-    background-color: var(--interactive-color);
     min-height: 4lh;
     max-height: 12lh;
+    outline: 0;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+
+    &:focus {
+      border: 2px solid var(--main-fg-color);
+    }
   }
 }

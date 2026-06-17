@@ -1,44 +1,70 @@
-.week {
+.wrapper {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  & > div {
-    position: relative;
-    text-align: center;
-    border-radius: 1000px;
-    aspect-ratio: 1 / 1;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  .calendar {
+    .week {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      & > div {
+        position: relative;
+        text-align: center;
+        border-radius: 1000px;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:first-child {
+          font-weight: bold;
+        }
+      }
+
+      &:first-child {
+        font-weight: bold;
+      }
+    }
+    .event {
+      background-color: var(--interactive-color);
+      cursor: pointer;
+
+      &.future {
+        background-color: var(--accent-color);
+      }
+    }
+
+    .today {
+      outline: 1px solid white;
+    }
+    .split::before {
+      position: absolute;
+      left: 0px;
+      content: "";
+      height: 100%;
+      top: 0px;
+      outline: 0.5px solid white;
+      width: 0px;
+    }
+
+    .firstWeek::after {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      content: "";
+      height: 0px;
+      outline: 0.5px solid white;
+      width: 100%;
+    }
+  }
+  .controls {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    .roundBtn {
+      padding: 8px;
+      img {
+        height: 16px;
+      }
+    }
   }
-}
-.event {
-  background-color: var(--interactive-color);
-  cursor: pointer;
-
-  &.future {
-    background-color: var(--accent-color);
-  }
-}
-
-.today {
-  outline: 1px solid white;
-}
-.split::before {
-  position: absolute;
-  left: 0px;
-  content: "";
-  height: 100%;
-  top: 0px;
-  outline: 0.5px solid white;
-  width: 0px;
-}
-
-.firstWeek::after {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  content: "";
-  height: 0px;
-  outline: 0.5px solid white;
-  width: 100%;
 }

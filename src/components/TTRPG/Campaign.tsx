@@ -1,52 +1,27 @@
-import { getCampaign } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { Card } from "@/src/components/Core/Card";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
-import { useFetchData } from "@/src/hooks/useFetchData";
-import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
-import { type Campaign as TCampaign } from "@/src/types/ttrpg";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { Temporal } from "temporal-polyfill";
 import { Calendar } from "../Core/Calendar";
 
-import { checkCampaignPermissions } from "@/src/utils/campaign";
-import { Spinner } from "../Core/Spinner";
+import { CampaignDetail } from "@/src/types/ttrpg";
+import { useRouter } from "next/navigation";
 import styles from "./Campaign.module.css";
-import { useRouteGuard } from "@/src/hooks/useRouteGuard";
 
 type Props = {
-  campaignId: TCampaign["id"];
+  campaign: CampaignDetail;
 };
 
-export const Campaign: React.FC<Props> = ({ campaignId }) => {
+export const Campaign: React.FC<Props> = ({ campaign }) => {
   const { userData } = useContext(UserContext);
-  const { createToast } = useContext(ToastContext);
-  const {
-    data: campaign,
-    loading: loadingCampaign,
-    error,
-  } = useFetchData(getCampaign, [campaignId]);
+
   const router = useRouter();
 
-  const { loading } = useRouteGuard(
-    loadingCampaign,
-    error,
-    false,
-    undefined,
-    "/",
-  );
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  const { author, canEdit } = checkCampaignPermissions(
-    userData.campaigns,
-    campaignId,
-  );
+  const author = ["player", "GM"].includes(userData.permissions[campaign.id]);
+  const canEdit = userData.permissions[campaign.id] === "GM";
 
   return (
     <section className={styles.campaign}>
@@ -57,7 +32,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           <>
             <Button
               onClick={() => {
-                router.push(`/sessions/new/${campaignId}`);
+                router.push(`/sessions/new/${campaign.id}`);
               }}
             >
               Nueva Sesión
@@ -65,7 +40,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
             {canEdit && (
               <Button
                 onClick={() => {
-                  router.push(`/campaigns/edit/${campaignId}`);
+                  router.push(`/campaigns/edit/${campaign.id}`);
                 }}
               >
                 Editar
@@ -89,7 +64,7 @@ export const Campaign: React.FC<Props> = ({ campaignId }) => {
           <>
             <h2>Personajes</h2>
             <ul>
-              {campaign?.members.map(
+              {campaign.members.map(
                 ({ character: { id, name }, name: memberName }) => {
                   return (
                     <li key={id}>

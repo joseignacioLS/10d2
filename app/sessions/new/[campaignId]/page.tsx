@@ -1,16 +1,18 @@
 "use client";
 
 import { getCampaign, postSession } from "@/src/api/ttrpg";
+import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { Form } from "@/src/components/Core/Form";
 import { Input } from "@/src/components/Core/Input";
+import { Spinner } from "@/src/components/Core/Spinner";
 import Tiptap from "@/src/components/Core/TipTap";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
+import { useRouteGuard } from "@/src/hooks/useRouteGuard";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
-import { ToastContext } from "@/src/store/toast";
 import { UserContext } from "@/src/store/user";
 import { useParams, useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 export default function Home() {
   const { campaignId } = useParams();
@@ -21,8 +23,11 @@ export default function Home() {
     summary: "",
   });
   const { userData } = useContext(UserContext);
-  const { data: campaign } = useFetchData(getCampaign, [campaignId]);
-  const { createToast } = useContext(ToastContext);
+  const {
+    data: campaign,
+    loading: loadingCampaign,
+    error,
+  } = useFetchData(getCampaign, [campaignId]);
   const router = useRouter();
 
   const handleCreateSession = useWrapFnWithToast(async () => {
@@ -43,18 +48,29 @@ export default function Home() {
     return "Sesión creada con éxito";
   });
 
-  useEffect(() => {
-    if (!userData) {
-      createToast(
-        "Debes estar logeado para acceder para crear una sesión",
-        "warning",
-      );
-      router.push(`/campaigns/${campaignId}`);
-    }
-  }, [userData]);
+  const loading = useRouteGuard(
+    loadingCampaign,
+    error,
+    true,
+    undefined,
+    `/campaigns/${campaignId}`,
+  );
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <main>
+      <CrumbsHeader
+        title={"Nueva sesión"}
+        crumbs={[
+          {
+            name: campaign?.short ?? "",
+            href: `/campaigns/${campaignId}`,
+          },
+        ]}
+      />
       <h2>Nueva sesión de {campaign?.name}</h2>
       <Form
         onSubmit={handleCreateSession}

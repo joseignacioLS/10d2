@@ -21,6 +21,7 @@ type UserState = {
       name: Campaign["name"];
       role: "GM" | "player";
     }[];
+    permissions: Record<string, "GM" | "player">;
   };
   loginModalOpen: boolean;
 };
@@ -48,6 +49,7 @@ const initialState: UserState = {
     username: "",
     subscriptions: [],
     campaigns: [],
+    permissions: {},
   },
   loginModalOpen: false,
 };
@@ -64,6 +66,7 @@ export const UserContext = createContext<{
       name: Campaign["name"];
       role: "GM" | "player";
     }[];
+    permissions: Record<string, "GM" | "player">;
   };
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -78,6 +81,7 @@ export const UserContext = createContext<{
     username: "",
     subscriptions: [],
     campaigns: [],
+    permissions: {},
   },
   login: () => new Promise(() => {}),
   logout: () => new Promise(() => {}),
@@ -111,6 +115,7 @@ const userReducer = (state: UserState, action: UserAction) => {
           username: "",
           subscriptions: [],
           campaigns: [],
+          permissions: {},
         },
       };
     case "logout": {
@@ -123,6 +128,7 @@ const userReducer = (state: UserState, action: UserAction) => {
           username: "",
           subscriptions: [],
           campaigns: [],
+          permissions: {},
         },
       };
     }
@@ -211,6 +217,12 @@ export const UserProvider = ({ children }: Props) => {
     const { data: member } = await getUserInfo();
     if (!member)
       throw "Error actualizando tu información. No existe el usuario";
+
+    const permissions: Record<string, "GM" | "player"> = {};
+
+    member.campaigns.forEach(({ id, role }) => {
+      permissions[id] = role;
+    });
     dispatch({
       type: "set_user_data",
       payload: {
@@ -219,6 +231,7 @@ export const UserProvider = ({ children }: Props) => {
         username: member.username,
         campaigns: member.campaigns,
         subscriptions: member.subscriptions,
+        permissions,
       },
     });
     return "";

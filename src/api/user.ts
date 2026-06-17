@@ -5,7 +5,10 @@ import { secureFetch } from "./fn";
 export const getUserInfo = async (): Promise<ServiceResponse<{
   id: string;
   username: string;
-  campaigns: Campaign[];
+  campaigns: {
+    id: Campaign["id"],
+    role: "GM" | "player"
+  }[];
   subscriptions: Campaign["id"][];
 }>> => {
   const path = "/user"

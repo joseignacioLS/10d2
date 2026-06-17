@@ -1,46 +1,26 @@
 "use client";
 
-import { annotateSentence, getSession } from "@/src/api/ttrpg";
+import { annotateSentence } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { Input } from "@/src/components/Core/Input";
 import { Modal } from "@/src/components/Core/Modal";
 import { TextEntrySection } from "@/src/components/TTRPG/TextEntrySection";
-import { useFetchData } from "@/src/hooks/useFetchData";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
-import { type Session as TSession } from "@/src/types/ttrpg";
+import { SessionDetail } from "@/src/types/ttrpg";
 import type React from "react";
 import { useContext, useEffect } from "react";
 
 import { useHandleInput } from "@/src/hooks/useHandleInput";
-import { ToastContext } from "@/src/store/toast";
-import { useRouter } from "next/navigation";
-import { Temporal } from "temporal-polyfill";
-import { Spinner } from "../Core/Spinner";
 import styles from "./Session.module.css";
 
 type Props = {
-  sessionId: TSession["id"];
+  session: SessionDetail;
+  refetchSession: () => void;
 };
 
-export const Session: React.FC<Props> = ({ sessionId }) => {
-  const {
-    data: session,
-    loading,
-    error,
-    refetch,
-  } = useFetchData(getSession, [sessionId], undefined, (data) => {
-    return {
-      ...data,
-      date: Temporal.PlainDate.from(data.date),
-    };
-  });
-
-  const { createToast } = useContext(ToastContext);
-
-  const router = useRouter();
-
+export const Session: React.FC<Props> = ({ session, refetchSession }) => {
   const { input, handleInput, resetInput } = useHandleInput({ annotation: "" });
 
   const {
@@ -54,13 +34,13 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
   const handleAnnotate = useWrapFnWithToast(
     async (text: string, position: number[]) => {
       if (!canAnnotate) throw "No tienes un personaje asignado en esta campaña";
-      const { error } = await annotateSentence(sessionId, position, text);
+      const { error } = await annotateSentence(session.id, position, text);
       if (error) {
         throw "Ha habido un error anotando la frase";
       }
       resetInput();
       closeCreateAnnotationModal();
-      refetch();
+      refetchSession();
       return "Texto anotado";
     },
   );
@@ -69,16 +49,6 @@ export const Session: React.FC<Props> = ({ sessionId }) => {
     if (!session?.campaign.id) return;
     checkAnnotationPermission(session?.campaign.id);
   }, [session?.campaign?.id]);
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error !== null) {
-    createToast(error, "error");
-    router.push("/");
-    return null;
-  }
 
   return (
     <div className={styles.sessionSummary}>

@@ -12,7 +12,6 @@ import { useFetchData } from "@/src/hooks/useFetchData";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
 import { useRouteGuard } from "@/src/hooks/useRouteGuard";
 import { ToastContext } from "@/src/store/toast";
-import { UserContext } from "@/src/store/user";
 import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 
@@ -30,8 +29,6 @@ export default function Home() {
     nextSession: campaign?.nextSession?.toString() ?? "",
     invite: "",
   });
-
-  const { userData } = useContext(UserContext);
 
   const { createToast } = useContext(ToastContext);
 
@@ -68,7 +65,7 @@ export default function Home() {
     loadingCampaign,
     error,
     true,
-    "campaign",
+    "GM",
     `/campaigns/${campaignId}`,
   );
 

@@ -1,10 +1,15 @@
 import { ServiceResponse } from "../types/api"
 
 export const secureFetch = async <T>(input: string | URL | Request, init?: RequestInit | undefined): Promise<ServiceResponse<T>> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, 15000)
   try {
     const res = await fetch(input, {
       credentials: "include",
-      ...init
+      ...init,
+      signal: controller.signal
     })
     if (!res.ok) return {
       data: null,
@@ -24,5 +29,8 @@ export const secureFetch = async <T>(input: string | URL | Request, init?: Reque
       data: null,
       error: String(err)
     }
+  }
+  finally {
+    clearTimeout(timeoutId)
   }
 }

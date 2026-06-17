@@ -2,10 +2,11 @@
 import { ServiceResponse } from "@/src/types/api";
 import {
   Campaign,
+  CampaignDetail,
   Character,
-  Member,
   SearchResult,
-  Session
+  Session,
+  SessionDetail
 } from "@/src/types/ttrpg";
 import { secureFetch } from "./fn";
 
@@ -21,17 +22,7 @@ export const getSearch = async (
 
 export const getSession = async (
   sessionId: string,
-): Promise<ServiceResponse<{
-  campaign: {
-    id: Campaign["id"],
-    short: Campaign["short"]
-  }
-  title: Session["title"],
-  date: Session["date"],
-  summary: Session["summary"],
-  author: Session["author"]
-
-}>> => {
+): Promise<ServiceResponse<SessionDetail>> => {
   const path = "/session/"
   return secureFetch(process.env.NEXT_PUBLIC_API + path + sessionId)
 
@@ -108,31 +99,9 @@ export const annotateSentence = (sessionId: string, position: number[], text: st
 }
 
 
-export const getCampaign = async (campaignId: Campaign["id"]): Promise<ServiceResponse<{
-  members: {
-    id: Member["id"],
-    name: Member["name"]
-    character: {
-      id: Character["id"]
-      role: "GM" | "player",
-      name: Character["name"]
-    }
-  }[];
-  name: Campaign["name"];
-  short: Campaign["short"];
-  summary: Campaign["summary"]
-  sessions: {
-    id: Session["id"]
-    number: Session["number"]
-    title: Session["title"]
-    date: Session["date"]
-  }[]
-  nextSession: Campaign["nextSession"]
-  invitations: {
-    id: Member["id"]
-    name: Member["name"]
-  }[]
-}>> => {
+export const getCampaign = async (campaignId: Campaign["id"]): Promise<ServiceResponse<
+  CampaignDetail
+>> => {
   const path = "/campaign/"
   return secureFetch(process.env.NEXT_PUBLIC_API + path + campaignId)
 
