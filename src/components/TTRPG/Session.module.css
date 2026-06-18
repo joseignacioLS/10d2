@@ -1,76 +1,33 @@
 .sessionSummary {
+  height: 100%;
+
+  padding-bottom: 40px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  line-height: 3ch;
+
+  h3 {
+    margin-bottom: 2ch;
+  }
+
+  p {
+    margin-bottom: 2ch;
+  }
+
+  .sessionBody {
     height: 100%;
-
-    padding-bottom: 40px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    line-height: 3ch;
-
-    h3 {
-        margin-bottom: 2ch;
-    }
-
-    p {
-        margin-bottom: 2ch
-    }
-
-    .sessionBody {
-        height: 100%;
-        overflow: auto;
-    }
-
+    overflow: auto;
+  }
 }
 
 .peekWrapper {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-height: 50%;
-    background-color: var(--main-bg-color);
-    padding: 8px 0;
-}
-
-
-
-.sessionAnnotationInputWrapper {
-    position: fixed;
-    top: 100%;
-    left: 0;
-    right: 0;
-    border-top: 3px solid var(--main-fg-color);
-    padding: 8px 16px;
-    transform: translateY(0%);
-
-    display: grid;
-    grid-template-rows: 1fr auto;
-    gap: 8px;
-
-
-    background-color: var(--main-bg-color);
-
-    opacity: 0;
-
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-
-
-    &.enabled {
-        transform: translateY(-100%);
-        opacity: 1;
-    }
-
-    .controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    textarea {
-        width: 100%;
-        padding: 4px;
-        background-color: transparent;
-        height: 12ch;
-    }
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 50%;
+  background-color: var(--main-bg-color);
+  padding: 8px 0;
 }

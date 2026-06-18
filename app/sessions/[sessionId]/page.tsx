@@ -2,6 +2,7 @@
 
 import { getSession } from "@/src/api/ttrpg";
 import { Spinner } from "@/src/components/Core/Spinner";
+import { AnnotateModal } from "@/src/components/TTRPG/AnnotateModal";
 import { Session } from "@/src/components/TTRPG/Session";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { useRouteGuard } from "@/src/hooks/useRouteGuard";
@@ -38,7 +39,13 @@ export default function Home() {
   return (
     <main>
       <TTRPGSessionProvider>
-        <Session session={session} refetchSession={refetch} />
+        <>
+          <Session session={session} />
+          <AnnotateModal
+            sessionId={sessionId as string}
+            refetchSession={refetch}
+          />
+        </>
       </TTRPGSessionProvider>
     </main>
   );
