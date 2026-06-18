@@ -48,7 +48,7 @@ export default function Home() {
     return "Sesión creada con éxito";
   });
 
-  const loading = useRouteGuard(
+  const { loading } = useRouteGuard(
     loadingCampaign,
     error,
     true,
