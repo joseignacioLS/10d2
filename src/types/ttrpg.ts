@@ -36,8 +36,11 @@ export type SessionDetail = {
   }
   title: Session["title"],
   date: Session["date"],
-  summary: Session["summary"],
-  author: Session["author"]
+  summary: string,
+  author: {
+    name: string;
+  };
+  annotations: any[]
 
 }
 
@@ -111,8 +114,14 @@ export type SessionSummary = {
 
 export type Annotation = {
   id: string;
-  position: number[];
-  character: string;
+  position: {
+    y: number, //paragraph
+    x: number //sentence
+  };
+  character: {
+    id: string;
+    name: string;
+  };
   text: string;
 };
 

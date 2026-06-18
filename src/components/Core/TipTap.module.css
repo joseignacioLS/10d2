@@ -1,6 +1,5 @@
 .tiptap {
   width: 100%;
-  height: 100%;
   div[role="textbox"] {
     padding: 4px 8px;
     overflow: auto;

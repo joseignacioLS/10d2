@@ -41,7 +41,7 @@ export const TTRPGSessionContext = createContext<{
     position: [number, number];
   }) => void;
   unselectSentence: () => void;
-  checkAnnotationPermission: (campaignId: string) => void;
+  updateAnnotatePermission: (state: boolean) => void;
 }>({
   selectedSentence: undefined,
   showCreateAnnotationModal: false,
@@ -50,7 +50,7 @@ export const TTRPGSessionContext = createContext<{
   closeCreateAnnotationModal: () => {},
   selectSentence: () => {},
   unselectSentence: () => {},
-  checkAnnotationPermission: () => {},
+  updateAnnotatePermission: () => {},
 });
 
 const ttrpgSessionReducer = (
@@ -127,11 +127,10 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
     });
   };
 
-  const checkAnnotationPermission = async (campaignId: string) => {
-    const { data } = await canAnnotate(campaignId);
+  const updateAnnotatePermission = async (value: boolean) => {
     dispatch({
       type: "can-annotate",
-      payload: data,
+      payload: value,
     });
   };
 
@@ -145,7 +144,7 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
         closeCreateAnnotationModal,
         selectSentence,
         unselectSentence,
-        checkAnnotationPermission,
+        updateAnnotatePermission,
       }}
     >
       {children}

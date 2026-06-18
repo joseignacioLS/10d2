@@ -14,7 +14,7 @@ export const Annotations: React.FC<Props> = ({
       className={`${styles.annotationsWrapper} ${showAnnotations ? styles.show : ""}`}
     >
       {annotations.map(({ text, character }, index) => {
-        return <Annotation key={index} text={text} author={character} />;
+        return <Annotation key={index} text={text} author={character.name} />;
       })}
     </span>
   );

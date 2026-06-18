@@ -5,10 +5,8 @@ import { Spinner } from "@/src/components/Core/Spinner";
 import { Session } from "@/src/components/TTRPG/Session";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { useRouteGuard } from "@/src/hooks/useRouteGuard";
-import { ToastContext } from "@/src/store/toast";
 import { TTRPGSessionProvider } from "@/src/store/ttrpgsession";
-import { useParams, useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useParams } from "next/navigation";
 
 export default function Home() {
   const { sessionId } = useParams();
@@ -23,10 +21,6 @@ export default function Home() {
       date: Temporal.PlainDate.from(data.date),
     };
   });
-
-  const { createToast } = useContext(ToastContext);
-
-  const router = useRouter();
 
   const { loading } = useRouteGuard(
     loadingSession,

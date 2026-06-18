@@ -14,6 +14,7 @@ import { useContext, useEffect } from "react";
 
 import { useHandleInput } from "@/src/hooks/useHandleInput";
 import styles from "./Session.module.css";
+import { UserContext } from "@/src/store/user";
 
 type Props = {
   session: SessionDetail;
@@ -23,12 +24,14 @@ type Props = {
 export const Session: React.FC<Props> = ({ session, refetchSession }) => {
   const { input, handleInput, resetInput } = useHandleInput({ annotation: "" });
 
+  const { userData } = useContext(UserContext);
+
   const {
     selectedSentence,
     showCreateAnnotationModal,
     closeCreateAnnotationModal,
     canAnnotate,
-    checkAnnotationPermission,
+    updateAnnotatePermission,
   } = useContext(TTRPGSessionContext);
 
   const handleAnnotate = useWrapFnWithToast(
@@ -46,9 +49,10 @@ export const Session: React.FC<Props> = ({ session, refetchSession }) => {
   );
 
   useEffect(() => {
-    if (!session?.campaign.id) return;
-    checkAnnotationPermission(session?.campaign.id);
-  }, [session?.campaign?.id]);
+    updateAnnotatePermission(
+      ["player", "GM"].includes(userData.permissions[session.campaign.id]),
+    );
+  }, [session.campaign.id, userData.permissions]);
 
   return (
     <div className={styles.sessionSummary}>
@@ -62,7 +66,7 @@ export const Session: React.FC<Props> = ({ session, refetchSession }) => {
         ]}
       />
       <p>
-        {session.author} //{" "}
+        {session.author.name} //{" "}
         {session.date.toLocaleString("es", {
           dateStyle: "full",
         })}
@@ -70,8 +74,8 @@ export const Session: React.FC<Props> = ({ session, refetchSession }) => {
       <div className="scrolleableBlock">
         {session && (
           <TextEntrySection
-            text={session.summary.text}
-            annotations={session.summary.annotations}
+            text={session.summary}
+            annotations={session.annotations}
           />
         )}
       </div>

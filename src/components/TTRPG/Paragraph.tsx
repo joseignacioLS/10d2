@@ -22,6 +22,9 @@ export const Paragraph: React.FC<Props> = ({
     <div key={lineIndex} className={styles.paragraph}>
       {" "}
       {sentences.map((sentence, sentenceIndex) => {
+        const isSelected =
+          selectedSentence?.position[0] === lineIndex &&
+          selectedSentence?.position[1] === sentenceIndex;
         return (
           <Sentence
             key={sentenceIndex}
@@ -29,12 +32,9 @@ export const Paragraph: React.FC<Props> = ({
             content={sentence}
             annotations={annotations.filter(
               ({ position }) =>
-                position[0] === lineIndex && position[1] === sentenceIndex,
+                position.y === lineIndex && position.x === sentenceIndex,
             )}
-            isSelected={
-              selectedSentence?.position[0] === lineIndex &&
-              selectedSentence?.position[1] === sentenceIndex
-            }
+            isSelected={isSelected}
           />
         );
       })}
