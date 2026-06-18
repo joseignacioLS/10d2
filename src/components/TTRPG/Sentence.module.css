@@ -24,14 +24,16 @@
   }
 }
 .annotateBtnWrapper {
+  display: inline-block;
   position: relative;
   width: 0;
   .annotateBtn {
     position: absolute;
-    height: 4ch;
-    width: 4ch;
-    bottom: 0;
+    height: 1.5lh;
+    width: 1.5lh;
+    bottom: -0.5lh;
     left: 100%;
     z-index: 1;
+    padding: 4px;
   }
 }

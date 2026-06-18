@@ -1,11 +1,16 @@
 .annotationsWrapper {
-    display: block;
+  display: inline-block;
 
-    overflow: hidden;
-    height: 0;
-    transition: height 0.3s ease-in-out, padding 0.3s ease-in-out;
+  overflow: hidden;
+  width: 0%;
+  height: 0;
+  transition:
+    width 0.3s ease-in-out,
+    height 0.3s ease-in-out,
+    padding 0.3s ease-in-out;
 
-    &.show {
-        height: auto;
-    }
+  &.show {
+    width: 100%;
+    height: auto;
+  }
 }
