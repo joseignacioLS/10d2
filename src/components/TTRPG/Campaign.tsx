@@ -112,10 +112,20 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
               {
                 date: campaign?.nextSession,
                 onClick: () => {
-                  canEdit &&
-                    window.open(
-                      `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${`Sesión ${(campaign?.sessions[0]?.number ?? 0) + 1} de ${campaign?.short}`}&dates=${campaign?.nextSession?.toString().replaceAll("-", "")}`,
-                    );
+                  if (!canEdit) {
+                    return;
+                  }
+                  const params = new URLSearchParams({
+                    action: "TEMPLATE",
+                    text: `Sesión ${(campaign?.sessions[0]?.number ?? 0) + 1} de ${campaign?.short}`,
+                    dates:
+                      campaign?.nextSession?.toString().replaceAll("-", "") ??
+                      "",
+                  });
+                  window.open(
+                    `https://calendar.google.com/calendar/render?${params.toString()}`,
+                    "_blank",
+                  );
                 },
               },
             ].filter(
