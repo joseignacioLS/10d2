@@ -7,6 +7,7 @@ import { useFetchData } from "@/src/hooks/useFetchData";
 import { useRouteGuard } from "@/src/hooks/useRouteGuard";
 import { TTRPGSessionProvider } from "@/src/store/ttrpgsession";
 import { useParams } from "next/navigation";
+import { Temporal } from "temporal-polyfill";
 
 export default function Home() {
   const { sessionId } = useParams();
