@@ -111,7 +111,12 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
               }),
               {
                 date: campaign?.nextSession,
-                onClick: () => {},
+                onClick: () => {
+                  canEdit &&
+                    window.open(
+                      `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${`Sesión ${(campaign?.sessions[0]?.number ?? 0) + 1} de ${campaign?.short}`}&dates=${campaign?.nextSession?.toString().replaceAll("-", "")}`,
+                    );
+                },
               },
             ].filter(
               (
