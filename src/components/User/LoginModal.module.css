@@ -1,3 +1,7 @@
+.loginModal {
+  width: fit-content;
+}
+
 .inputsWrapper {
   display: flex;
   flex-direction: column;
