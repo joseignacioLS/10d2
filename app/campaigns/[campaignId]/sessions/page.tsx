@@ -1,6 +1,7 @@
 "use client";
 
 import { getCampaign } from "@/src/api/ttrpg";
+import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { Spinner } from "@/src/components/Core/Spinner";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { useRouteGuard } from "@/src/hooks/useRouteGuard";
@@ -30,7 +31,15 @@ export default function Home() {
 
   return (
     <main style={{ display: "grid", gridTemplateRows: "auto 1fr" }}>
-      <h2>Sesiones de {campaign.name}</h2>
+      <CrumbsHeader
+        title={"Todas las sesiones"}
+        crumbs={[
+          {
+            name: campaign.short,
+            href: `/campaigns/${campaign.id}`,
+          },
+        ]}
+      ></CrumbsHeader>
       <ul className="scrolleableBlock">
         {campaign.sessions.map((session) => {
           return (
