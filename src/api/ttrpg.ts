@@ -84,7 +84,7 @@ export const getCharacter = async (
 
 
 export const annotateSentence = (sessionId: string, position: number[], text: string): Promise<ServiceResponse<boolean>> => {
-  const path = "/session/annotate"
+  const path = "/session/annotation"
   return secureFetch(process.env.NEXT_PUBLIC_API + path, {
     method: "POST",
     headers: {
@@ -95,6 +95,13 @@ export const annotateSentence = (sessionId: string, position: number[], text: st
       position,
       text
     })
+  })
+}
+
+export const deleteAnnotation = (annotationId: string): Promise<ServiceResponse<boolean>> => {
+  const path = "/session/annotation/"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path + annotationId, {
+    method: "DELETE",
   })
 }
 

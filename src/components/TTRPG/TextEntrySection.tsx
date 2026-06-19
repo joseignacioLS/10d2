@@ -1,12 +1,11 @@
 import { Paragraph } from "@/src/components/TTRPG/Paragraph";
-import type { Annotation } from "@/src/types/ttrpg";
+import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
+import { useContext } from "react";
 
-type Props = {
-  text: string;
-  annotations: Annotation[];
-};
+type Props = {};
 
-export const TextEntrySection: React.FC<Props> = ({ text, annotations }) => {
+export const TextEntrySection: React.FC<Props> = ({}) => {
+  const { session } = useContext(TTRPGSessionContext);
   return (
     <section
       onClick={(e) => {
@@ -14,7 +13,7 @@ export const TextEntrySection: React.FC<Props> = ({ text, annotations }) => {
         e.stopPropagation();
       }}
     >
-      {text
+      {session?.summary
         .replace(/(\/(?:p|h1|h2|h3)>)(<)/g, "$1\n$2")
         .split("\n")
         .map((line, lineIndex) => {
@@ -29,7 +28,6 @@ export const TextEntrySection: React.FC<Props> = ({ text, annotations }) => {
                 key={lineIndex}
                 lineIndex={lineIndex}
                 plainText={line.substring(3, line.length - 4)}
-                annotations={annotations}
               ></Paragraph>
             );
           }

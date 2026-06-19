@@ -1,10 +1,14 @@
 "use client";
 
-import React, { createContext, useReducer } from "react";
-import { annotateSentence } from "../api/ttrpg";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
+import { annotateSentence, deleteAnnotation } from "../api/ttrpg";
 import { useWrapFnWithToast } from "../hooks/useWrapFnWithToast";
+import { SessionDetail } from "../types/ttrpg";
+import { UserContext } from "./user";
+import { AlertContext } from "./alert";
 
 type TTRPGSessionState = {
+  session: SessionDetail | undefined;
   canAnnotate: boolean;
   showCreateAnnotationModal: boolean;
   selectedSentence:
@@ -21,12 +25,15 @@ type TTRPGSessionAction = {
 };
 
 const initialState: TTRPGSessionState = {
+  session: undefined,
   showCreateAnnotationModal: false,
   selectedSentence: undefined,
   canAnnotate: false,
 };
 
 export const TTRPGSessionContext = createContext<{
+  session: SessionDetail | undefined;
+  setSessionIds: (sessionId: string, campaignId: string) => void;
   selectedSentence:
     | {
         text: string;
@@ -48,7 +55,10 @@ export const TTRPGSessionContext = createContext<{
     annotation: string,
     position: number[],
   ) => Promise<void>;
+  handleDeleteAnnotation: (annotationId: string) => void;
 }>({
+  session: undefined,
+  setSessionIds: () => {},
   selectedSentence: undefined,
   showCreateAnnotationModal: false,
   canAnnotate: false,
@@ -58,6 +68,7 @@ export const TTRPGSessionContext = createContext<{
   unselectSentence: () => {},
   updateAnnotatePermission: () => {},
   handleAnnotate: () => new Promise(() => {}),
+  handleDeleteAnnotation: () => {},
 });
 
 const ttrpgSessionReducer = (
@@ -94,17 +105,32 @@ const ttrpgSessionReducer = (
         canAnnotate: action.payload,
       };
     }
+    case "set-session": {
+      return {
+        ...state,
+        session: action.payload,
+      };
+    }
     default:
       return state;
   }
 };
 
 type Props = {
+  session: SessionDetail;
+  refetchSession: () => void;
   children: React.ReactElement;
 };
 
-export const TTRPGSessionProvider = ({ children }: Props) => {
+export const TTRPGSessionProvider = ({
+  session,
+  refetchSession,
+  children,
+}: Props) => {
   const [state, dispatch] = useReducer(ttrpgSessionReducer, initialState);
+
+  const { userData } = useContext(UserContext);
+  const { createAlert } = useContext(AlertContext);
 
   const openCreateAnnotationModal = () => {
     dispatch({
@@ -141,6 +167,16 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
     });
   };
 
+  const setSessionIds = (sessionId: string, campaignId: string) => {
+    dispatch({
+      type: "set-session-ids",
+      payload: {
+        sessionId,
+        campaignId,
+      },
+    });
+  };
+
   const handleAnnotate = useWrapFnWithToast(
     async (sessionId: string, text: string, position: number[]) => {
       const { error } = await annotateSentence(sessionId, position, text);
@@ -152,9 +188,40 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
     },
   );
 
+  const handleDeleteAnnotation = (annotationId: string) => {
+    createAlert("¿Confirmas eliminar la anotación?", [
+      {
+        text: "No",
+        callback: () => {},
+      },
+      {
+        text: "Sí",
+        callback: async () => {
+          await deleteAnnotation(annotationId);
+          refetchSession();
+        },
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    dispatch({
+      type: "set-session",
+      payload: session,
+    });
+  }, [session, session?.id]);
+
+  useEffect(() => {
+    updateAnnotatePermission(
+      ["player", "GM"].includes(userData.permissions[session?.campaign.id]),
+    );
+  }, [session?.campaign.id, userData.permissions]);
+
   return (
     <TTRPGSessionContext.Provider
       value={{
+        session: state.session,
+        setSessionIds,
         selectedSentence: state.selectedSentence,
         canAnnotate: state.canAnnotate,
         showCreateAnnotationModal: state.showCreateAnnotationModal,
@@ -164,6 +231,7 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
         unselectSentence,
         updateAnnotatePermission,
         handleAnnotate,
+        handleDeleteAnnotation,
       }}
     >
       {children}

@@ -1,7 +1,9 @@
+import { Alert } from "@/src/components/Core/Alert";
 import { Toast } from "@/src/components/Core/Toast";
 import { SearchModal } from "@/src/components/TTRPG/SearchModal";
 import { LoginModal } from "@/src/components/User/LoginModal";
 import { UserButton } from "@/src/components/User/UserButton";
+import { AlertProvider } from "@/src/store/alert";
 import { ToastProvider } from "@/src/store/toast";
 import { UserProvider } from "@/src/store/user";
 import type { Metadata } from "next";
@@ -26,22 +28,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ToastProvider>
-        <UserProvider>
-          <body className={opensans.className}>
-            <header className={"mainHeader"}>
-              <SearchModal />
-              <h1>
-                <Link href="/">
-                  <img src="/10d2.svg" alt="logo de 10d2" />
-                </Link>
-              </h1>
-              <UserButton />
-            </header>
-            {children}
-            <LoginModal />
-            <Toast />
-          </body>
-        </UserProvider>
+        <AlertProvider>
+          <UserProvider>
+            <body className={opensans.className}>
+              <header className={"mainHeader"}>
+                <SearchModal />
+                <h1>
+                  <Link href="/">
+                    <img src="/10d2.svg" alt="logo de 10d2" />
+                  </Link>
+                </h1>
+                <UserButton />
+              </header>
+              {children}
+              <LoginModal />
+              <Toast />
+              <Alert />
+            </body>
+          </UserProvider>
+        </AlertProvider>
       </ToastProvider>
     </html>
   );

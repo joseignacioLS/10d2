@@ -38,9 +38,9 @@ export default function Home() {
 
   return (
     <main>
-      <TTRPGSessionProvider>
+      <TTRPGSessionProvider session={session} refetchSession={refetch}>
         <>
-          <Session session={session} />
+          <Session />
           <AnnotateModal
             sessionId={sessionId as string}
             refetchSession={refetch}

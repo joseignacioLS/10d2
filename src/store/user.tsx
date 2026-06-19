@@ -20,6 +20,10 @@ type UserState = {
       id: Campaign["id"];
       name: Campaign["name"];
       role: "GM" | "player";
+      character: {
+        id: string;
+        name: string;
+      };
     }[];
     permissions: Record<string, "GM" | "player">;
   };
@@ -65,6 +69,10 @@ export const UserContext = createContext<{
       id: Campaign["id"];
       name: Campaign["name"];
       role: "GM" | "player";
+      character: {
+        id: string;
+        name: string;
+      };
     }[];
     permissions: Record<string, "GM" | "player">;
   };
