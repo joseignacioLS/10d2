@@ -91,6 +91,11 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
                   </li>
                 );
               })}
+              <li>
+                <Link href={`/campaigns/${campaign.id}/sessions`}>
+                  Ver todas
+                </Link>
+              </li>
             </ul>
           </>
         </Card>
