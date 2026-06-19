@@ -1,7 +1,8 @@
 "use client";
 
 import React, { createContext, useReducer } from "react";
-import { canAnnotate } from "../api/ttrpg";
+import { annotateSentence } from "../api/ttrpg";
+import { useWrapFnWithToast } from "../hooks/useWrapFnWithToast";
 
 type TTRPGSessionState = {
   canAnnotate: boolean;
@@ -42,6 +43,11 @@ export const TTRPGSessionContext = createContext<{
   }) => void;
   unselectSentence: () => void;
   updateAnnotatePermission: (state: boolean) => void;
+  handleAnnotate: (
+    sessionId: string,
+    annotation: string,
+    position: number[],
+  ) => Promise<void>;
 }>({
   selectedSentence: undefined,
   showCreateAnnotationModal: false,
@@ -51,6 +57,7 @@ export const TTRPGSessionContext = createContext<{
   selectSentence: () => {},
   unselectSentence: () => {},
   updateAnnotatePermission: () => {},
+  handleAnnotate: () => new Promise(() => {}),
 });
 
 const ttrpgSessionReducer = (
@@ -134,6 +141,17 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
     });
   };
 
+  const handleAnnotate = useWrapFnWithToast(
+    async (sessionId: string, text: string, position: number[]) => {
+      const { error } = await annotateSentence(sessionId, position, text);
+      if (error) {
+        throw "Ha habido un error anotando la frase";
+      }
+      closeCreateAnnotationModal();
+      return "Texto anotado";
+    },
+  );
+
   return (
     <TTRPGSessionContext.Provider
       value={{
@@ -145,6 +163,7 @@ export const TTRPGSessionProvider = ({ children }: Props) => {
         selectSentence,
         unselectSentence,
         updateAnnotatePermission,
+        handleAnnotate,
       }}
     >
       {children}

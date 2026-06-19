@@ -5,7 +5,7 @@ export const useWrapFnWithToast = (fn: (...args: any) => Promise<string>) => {
   const { createToast } = useContext(ToastContext);
 
   const wrappedFn = async (...args: any) => {
-    fn(...args)
+    return fn(...args)
       .then((successMsg) => {
         if (successMsg === "") return;
         createToast(successMsg, "info");
