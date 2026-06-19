@@ -190,7 +190,9 @@ export const UserProvider = ({ children }: Props) => {
     } catch (err) {
       dispatch({
         type: "login-error",
-        payload: err,
+        payload: {
+          error: err,
+        },
       });
     }
   };
