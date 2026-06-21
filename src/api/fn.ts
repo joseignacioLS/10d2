@@ -1,4 +1,4 @@
-import { ServiceResponse } from "../types/api"
+import { ServiceResponse } from "@/src/types/api";
 
 export const secureFetch = async <T>(input: string | URL | Request, init?: RequestInit | undefined): Promise<ServiceResponse<T>> => {
   const controller = new AbortController();
@@ -20,7 +20,7 @@ export const secureFetch = async <T>(input: string | URL | Request, init?: Reque
     }
     const { status, message, data } = await res.json()
     if (status !== 200) {
-      if ([401, 403].includes(status)) {
+      if ([401, 403].includes(status) && typeof window !== "undefined") {
         localStorage.removeItem("authtoken");
       }
       throw message
