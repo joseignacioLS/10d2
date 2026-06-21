@@ -33,7 +33,7 @@ type UserState = {
 type UserAction =
   | { type: "error"; payload: string }
   | { type: "start-login" }
-  | { type: "login"; payload: string }
+  | { type: "login"; payload: { token: string } }
   | { type: "login-error" }
   | {
       type: "logout" | "open_login_modal" | "close_login_modal";
@@ -109,6 +109,7 @@ const userReducer = (state: UserState, action: UserAction) => {
         },
       };
     case "login":
+      localStorage.setItem("authtoken", action.payload.token);
       return {
         ...state,
         token: action.payload,
@@ -127,6 +128,7 @@ const userReducer = (state: UserState, action: UserAction) => {
         },
       };
     case "logout": {
+      localStorage.removeItem("authtoken");
       return {
         ...state,
         token: undefined,
@@ -185,7 +187,7 @@ export const UserProvider = ({ children }: Props) => {
       }
       dispatch({
         type: "login",
-        payload: { token, info: "¡Hola de nuevo!" },
+        payload: { token: token, info: "¡Hola de nuevo!" },
       });
     } catch (err) {
       dispatch({
@@ -260,7 +262,7 @@ export const UserProvider = ({ children }: Props) => {
         }
         dispatch({
           type: "login",
-          payload: data,
+          payload: { token: data },
         });
       })
       .catch((err) => {

@@ -6,9 +6,13 @@ export const secureFetch = async <T>(input: string | URL | Request, init?: Reque
     controller.abort();
   }, 15000)
   try {
+    const token = localStorage.getItem("authtoken") ?? "";
     const res = await fetch(input, {
-      credentials: "include",
       ...init,
+      headers: {
+        ...init?.headers,
+        authToken: token,
+      },
       signal: controller.signal
     })
     if (!res.ok) return {
@@ -17,6 +21,9 @@ export const secureFetch = async <T>(input: string | URL | Request, init?: Reque
     }
     const { status, message, data } = await res.json()
     if (status !== 200) {
+      if ([401, 403].includes(status)) {
+        localStorage.removeItem("authtoken");
+      }
       throw message
     }
     return {
