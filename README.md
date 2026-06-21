@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 10d2
 
-## Getting Started
+A project for TTRPG story sharing
 
-First, run the development server:
+## Summary
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+10d2 is a forum-like site where TTRPG groups can write, comment and share their campaign journals.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Session based journal
+- Any member of the group can write a session summary: not only the GM can tell what happend, explain what your character lived
+- Add inline comments to your group sessions: add your character perspective to the story
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## TODO
 
-## Learn More
+### Bugs
 
-To learn more about Next.js, take a look at the following resources:
+- [x] iOS login
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] Create new user
+- [ ] Recover password
+- [ ] Draft sessions
+- [ ] Edit session while in draft
+- [ ] Autonumber session
+- [ ] Improve read experience
+- [ ] Report summary/comment
+- [ ] About us page
+- [ ] Policy page
+- [ ] Edit character data
+- [ ] Character avatar
+- [ ] Character color
+- [ ] Campaign glossary
+- [ ] Campaign cover image
+- [ ] Member invitation
+- [ ] Character creation
+- [ ] Handle Invitations
+- [ ] Remove player from campaign
