@@ -1,7 +1,7 @@
+import { ToastContext } from "@/src/store/toast";
+import { UserContext } from "@/src/store/user";
 import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { ToastContext } from "../store/toast";
-import { UserContext } from "../store/user";
 
 export const useRouteGuard = (
   dataLoading: boolean,

@@ -7,10 +7,9 @@ import {
 } from "@/src/api/ttrpg";
 import { Card } from "@/src/components/Core/Card";
 import { Carousel } from "@/src/components/Core/Carousel";
+import { Spinner } from "@/src/components/Core/Spinner";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import Link from "next/link";
-
-import { Spinner } from "../Core/Spinner";
 import styles from "./Dashboard.module.css";
 
 export const Dashboard = () => {

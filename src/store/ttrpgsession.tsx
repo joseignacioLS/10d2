@@ -1,11 +1,11 @@
 "use client";
 
+import { annotateSentence, deleteAnnotation } from "@/src/api/ttrpg";
+import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
+import { AlertContext } from "@/src/store/alert";
+import { UserContext } from "@/src/store/user";
+import { SessionDetail } from "@/src/types/ttrpg";
 import React, { createContext, useContext, useEffect, useReducer } from "react";
-import { annotateSentence, deleteAnnotation } from "../api/ttrpg";
-import { useWrapFnWithToast } from "../hooks/useWrapFnWithToast";
-import { SessionDetail } from "../types/ttrpg";
-import { UserContext } from "./user";
-import { AlertContext } from "./alert";
 
 type TTRPGSessionState = {
   session: SessionDetail | undefined;

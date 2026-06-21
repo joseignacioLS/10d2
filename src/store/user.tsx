@@ -1,13 +1,17 @@
 "use client";
 
+import {
+  loginOnTokeRequest,
+  loginRequest,
+  logoutRequest,
+} from "@/src/api/auth";
 import { getUserInfo } from "@/src/api/user";
 import { useReducerWithMiddleware } from "@/src/hooks/useReducerWithMiddleware";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { ToastContext } from "@/src/store/toast";
-import { Campaign, Member } from "@/src/types/ttrpg";
+import { Campaign } from "@/src/types/ttrpg";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect } from "react";
-import { loginOnTokeRequest, loginRequest, logoutRequest } from "../api/auth";
 
 type UserState = {
   token?: string;

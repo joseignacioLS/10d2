@@ -1,6 +1,6 @@
+import { secureFetch } from "@/src/api/fn";
 import type { ServiceResponse } from "@/src/types/api";
-import { Campaign } from "../types/ttrpg";
-import { secureFetch } from "./fn";
+import { Campaign } from "@/src/types/ttrpg";
 
 export const getUserInfo = async (): Promise<ServiceResponse<{
   id: string;

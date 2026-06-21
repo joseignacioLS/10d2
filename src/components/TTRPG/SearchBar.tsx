@@ -1,13 +1,13 @@
 import { getSearch } from "@/src/api/ttrpg";
 import { Card } from "@/src/components/Core/Card";
 import { Input } from "@/src/components/Core/Input";
+import { Spinner } from "@/src/components/Core/Spinner";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
+import { ToastContext } from "@/src/store/toast";
 import { SearchResult } from "@/src/types/ttrpg";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { Spinner } from "../Core/Spinner";
-import { ToastContext } from "@/src/store/toast";
 
 type Props = {
   onSearchClick: () => void;

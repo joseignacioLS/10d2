@@ -8,7 +8,7 @@ import {
   Session,
   SessionDetail
 } from "@/src/types/ttrpg";
-import { secureFetch } from "./fn";
+import { secureFetch } from "@/src/api/fn";
 
 export const getSearch = async (
   search: string,

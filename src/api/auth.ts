@@ -1,5 +1,5 @@
-import { ServiceResponse } from "../types/api";
-import { secureFetch } from "./fn";
+import { secureFetch } from "@/src/api/fn";
+import { ServiceResponse } from "@/src/types/api";
 
 export const loginRequest = async (
   username: string,

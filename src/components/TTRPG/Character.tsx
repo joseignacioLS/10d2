@@ -1,9 +1,9 @@
 import { getCharacter } from "@/src/api/ttrpg";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
+import { Spinner } from "@/src/components/Core/Spinner";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { UserContext } from "@/src/store/user";
 import { useContext } from "react";
-import { Spinner } from "../Core/Spinner";
 
 type Props = {
   characterId: string;

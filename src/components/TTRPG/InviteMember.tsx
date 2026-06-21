@@ -1,6 +1,6 @@
+import { Form } from "@/src/components/Core/Form";
+import { Input } from "@/src/components/Core/Input";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
-import { Form } from "../Core/Form";
-import { Input } from "../Core/Input";
 
 type Props = {};
 
