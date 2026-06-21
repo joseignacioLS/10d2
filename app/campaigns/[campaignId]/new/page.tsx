@@ -43,7 +43,7 @@ export default function Home() {
     if (error !== null) {
       throw "Ha habido un error creando la sesión";
     }
-    router.push(`/sessions/${sessionId}`);
+    router.push(`/campaigns/${campaignId}/${sessionId}`);
 
     return "Sesión creada con éxito";
   });

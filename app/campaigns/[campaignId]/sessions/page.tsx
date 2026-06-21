@@ -44,7 +44,7 @@ export default function Home() {
         {campaign.sessions.map((session) => {
           return (
             <li key={session.id}>
-              <Link href={`/sessions/${session.id}`}>
+              <Link href={`/campaigns/${campaignId}/${session.id}`}>
                 {session.number} - {session.title}
               </Link>
             </li>

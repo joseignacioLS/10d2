@@ -103,7 +103,7 @@ export const SearchBar: React.FC<Props> = ({
                 return (
                   <li key={session.id}>
                     <Link
-                      href={`/sessions/${session.id}`}
+                      href={`/campaigns/${session.campaign}/${session.id}`}
                       onClick={onSearchClick}
                     >
                       {session.title}

@@ -53,7 +53,7 @@ export const Dashboard = () => {
             {lastSessions?.map((session) => {
               return (
                 <li key={session.id}>
-                  <Link href={`/sessions/${session.id}`}>
+                  <Link href={`/campaigns/${session.campaign}/${session.id}`}>
                     {session.title} ({session.campaign}#{session.number})
                   </Link>
                 </li>

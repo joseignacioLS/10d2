@@ -53,6 +53,7 @@ export type SearchResult = {
   sessions: {
     id: Session["id"],
     title: Session["title"]
+    campaign: Campaign["id"]
   }[]
 }
 

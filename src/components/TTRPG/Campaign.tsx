@@ -31,7 +31,7 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
           <>
             <Button
               onClick={() => {
-                router.push(`/sessions/new/${campaign.id}`);
+                router.push(`/campaigns/${campaign.id}/new`);
               }}
             >
               Nueva Sesión
@@ -39,7 +39,7 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
             {canEdit && (
               <Button
                 onClick={() => {
-                  router.push(`/campaigns/edit/${campaign.id}`);
+                  router.push(`/campaigns/${campaign.id}/edit`);
                 }}
               >
                 Editar
@@ -84,7 +84,7 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
               {campaign?.sessions.slice(0, 5).map(({ id, number, title }) => {
                 return (
                   <li key={id}>
-                    <Link href={`/sessions/${id}`}>
+                    <Link href={`/campaigns/${campaign.id}/${id}`}>
                       #{number ?? 1} {title}
                     </Link>
                   </li>
@@ -109,7 +109,7 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
                 return {
                   date,
                   onClick: () => {
-                    router.push(`/sessions/${id}`);
+                    router.push(`/campaigns/${campaign.id}/${id}`);
                   },
                 };
               }),
