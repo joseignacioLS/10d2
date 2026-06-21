@@ -6,13 +6,12 @@ export const secureFetch = async <T>(input: string | URL | Request, init?: Reque
     controller.abort();
   }, 15000)
   try {
-    const token = localStorage.getItem("authtoken") ?? "";
+    const token = typeof window !== "undefined" ? (localStorage.getItem("authtoken") ?? "") : ""
+    const headers = new Headers(init?.headers);
+    headers.set("authtoken", token)
     const res = await fetch(input, {
       ...init,
-      headers: {
-        ...init?.headers,
-        authToken: token,
-      },
+      headers,
       signal: controller.signal
     })
     if (!res.ok) return {
