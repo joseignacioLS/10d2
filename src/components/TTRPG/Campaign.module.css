@@ -13,3 +13,8 @@
   display: flex;
   gap: 8px;
 }
+
+.dayNextSession {
+  background-color: var(--orange)!important;
+  color: var(--main-bg-color);
+}

@@ -7,6 +7,7 @@ type Props = {
   events: {
     date: Temporal.PlainDate;
     onClick: () => void;
+    className?: string;
   }[];
 };
 
@@ -55,7 +56,7 @@ export const Calendar: React.FC<Props> = ({ events }) => {
                     key={deltaDay}
                     className={`${event ? styles.event : ""} ${isToday ? styles.today : ""} ${
                       splitMonth ? styles.split : ""
-                    } ${firstWeek ? styles.firstWeek : ""} ${isFuture ? styles.future : ""}`}
+                    } ${firstWeek ? styles.firstWeek : ""} ${event?.className}`}
                     onClick={event?.onClick}
                   >
                     {day.day}

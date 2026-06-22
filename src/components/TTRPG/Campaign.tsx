@@ -91,7 +91,13 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
                 };
               }),
               {
-                date: campaign?.nextSession,
+                date:
+                  Temporal.PlainDate.from(campaign?.nextSession ?? "").since(
+                    Temporal.Now.plainDateISO(),
+                  ).days >= 0
+                    ? campaign?.nextSession
+                    : undefined,
+                className: styles.dayNextSession,
                 onClick: () => {
                   if (!canEdit) {
                     return;
