@@ -11,7 +11,7 @@ import { useParams } from "next/navigation";
 import { Temporal } from "temporal-polyfill";
 
 export default function Home() {
-  const { sessionId } = useParams();
+  const { sessionId, campaignId } = useParams();
   const {
     data: session,
     loading: loadingSession,
@@ -29,7 +29,7 @@ export default function Home() {
     error,
     false,
     undefined,
-    "/",
+    `/campaigns/${campaignId}`,
   );
 
   if (loading || !session) {

@@ -58,15 +58,17 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
           <>
             <h2>Sesiones</h2>
             <ul>
-              {campaign?.sessions.slice(0, 5).map(({ id, number, title }) => {
-                return (
-                  <li key={id}>
-                    <Link href={`/campaigns/${campaign.id}/${id}`}>
-                      #{number ?? 1} {title}
-                    </Link>
-                  </li>
-                );
-              })}
+              {campaign?.sessions
+                .slice(0, 5)
+                .map(({ id, number, title, status }) => {
+                  return (
+                    <li key={id}>
+                      <Link href={`/campaigns/${campaign.id}/${id}`}>
+                        #{number ?? 1} {title} {status === "draft" && "(draft)"}
+                      </Link>
+                    </li>
+                  );
+                })}
               <li>
                 <Link href={`/campaigns/${campaign.id}/sessions`}>
                   Ver todas

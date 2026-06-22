@@ -14,16 +14,16 @@ export const secureFetch = async <T>(input: string | URL | Request, init?: Reque
       headers,
       signal: controller.signal
     })
-    if (!res.ok) return {
-      data: null,
-      error: "Ha habido un error con la request"
-    }
     const { status, message, data } = await res.json()
     if (status !== 200) {
       if ([401, 403].includes(status) && typeof window !== "undefined") {
         localStorage.removeItem("authtoken");
       }
       throw message
+    }
+    if (!res.ok) return {
+      data: null,
+      error: "Ha habido un error con la request"
     }
     return {
       data,
