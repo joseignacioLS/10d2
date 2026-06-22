@@ -1,7 +1,9 @@
+import { annotateSentence } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { Modal } from "@/src/components/Core/Modal";
 import Tiptap from "@/src/components/Core/TipTap";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
+import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
 import { useContext } from "react";
 
@@ -16,8 +18,18 @@ export const AnnotateModal: React.FC<Props> = ({
     selectedSentence,
     showCreateAnnotationModal,
     closeCreateAnnotationModal,
-    handleAnnotate,
   } = useContext(TTRPGSessionContext);
+
+  const handleAnnotate = useWrapFnWithToast(
+    async (sessionId: string, text: string, position: number[]) => {
+      const { error } = await annotateSentence(sessionId, position, text);
+      if (error) {
+        throw "Ha habido un error anotando la frase";
+      }
+      closeCreateAnnotationModal();
+      return "Texto anotado";
+    },
+  );
 
   return (
     <Modal

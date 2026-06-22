@@ -1,7 +1,6 @@
 "use client";
 
-import { annotateSentence, deleteAnnotation } from "@/src/api/ttrpg";
-import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
+import { deleteAnnotation } from "@/src/api/ttrpg";
 import { AlertContext } from "@/src/store/alert";
 import { UserContext } from "@/src/store/user";
 import { SessionDetail } from "@/src/types/ttrpg";
@@ -34,6 +33,7 @@ const initialState: TTRPGSessionState = {
 export const TTRPGSessionContext = createContext<{
   session: SessionDetail | undefined;
   setSessionIds: (sessionId: string, campaignId: string) => void;
+  refetchSession: () => Promise<void>;
   selectedSentence:
     | {
         text: string;
@@ -50,15 +50,10 @@ export const TTRPGSessionContext = createContext<{
   }) => void;
   unselectSentence: () => void;
   updateAnnotatePermission: (state: boolean) => void;
-  handleAnnotate: (
-    sessionId: string,
-    annotation: string,
-    position: number[],
-  ) => Promise<void>;
-  handleDeleteAnnotation: (annotationId: string) => void;
 }>({
   session: undefined,
   setSessionIds: () => {},
+  refetchSession: () => new Promise(() => {}),
   selectedSentence: undefined,
   showCreateAnnotationModal: false,
   canAnnotate: false,
@@ -67,8 +62,6 @@ export const TTRPGSessionContext = createContext<{
   selectSentence: () => {},
   unselectSentence: () => {},
   updateAnnotatePermission: () => {},
-  handleAnnotate: () => new Promise(() => {}),
-  handleDeleteAnnotation: () => {},
 });
 
 const ttrpgSessionReducer = (
@@ -118,7 +111,7 @@ const ttrpgSessionReducer = (
 
 type Props = {
   session: SessionDetail;
-  refetchSession: () => void;
+  refetchSession: () => Promise<void>;
   children: React.ReactElement;
 };
 
@@ -177,33 +170,6 @@ export const TTRPGSessionProvider = ({
     });
   };
 
-  const handleAnnotate = useWrapFnWithToast(
-    async (sessionId: string, text: string, position: number[]) => {
-      const { error } = await annotateSentence(sessionId, position, text);
-      if (error) {
-        throw "Ha habido un error anotando la frase";
-      }
-      closeCreateAnnotationModal();
-      return "Texto anotado";
-    },
-  );
-
-  const handleDeleteAnnotation = (annotationId: string) => {
-    createAlert("¿Confirmas eliminar la anotación?", [
-      {
-        text: "No",
-        callback: () => {},
-      },
-      {
-        text: "Sí",
-        callback: async () => {
-          await deleteAnnotation(annotationId);
-          refetchSession();
-        },
-      },
-    ]);
-  };
-
   useEffect(() => {
     dispatch({
       type: "set-session",
@@ -222,6 +188,7 @@ export const TTRPGSessionProvider = ({
       value={{
         session: state.session,
         setSessionIds,
+        refetchSession,
         selectedSentence: state.selectedSentence,
         canAnnotate: state.canAnnotate,
         showCreateAnnotationModal: state.showCreateAnnotationModal,
@@ -230,8 +197,6 @@ export const TTRPGSessionProvider = ({
         selectSentence,
         unselectSentence,
         updateAnnotatePermission,
-        handleAnnotate,
-        handleDeleteAnnotation,
       }}
     >
       {children}

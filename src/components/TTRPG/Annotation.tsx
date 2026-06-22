@@ -1,9 +1,10 @@
-import { editAnnotation } from "@/src/api/ttrpg";
+import { deleteAnnotation, editAnnotation } from "@/src/api/ttrpg";
 import { Button } from "@/src/components/Core/Button";
 import { Modal } from "@/src/components/Core/Modal";
 import Tiptap from "@/src/components/Core/TipTap";
 import { UserTextBubble } from "@/src/components/Core/UserTextBubble";
 import { useHandleInput } from "@/src/hooks/useHandleInput";
+import { AlertContext } from "@/src/store/alert";
 import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
 import { UserContext } from "@/src/store/user";
 import { useContext, useState } from "react";
@@ -25,7 +26,8 @@ export const Annotation: React.FC<Props> = ({
 }) => {
   const { userData } = useContext(UserContext);
   const [annotationText, setAnnotationText] = useState(text);
-  const { session, handleDeleteAnnotation } = useContext(TTRPGSessionContext);
+  const { session, refetchSession } = useContext(TTRPGSessionContext);
+  const { createAlert } = useContext(AlertContext);
 
   const { input, handleInput } = useHandleInput({
     annotation: text,
@@ -35,9 +37,25 @@ export const Annotation: React.FC<Props> = ({
     userData.campaigns.find(({ id }) => id === session?.campaign.id)?.character
       .id === author.id;
 
+  const handleDeleteAnnotation = (annotationId: string) => {
+    createAlert("¿Confirmas eliminar la anotación?", [
+      {
+        text: "No",
+        callback: () => {},
+      },
+      {
+        text: "Sí",
+        callback: async () => {
+          await deleteAnnotation(annotationId);
+          refetchSession();
+        },
+      },
+    ]);
+  };
+
   return (
     <>
-      <UserTextBubble color={"#5941b1"} width="full">
+      <UserTextBubble color={"#306080"} width="full">
         <div dangerouslySetInnerHTML={{ __html: annotationText }}></div>
         <div className={styles.authorBar}>
           <i> - {author.name}</i>
