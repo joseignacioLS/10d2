@@ -1,7 +1,5 @@
 "use client";
 
-import { deleteAnnotation } from "@/src/api/ttrpg";
-import { AlertContext } from "@/src/store/alert";
 import { UserContext } from "@/src/store/user";
 import { SessionDetail } from "@/src/types/ttrpg";
 import React, { createContext, useContext, useEffect, useReducer } from "react";
@@ -123,7 +121,6 @@ export const TTRPGSessionProvider = ({
   const [state, dispatch] = useReducer(ttrpgSessionReducer, initialState);
 
   const { userData } = useContext(UserContext);
-  const { createAlert } = useContext(AlertContext);
 
   const openCreateAnnotationModal = () => {
     dispatch({

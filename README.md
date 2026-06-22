@@ -38,5 +38,7 @@ A project for TTRPG story sharing
 - [ ] Character creation
 - [ ] Handle Invitations
 - [ ] Remove player from campaign
-- [X] Edit comments
+- [x] Draft sessions
+- [x] Edit session while in draft
+- [x] Edit comments
 - [x] Autonumber session

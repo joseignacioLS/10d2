@@ -1,6 +1,6 @@
 "use client";
 
-import { getCampaign, postSession } from "@/src/api/ttrpg";
+import { editSession, getSession } from "@/src/api/ttrpg";
 import { CrumbsHeader } from "@/src/components/Core/CrumbsHeader";
 import { Form } from "@/src/components/Core/Form";
 import { Input } from "@/src/components/Core/Input";
@@ -12,30 +12,29 @@ import { useRouteGuard } from "@/src/hooks/useRouteGuard";
 import { useWrapFnWithToast } from "@/src/hooks/useWrapFnWithToast";
 import { UserContext } from "@/src/store/user";
 import { useParams, useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 export default function Home() {
-  const { campaignId } = useParams();
+  const { campaignId, sessionId } = useParams();
   const { input, handleInput } = useHandleInput({
-    name: "",
+    title: "",
     date: "",
     summary: "",
   });
   const { userData } = useContext(UserContext);
   const {
-    data: campaign,
+    data: session,
     loading: loadingCampaign,
     error,
-  } = useFetchData(getCampaign, [campaignId]);
+  } = useFetchData(getSession, [sessionId]);
   const router = useRouter();
 
-  const handleCreateSession = useWrapFnWithToast(async () => {
-    if (!userData || !campaignId) throw "User error";
+  const handleEditSession = useWrapFnWithToast(async () => {
+    if (!userData || !sessionId) throw "User error";
 
-    const { data: sessionId, error } = await postSession(
-      campaignId as string,
-      input.name as string,
-      nextSessionNumber,
+    const { error } = await editSession(
+      sessionId as string,
+      input.title,
       input.date,
       input.summary as string,
     );
@@ -46,6 +45,13 @@ export default function Home() {
 
     return "Sesión creada con éxito";
   });
+
+  useEffect(() => {
+    if (!session) return;
+    handleInput("title", session.title);
+    handleInput("summary", session.summary);
+    handleInput("date", session.date.toString());
+  }, [session]);
 
   const { loading } = useRouteGuard(
     loadingCampaign,
@@ -59,38 +65,32 @@ export default function Home() {
     return <Spinner />;
   }
 
-  const nextSessionNumber = (campaign?.sessions[0].number ?? 0) + 1;
-
   return (
     <main>
       <CrumbsHeader
-        title={"Nueva sesión"}
+        title={session?.title}
         crumbs={[
           {
-            name: campaign?.short ?? "",
+            name: "<",
             href: `/campaigns/${campaignId}`,
           },
         ]}
       />
-      <h2>
-        Sesión #{nextSessionNumber} de {campaign?.name}
-      </h2>
       <Form
-        onSubmit={handleCreateSession}
+        onSubmit={handleEditSession}
         disabled={
-          input.name.length < 12 ||
+          input.title.length < 12 ||
           input.summary.length < 64 ||
-          input.number === "" ||
           input.date === ""
         }
       >
         <>
           <Input
-            id="name"
-            name="name"
-            placeholder="Nombre"
+            id="title"
+            name="title"
+            placeholder="Título"
             onChange={handleInput}
-            value={input.name}
+            value={input.title}
             label="Nombre de la sesión"
             min={12}
             max={128}
@@ -104,14 +104,16 @@ export default function Home() {
             label="Fecha de la sesión"
             type="date"
           />
-          <Tiptap
-            name="summary"
-            value={input.summary}
-            onChange={handleInput}
-            placeholder={"Introducción a la campaña"}
-            label="Resumen de la sesión"
-            max={8000}
-          />
+          {session && (
+            <Tiptap
+              name="summary"
+              value={input.summary}
+              onChange={handleInput}
+              placeholder={"Introducción a la campaña"}
+              label="Resumen de la sesión"
+              max={8000}
+            />
+          )}
         </>
       </Form>
     </main>

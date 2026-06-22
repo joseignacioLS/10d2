@@ -17,7 +17,6 @@ export const UserTextBubble: React.FC<Props> = ({
     <article
       className={styles.userTextBubble}
       style={{
-        backgroundColor: color,
         width: width === "full" ? "100%" : "fit-content",
       }}
     >

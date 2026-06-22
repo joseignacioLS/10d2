@@ -20,6 +20,7 @@ export type CampaignDetail = {
     number: Session["number"]
     title: Session["title"]
     date: Session["date"]
+    status: Session["status"]
   }[]
   nextSession: Campaign["nextSession"]
   invitations: {
@@ -30,6 +31,7 @@ export type CampaignDetail = {
 
 export type SessionDetail = {
   id: Session["id"]
+  status: Session["status"]
   campaign: {
     id: Campaign["id"],
     short: Campaign["short"]
@@ -38,6 +40,7 @@ export type SessionDetail = {
   date: Session["date"],
   summary: string,
   author: {
+    id: string;
     name: string;
   };
   annotations: any[]
@@ -100,6 +103,7 @@ export type Session = {
   author: Character["id"];
   summary: SessionSummary;
   date: Temporal.PlainDate;
+  status: "draft" | "published"
 };
 
 export type FilledSession = Omit<Session, "campaign" | "author"> & {

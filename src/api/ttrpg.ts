@@ -1,4 +1,5 @@
 
+import { secureFetch } from "@/src/api/fn";
 import { ServiceResponse } from "@/src/types/api";
 import {
   Campaign,
@@ -8,7 +9,6 @@ import {
   Session,
   SessionDetail
 } from "@/src/types/ttrpg";
-import { secureFetch } from "@/src/api/fn";
 
 export const getSearch = async (
   search: string,
@@ -51,6 +51,39 @@ export const postSession = async (
   })
 
 };
+
+export const editSession = async (
+  sessionId: string,
+  title: string,
+  date: string,
+  summary: string,
+): Promise<ServiceResponse<string>> => {
+  const path = "/session"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      sessionId,
+      title,
+      date,
+      summary
+    })
+  })
+
+};
+
+export const publishSession = async (
+  sessionId: string,
+): Promise<ServiceResponse<string>> => {
+  const path = "/session/publish/"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path + sessionId, {
+    method: "PUT",
+  })
+};
+
+
 
 export const getLastSessions = async (
   count: number,

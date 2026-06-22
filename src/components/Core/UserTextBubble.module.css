@@ -8,7 +8,7 @@
   padding: 8px 8px;
   margin-bottom: 4px;
 
-  background-color: #444;
+  background-color: var(--interactive-color);
   color: var(--egg-shell);
 
   border-radius: 6px;
