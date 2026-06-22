@@ -26,29 +26,6 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
     <section className={styles.campaign}>
       <CrumbsHeader title={<span>{campaign?.name} </span>} />
 
-      {(author || canEdit) && (
-        <Card>
-          <>
-            <Button
-              onClick={() => {
-                router.push(`/campaigns/${campaign.id}/new`);
-              }}
-            >
-              Nueva Sesión
-            </Button>
-            {canEdit && (
-              <Button
-                onClick={() => {
-                  router.push(`/campaigns/${campaign.id}/edit`);
-                }}
-              >
-                Editar
-              </Button>
-            )}
-          </>
-        </Card>
-      )}
-
       <Card>
         <p dangerouslySetInnerHTML={{ __html: campaign?.summary ?? "" }}></p>
       </Card>
@@ -141,6 +118,31 @@ export const Campaign: React.FC<Props> = ({ campaign }) => {
           />
         </>
       </Card>
+      <Card>
+        <>
+          <h2>Glosario</h2>
+        </>
+      </Card>
+      {(author || canEdit) && (
+        <div className={styles.actions}>
+          <Button
+            onClick={() => {
+              router.push(`/campaigns/${campaign.id}/new`);
+            }}
+          >
+            Nueva Sesión
+          </Button>
+          {canEdit && (
+            <Button
+              onClick={() => {
+                router.push(`/campaigns/${campaign.id}/edit`);
+              }}
+            >
+              Editar
+            </Button>
+          )}
+        </div>
+      )}
     </section>
   );
 };
