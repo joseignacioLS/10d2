@@ -3,7 +3,7 @@
 // src/Tiptap.tsx
 import { Button } from "@/src/components/Core/Button";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -15,6 +15,7 @@ type Props = {
   onChange: (name: string, value: string) => void;
   placeholder?: string;
   label?: string;
+  max?: number;
 };
 
 const Tiptap: React.FC<Props> = ({
@@ -23,6 +24,7 @@ const Tiptap: React.FC<Props> = ({
   onChange,
   placeholder = "",
   label,
+  max = 512,
 }) => {
   const editor = useEditor({
     extensions: [
@@ -43,7 +45,7 @@ const Tiptap: React.FC<Props> = ({
         placeholder,
       }),
       CharacterCount.configure({
-        limit: 8192,
+        limit: max,
       }),
     ],
     content: value,
@@ -53,6 +55,13 @@ const Tiptap: React.FC<Props> = ({
     },
   });
 
+  const { charactersCount = 0 } = useEditorState({
+    editor,
+    selector: (context) => ({
+      charactersCount: context.editor?.storage.characterCount.characters(),
+    }),
+  }) as { charactersCount: number };
+
   if (!editor) {
     return null;
   }
@@ -61,6 +70,9 @@ const Tiptap: React.FC<Props> = ({
     <>
       {label && <label htmlFor={name}>{label}</label>}
       <EditorContent id={name} editor={editor} className={styles.tiptap} />
+      <p>
+        {charactersCount}/{max}
+      </p>
       <BubbleMenu editor={editor}>
         <div style={{ display: "flex", gap: "4px" }}>
           <Button

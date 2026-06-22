@@ -18,7 +18,6 @@ export default function Home() {
   const { campaignId } = useParams();
   const { input, handleInput } = useHandleInput({
     name: "",
-    number: "",
     date: "",
     summary: "",
   });
@@ -36,7 +35,7 @@ export default function Home() {
     const { data: sessionId, error } = await postSession(
       campaignId as string,
       input.name as string,
-      Number(input.number),
+      nextSessionNumber,
       input.date,
       input.summary as string,
     );
@@ -60,6 +59,8 @@ export default function Home() {
     return <Spinner />;
   }
 
+  const nextSessionNumber = (campaign?.sessions[0].number ?? 0) + 1;
+
   return (
     <main>
       <CrumbsHeader
@@ -71,7 +72,9 @@ export default function Home() {
           },
         ]}
       />
-      <h2>Nueva sesión de {campaign?.name}</h2>
+      <h2>
+        Sesión #{nextSessionNumber} de {campaign?.name}
+      </h2>
       <Form
         onSubmit={handleCreateSession}
         disabled={
@@ -93,17 +96,6 @@ export default function Home() {
             max={128}
           />
           <Input
-            id="number"
-            name="number"
-            placeholder="37"
-            onChange={handleInput}
-            value={input.number}
-            label="Número de la sesión"
-            type="number"
-            min={0}
-            max={Infinity}
-          />
-          <Input
             id="date"
             name="date"
             placeholder="2026-06-13"
@@ -118,6 +110,7 @@ export default function Home() {
             onChange={handleInput}
             placeholder={"Introducción a la campaña"}
             label="Resumen de la sesión"
+            max={2048}
           />
         </>
       </Form>

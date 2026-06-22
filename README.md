@@ -38,3 +38,4 @@ A project for TTRPG story sharing
 - [ ] Character creation
 - [ ] Handle Invitations
 - [ ] Remove player from campaign
+- [x] Autonumber session
