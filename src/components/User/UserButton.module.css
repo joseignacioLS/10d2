@@ -2,9 +2,6 @@
   display: block;
   height: 32px;
   min-width: 32px;
-  position: absolute;
-  right: 16px;
-  top: 16px;
 
   img {
     height: 16px;

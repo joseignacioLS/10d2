@@ -48,9 +48,13 @@ body {
 header.mainHeader {
   width: 100%;
   margin: auto;
-  padding: 8px 0;
+  padding: 4px 16px;
   height: fit-content;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
 
   h1 {
     width: 100%;
@@ -61,7 +65,7 @@ header.mainHeader {
       color: var(--main-fg-color);
       img {
         width: auto;
-        height: 96px;
+        height: 64px;
       }
     }
   }
