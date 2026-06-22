@@ -98,6 +98,21 @@ export const annotateSentence = (sessionId: string, position: number[], text: st
   })
 }
 
+
+export const editAnnotation = (annotationId: string, text: string): Promise<ServiceResponse<boolean>> => {
+  const path = "/session/annotation/"
+  return secureFetch(process.env.NEXT_PUBLIC_API + path + annotationId, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      annotationId,
+      text
+    })
+  })
+}
+
 export const deleteAnnotation = (annotationId: string): Promise<ServiceResponse<boolean>> => {
   const path = "/session/annotation/"
   return secureFetch(process.env.NEXT_PUBLIC_API + path + annotationId, {
