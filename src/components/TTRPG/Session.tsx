@@ -61,6 +61,7 @@ export const Session: React.FC<Props> = () => {
               Publicar
             </Button>
           )}
+          {session?.status === "draft" && <Button>Descartar</Button>}
           {session?.status === "published" && <Button>Eliminar</Button>}
         </div>
       )}
