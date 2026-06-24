@@ -20,24 +20,23 @@ A project for TTRPG story sharing
 
 ### Features
 
+- [ ] Character avatar
+- [ ] Character color
+- [ ] Edit character data
+- [ ] Character creation
 - [ ] Create new user
 - [ ] Recover password
-- [ ] Draft sessions
-- [ ] Edit session while in draft
-- [ ] Autonumber session
 - [ ] Improve read experience
 - [ ] Report summary/comment
 - [ ] About us page
 - [ ] Policy page
-- [ ] Edit character data
-- [ ] Character avatar
-- [ ] Character color
 - [ ] Campaign glossary
 - [ ] Campaign cover image
 - [ ] Member invitation
-- [ ] Character creation
 - [ ] Handle Invitations
 - [ ] Remove player from campaign
+- [ ] Follow campaign
+- [ ] Like/react to session
 - [x] Draft sessions
 - [x] Edit session while in draft
 - [x] Edit comments
