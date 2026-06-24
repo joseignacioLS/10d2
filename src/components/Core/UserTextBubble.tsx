@@ -1,14 +1,16 @@
+import { Character } from "@/src/types/ttrpg";
+import { Avatar } from "../TTRPG/Avatar";
 import styles from "./UserTextBubble.module.css";
 
 type Props = {
-  imgSrc?: string;
-  color?: string;
+  icon?: Character["icon"];
+  color?: Character["color"];
   children: React.ReactNode;
   width?: "full" | "fit";
 };
 
 export const UserTextBubble: React.FC<Props> = ({
-  imgSrc = "/chicken.svg",
+  icon,
   color,
   width = "fit",
   children,
@@ -20,7 +22,7 @@ export const UserTextBubble: React.FC<Props> = ({
         width: width === "full" ? "100%" : "fit-content",
       }}
     >
-      <img className={styles.avatar} src={imgSrc} />
+      <Avatar icon={icon} color={color} />
       <div>{children}</div>
     </article>
   );

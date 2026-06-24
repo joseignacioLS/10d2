@@ -137,12 +137,19 @@ export type Comment = {
   date: Temporal.PlainDateTime;
 };
 
+
+export const Icons = {
+  sword: "/avatars/sword.svg",
+  shield: "/avatars/shield.svg",
+}
+
 export type Character = {
   id: string;
   name: string;
   campaign: Campaign["id"];
   member: Member["id"];
   color: string;
+  icon: keyof typeof Icons;
 };
 
 export type FilledCharacter = Omit<Character, "campaign" | "member"> & {

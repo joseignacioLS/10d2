@@ -4,6 +4,7 @@ import { Spinner } from "@/src/components/Core/Spinner";
 import { useFetchData } from "@/src/hooks/useFetchData";
 import { UserContext } from "@/src/store/user";
 import { useContext } from "react";
+import { Avatar } from "./Avatar";
 
 type Props = {
   characterId: string;
@@ -36,6 +37,7 @@ export const Character: React.FC<Props> = ({ characterId }) => {
           },
         ]}
       />
+      <Avatar icon={character.icon} color={character.color} />
       {userData?.id === character.member && "Hola!"}
     </section>
   );

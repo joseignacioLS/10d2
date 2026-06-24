@@ -9,20 +9,28 @@ import { TTRPGSessionContext } from "@/src/store/ttrpgsession";
 import { UserContext } from "@/src/store/user";
 import { useContext, useState } from "react";
 import styles from "./Annotation.module.css";
+import { Character } from "@/src/types/ttrpg";
 
 type Props = {
   id: string;
   text: string;
   author: {
-    id: string;
-    name: string;
+    id: Character["id"];
+    name: Character["name"];
+    icon: Character["icon"];
+    color: Character["color"];
   };
 };
 
 export const Annotation: React.FC<Props> = ({
   id,
   text,
-  author = { id: undefined, name: "Unknown" },
+  author = {
+    id: undefined,
+    name: "Unknown",
+    icon: undefined,
+    color: undefined,
+  },
 }) => {
   const { userData } = useContext(UserContext);
   const [annotationText, setAnnotationText] = useState(text);
@@ -55,7 +63,7 @@ export const Annotation: React.FC<Props> = ({
 
   return (
     <>
-      <UserTextBubble color={"#306080"} width="full">
+      <UserTextBubble icon={author.icon} color={author.color} width="full">
         <div dangerouslySetInnerHTML={{ __html: annotationText }}></div>
         <div className={styles.authorBar}>
           <i> - {author.name}</i>

@@ -109,6 +109,8 @@ export const getCharacter = async (
     id: Campaign["id"],
     short: Campaign["short"]
   }
+  color: Character["color"]
+  icon: Character["icon"]
 }>> => {
   const path = "/character/"
   return secureFetch(process.env.NEXT_PUBLIC_API + path + characterId)
